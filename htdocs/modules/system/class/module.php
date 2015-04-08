@@ -37,7 +37,6 @@ class SystemModule
     protected $config_old = array();
     protected $reservedTables = array(
         'block_module_link',
-        'cache_model',
         'config',
         'configoption',
         'groups',
@@ -178,7 +177,7 @@ class SystemModule
                         $module->setInfo('version', round($module->getInfo('version'), 2));
                         $ret[] = $module;
                         unset($module);
-                        $i++;
+                        ++$i;
                     }
                 }
             }
@@ -711,7 +710,7 @@ class SystemModule
             return $ret;
         }
         $count = count($lines);
-        for ($i = 0; $i < $count; $i++) {
+        for ($i = 0; $i < $count; ++$i) {
             $ret .= str_replace("\n", "\r\n", str_replace("\r\n", "\n", $lines[$i]));
         }
         return $ret;
@@ -1165,7 +1164,7 @@ class SystemModule
                             unset($confop);
                         }
                     }
-                    $order++;
+                    ++$order;
                     if (false != $config_handler->insertConfig($confobj)) {
                         $this->trace[]['sub'] = sprintf(
                             SystemLocale::SF_CONFIG_ADDED,

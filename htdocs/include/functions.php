@@ -10,7 +10,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
  * @copyright       The XOOPS Project http://sourceforge.net/projects/xoops/
- * @license         GNU GPL 2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
+ * @license         GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
  * @package         kernel
  * @since           2.0.0
  * @version         $Id$
@@ -171,7 +171,7 @@ function xoops_confirm($hiddens, $action, $msg, $submit = '', $addtoken = true)
 {
     $xoops = Xoops::getInstance();
     $xoops->deprecated(__FUNCTION__ . ' is deprecated since XOOPS 2.6.0. See how to replace it in file ' . __FILE__ . ' line ' . __LINE__);
-    $xoops->confirm($hiddens, $action, $msg, $submit, $addtoken);
+    echo $xoops->confirm($hiddens, $action, $msg, $submit, $addtoken);
 }
 
 /**

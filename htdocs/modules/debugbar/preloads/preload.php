@@ -20,7 +20,7 @@ use Xoops\Core\PreloadItem;
  * @author    Richard Griffith <richard@geekwright.com>
  * @author    trabis <lusopoemas@gmail.com>
  * @copyright 2013 The XOOPS Project http://sourceforge.net/projects/xoops/
- * @license   GNU GPL 2 or later (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
+ * @license   GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
  * @version   Release: 1.0
  * @link      http://xoops.org
  * @since     1.0
@@ -107,9 +107,14 @@ class DebugbarPreload extends PreloadItem
      */
     public static function eventCoreIncludeCommonStart($args)
     {
-        DebugbarLogger::getInstance()->enable();//until we get a db connection debug is enabled
-        DebugbarLogger::getInstance()->startTime();
-        DebugbarLogger::getInstance()->startTime('XOOPS Boot');
+        $logger = DebugbarLogger::getInstance();
+
+        $logger->enable();//until we get a db connection debug is enabled
+        //if (isset($_SERVER['REQUEST_TIME_FLOAT'])) {
+        //    $logger->getDebugbar()['time']->addMeasure('Loading', $_SERVER['REQUEST_TIME_FLOAT'], microtime(true));
+        //}
+        $logger->startTime();
+        $logger->startTime('XOOPS Boot');
     }
 
     /**
@@ -142,29 +147,6 @@ class DebugbarPreload extends PreloadItem
             $db = $args[0];
             DebugbarLogger::getInstance()->log(LogLevel::ALERT, $db->error(), array('errno' => $db->errno()));
         }
-    }
-
-    /**
-     * eventCoreIncludeCommonConfigsSuccess
-     *
-     * @param mixed $args arguments supplied to triggerEvent
-     *
-     * @return void
-     */
-    public static function eventCoreIncludeCommonConfigsSuccess($args)
-    {
-        /*
-        $xoops = Xoops::getInstance();
-        $logger = DebugbarLogger::getInstance();
-        $configs = self::getConfigs();
-        if ($configs['debugbar_enable']) {
-            $xoops->loadLocale();
-            $xoops->loadLanguage('main', 'debugbar');
-            $logger->enable();
-        } else {
-            $logger->disable();
-        }
-        */
     }
 
     /**
@@ -382,7 +364,6 @@ class DebugbarPreload extends PreloadItem
         $logger = DebugbarLogger::getInstance();
         $logs = $args[0];
         foreach ($logs as $log) {
-            //$logger->addExtra($log[0], $log[1]);
             $context = array('channel'=>'Extra', 'name'=>$log[0]);
             $logger->log(LogLevel::INFO, $log[1], $context);
         }
@@ -397,7 +378,6 @@ class DebugbarPreload extends PreloadItem
      */
     public static function eventCoreModuleAddlog($args)
     {
-        //Logger::getInstance()->addExtra($args[0], $args[1]);
         $context = array('channel'=>'Extra', 'name'=>$args[0]);
         DebugbarLogger::getInstance()->log(LogLevel::DEBUG, $args[1], $context);
 
@@ -416,18 +396,26 @@ class DebugbarPreload extends PreloadItem
     }
 
     /**
-     * eventSystemPreferencesSave
+     * eventDebugTimerStart - start a timer
      *
-     * @param mixed $args arguments supplied to triggerEvent
+     * @param array $args array of name and label for timer
      *
      * @return void
      */
-    public static function eventSystemPreferencesSave($args)
+    public static function eventDebugTimerStart($args)
     {
-        /*
-        if (isset($_REQUEST['debug_plugin'])) {
-            Xoops_Cache::delete('module_debugbar_plugin');
-        }
-        */
+        DebugbarLogger::getInstance()->startTime($args[0], $args[1]);
+    }
+
+    /**
+     * eventDebugTimerStop - start a timer
+     *
+     * @param string $args name of timer
+     *
+     * @return void
+     */
+    public static function eventDebugTimerStop($args)
+    {
+        DebugbarLogger::getInstance()->stopTime($args);
     }
 }

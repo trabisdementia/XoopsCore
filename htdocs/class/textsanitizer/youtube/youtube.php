@@ -13,7 +13,7 @@
  * TextSanitizer extension
  *
  * @copyright       The XOOPS Project http://sourceforge.net/projects/xoops/
- * @license         GNU GPL 2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
+ * @license         GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
  * @package         class
  * @subpackage      textsanitizer
  * @since           2.3.0
@@ -83,7 +83,7 @@ static function myCallback($match) {
      */
     public static function decode($url, $width, $height)
     {
-        if (!preg_match("/^http:\/\/(www\.)?youtube\.com\/watch\?v=(.*)/i", $url, $matches)) {
+        if (!preg_match("/^http[s]?:\/\/(www\.)?youtube\.com\/watch\?v=(.*)/i", $url, $matches)) {
             trigger_error("Not matched: {$url} {$width} {$height}", E_USER_WARNING);
             return "";
         }

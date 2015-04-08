@@ -230,7 +230,7 @@ function publisher_latest_news_show($options)
         $block['letters'] = $letters;
 
         $columns[$k][] = $item;
-        $k++;
+        ++$k;
 
         if ($k == $column_count) {
             $k = 0;
@@ -414,7 +414,7 @@ function publisher_mk_select($options, $number)
     if ($options[$number] == 1) {
         $slc = " checked='checked'";
     }
-    $select = "<input type='radio' name='options[{$number}]' value='1'" . $slc . " />&nbsp;" . XoopsLocale::CENTER . "&nbsp;&nbsp;";
+    $select .= "<input type='radio' name='options[{$number}]' value='1'" . $slc . " />&nbsp;" . XoopsLocale::CENTER . "&nbsp;&nbsp;";
     $slc = "";
     if ($options[$number] == 0) {
         $slc = " checked='checked'";

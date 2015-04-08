@@ -10,7 +10,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
  * @copyright       The XOOPS Project http://sourceforge.net/projects/xoops/
- * @license         GNU GPL 2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
+ * @license         GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
  * @package         kernel
  * @since           2.0.0
  * @author          Kazumi Ono (AKA onokazu) http://www.myweb.ne.jp/, http://jp.xoops.org/
@@ -163,7 +163,7 @@ class XoopsPrivmessageHandler extends XoopsPersistableObjectHandler
     public function setRead(XoopsPrivmessage &$pm)
     {
         $qb = $this->db2->createXoopsQueryBuilder()
-            ->updatePrefix('priv_msgs', 'pm')
+            ->update($this->table, 'pm')
             ->set('pm.read_msg', ':readmsg')
             ->where('pm.msg_id = :msgid')
             ->setParameter(':readmsg', 1, \PDO::PARAM_INT)

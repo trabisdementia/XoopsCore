@@ -13,7 +13,7 @@
  * XOOPS template engine class
  *
  * @copyright       The XOOPS project http://sourceforge.net/projects/xoops/
- * @license         GNU GPL 2 (http://www.gnu.org/licenses/gpl-2.0.html)
+ * @license         GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
  * @author          Kazumi Ono <onokazu@xoops.org>
  * @author          Skalpa Keo <skalpa@xoops.org>
  * @author          Taiwen Jiang <phppp@users.sourceforge.net>
@@ -49,13 +49,12 @@ class XoopsTpl extends Smarty
         $xoops->preload()->triggerEvent('core.template.construct.start', array($this));
         $this->left_delimiter = '<{';
         $this->right_delimiter = '}>';
-        $this->template_dir = XOOPS_THEME_PATH;
-        $this->cache_dir = XOOPS_VAR_PATH . '/caches/smarty_cache';
-        $this->compile_dir = XOOPS_COMPILE_PATH;
+        $this->setTemplateDir(XOOPS_THEME_PATH);
+        $this->setCacheDir(XOOPS_VAR_PATH . '/caches/smarty_cache');
+        $this->setCompileDir(XOOPS_COMPILE_PATH);
         $this->compile_check = ($xoops->getConfig('theme_fromfile') == 1);
         $this->setPluginsDir(XOOPS_PATH . '/smarty/xoops_plugins');
         $this->addPluginsDir(SMARTY_DIR . 'plugins');
-        //$this->Smarty();
         $this->setCompileId();
         $this->assign(
             array('xoops_url' => XOOPS_URL, 'xoops_rootpath' => XOOPS_ROOT_PATH, 'xoops_langcode' => XoopsLocale::getLangCode(), 'xoops_charset' => XoopsLocale::getCharset(), 'xoops_version' => XOOPS_VERSION, 'xoops_upload_url' => XOOPS_UPLOAD_URL)
@@ -72,21 +71,17 @@ class XoopsTpl extends Smarty
      */
     public function fetchFromData($tplSource, $display = false, $vars = null)
     {
-        if (!function_exists('smarty_function_eval')) {
-            require_once SMARTY_DIR . '/plugins/function.eval.php';
-        }
+        $oldVars = $this->_tpl_vars;
         if (isset($vars)) {
-            $oldVars = $this->_tpl_vars;
             $this->assign($vars);
-            $out = smarty_function_eval(
-                array('var' => $tplSource), $this
-            );
-            $this->_tpl_vars = $oldVars;
-            return $out;
         }
-        return smarty_function_eval(
-            array('var' => $tplSource), $this
-        );
+        if ($display) {
+            $out = $this->display('eval:'.$tplSource);
+        } else {
+            $out = $this->fetch('eval:'.$tplSource);
+        }
+        $this->_tpl_vars = $oldVars;
+        return $out;
     }
 
     /**

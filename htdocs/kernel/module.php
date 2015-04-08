@@ -10,7 +10,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
  * @copyright       The XOOPS Project http://sourceforge.net/projects/xoops/
- * @license         GNU GPL 2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
+ * @license         GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
  * @package         kernel
  * @since           2.0.0
  * @version         $Id$
@@ -610,8 +610,10 @@ class XoopsModuleHandler extends XoopsPersistableObjectHandler
         if (!empty($this->_cachedModule_mid[$mid])) {
             unset($this->_cachedModule_mid[$mid]);
         }
-        Xoops_Cache::delete("module_id_" . $mid);
-        Xoops_Cache::delete("module_dirname_" . $dirname);
+        $cache = \Xoops::getInstance()->cache();
+        $cache->delete("system/module/id/{$mid}");
+        $cache->delete("system/module/dirname/{$dirname}");
+        $cache->delete("module/{$dirname}");
         return true;
     }
 

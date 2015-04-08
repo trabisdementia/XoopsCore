@@ -68,10 +68,12 @@ class FilterInput
         $xssAuto = 1
     ) {
         // make sure user defined arrays are in lowercase
-        for ($i = 0; $i < count($tagsArray); $i++) {
+        $countTagsArray = count($tagsArray);
+        for ($i = 0; $i < $countTagsArray; ++$i) {
             $tagsArray[$i] = strtolower($tagsArray[$i]);
         }
-        for ($i = 0; $i < count($attrArray); $i++) {
+        $countAttrArray = count($attrArray);
+        for ($i = 0; $i < $countAttrArray; ++$i) {
             $attrArray[$i] = strtolower($attrArray[$i]);
         }
         // assign to member vars
@@ -155,9 +157,9 @@ class FilterInput
      * specified bad code.
      *
      * @param mixed  $source Input string/array-of-string to be 'cleaned'
-     * @param string $type   Return type for the variable (INT, FLOAT,
-     *                       BOOLEAN, WORD, ALNUM, CMD, BASE64, STRING,
-     *                       ARRAY, PATH, NONE)
+     * @param string $type   Return/cleaning type for the variable, one of
+     *                       (INTEGER, FLOAT, BOOLEAN, WORD, ALNUM, CMD, BASE64,
+     *                        STRING, ARRAY, PATH, USERNAME, WEBURL, EMAIL, IP)
      *
      * @return mixed 'Cleaned' version of input parameter
      * @static
@@ -256,6 +258,15 @@ class FilterInput
                 }
                 break;
 
+            case 'IP':
+                $result = (string) $source;
+                // this may be too restrictive.
+                // Should the FILTER_FLAG_NO_PRIV_RANGE flag be excluded?
+                if (!filter_var((string) $source, FILTER_VALIDATE_IP)) {
+                    $result = '';
+                }
+                break;
+
             default:
                 $result = $filter->process($source);
                 break;
@@ -277,7 +288,7 @@ class FilterInput
         // provides nested-tag protection
         while ($source != $this->filterTags($source)) {
             $source = $this->filterTags($source);
-            $loopCounter++;
+            ++$loopCounter;
         }
 
         return $source;
@@ -388,7 +399,8 @@ class FilterInput
                 if (!$isCloseTag) {
                     $attrSet = $this->filterAttr($attrSet);
                     $preTag .= '<' . $tagName;
-                    for ($i = 0; $i < count($attrSet); $i++) {
+                    $countAttrSet = count($attrSet);
+                    for ($i = 0; $i < $countAttrSet; ++$i) {
                         $preTag .= ' ' . $attrSet[$i];
                     }
                     // reformat single tags to XHTML
@@ -423,7 +435,8 @@ class FilterInput
     {
         $newSet = array();
         // process attributes
-        for ($i = 0; $i <count($attrSet); $i++) {
+        $countAttrSet = count($attrSet);
+        for ($i = 0; $i < $countAttrSet; ++$i) {
             // skip blank spaces in tag
             if (!$attrSet[$i]) {
                 continue;
@@ -504,13 +517,17 @@ class FilterInput
         // convert decimal
         $source = preg_replace_callback(
             '/&#(\d+);/m',
-            create_function('$matches', "return  chr(\$matches[1]);"),
+            function ($matches) {
+                return chr($matches[1]);
+            },
             $source
         );
         // convert hex
         $source = preg_replace_callback(
             '/&#x([a-f0-9]+);/mi',
-            create_function('$matches', "return  chr('0x'.\$matches[1]);"),
+            function ($matches) {
+                return chr('0x'.$matches[1]);
+            },
             $source
         );   // hex notation
 

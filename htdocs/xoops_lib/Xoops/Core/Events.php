@@ -19,7 +19,7 @@ namespace Xoops\Core;
  * @author    trabis <lusopoemas@gmail.com>
  * @author    Richard Griffith <richard@geekwright.com>
  * @copyright 2013 The XOOPS Project http://sourceforge.net/projects/xoops/
- * @license   GNU GPL 2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
+ * @license   GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
  * @version   Release: 1.0
  * @link      http://xoops.org
  * @since     1.0
@@ -90,7 +90,9 @@ class Events
      */
     protected function setPreloads()
     {
-        if (!$this->preloadList = \Xoops_Cache::read('system_modules_preloads')) {
+        $cache = \Xoops::getInstance()->cache();
+        $key = 'system/modules/preloads';
+        if (!$this->preloadList = $cache->read($key)) {
             // get active modules from the xoops instance
             $modules_list = \Xoops::getInstance()->getActiveModules();
             if (empty($modules_list)) {
@@ -107,12 +109,12 @@ class Events
                             $file = substr($file, 0, -4);
                             $this->preloadList[$i]['module'] = $module;
                             $this->preloadList[$i]['file'] = $file;
-                            $i++;
+                            ++$i;
                         }
                     }
                 }
             }
-            \Xoops_Cache::write('system_modules_preloads', $this->preloadList);
+            $cache->write($key, $this->preloadList);
         }
     }
 
@@ -153,9 +155,9 @@ class Events
             $class_methods = get_class_methods($class_name);
             foreach ($class_methods as $method) {
                 if (strpos($method, 'event') === 0) {
-                    $event_name = strtolower(str_replace('event', '', $method));
-                    $event= array($class_name, $method);
-                    $this->eventListeners[$event_name][] = $event;
+                    $eventName = strtolower(str_replace('event', '', $method));
+                    $event = array($class_name, $method);
+                    $this->eventListeners[$eventName][] = $event;
                 }
             }
         }
@@ -164,17 +166,17 @@ class Events
     /**
      * Trigger a specific event
      *
-     * @param string $event_name Name of the event to trigger
-     * @param mixed  $args       Method arguments
+     * @param string $eventName Name of the event to trigger
+     * @param mixed  $args      Method arguments
      *
      * @return void
      */
-    public function triggerEvent($event_name, $args = array())
+    public function triggerEvent($eventName, $args = array())
     {
         if ($this->eventsEnabled) {
-            $event_name = $this->toInternalEventName($event_name);
-            if (isset($this->eventListeners[$event_name])) {
-                foreach ($this->eventListeners[$event_name] as $event) {
+            $eventName = $this->toInternalEventName($eventName);
+            if (isset($this->eventListeners[$eventName])) {
+                foreach ($this->eventListeners[$eventName] as $event) {
                     if (is_callable($event)) {
                         call_user_func($event, $args);
                     }
@@ -187,27 +189,27 @@ class Events
      * toInternalEventName - convert event name to internal form
      * i.e. core.include.common.end becomes coreincludecommonend
      *
-     * @param string $event_name the event name
+     * @param string $eventName the event name
      *
      * @return string converted name
      */
-    protected function toInternalEventName($event_name)
+    protected function toInternalEventName($eventName)
     {
-        return strtolower(str_replace('.', '', $event_name));
+        return strtolower(str_replace('.', '', $eventName));
     }
 
     /**
      * addListener - add a listener, providing a callback for a specific event.
      *
-     * @param string   $event_name the event name
-     * @param callable $callback   any callable acceptable for call_user_func
+     * @param string   $eventName the event name
+     * @param callable $callback  any callable acceptable for call_user_func
      *
      * @return void
      */
-    public function addListener($event_name, $callback)
+    public function addListener($eventName, $callback)
     {
-        $event_name = $this->toInternalEventName($event_name);
-        $this->eventListeners[$event_name][]=$callback;
+        $eventName = $this->toInternalEventName($eventName);
+        $this->eventListeners[$eventName][]=$callback;
     }
 
     /**
@@ -218,5 +220,17 @@ class Events
     public function getEvents()
     {
         return $this->eventListeners;
+    }
+
+    /**
+     * hasListeners - for debugging only, return list of event listeners
+     * @param type $eventName event name
+     *
+     * @return boolean true if one or more listeners are registered for the event
+     */
+    public function hasListeners($eventName)
+    {
+        $eventName = $this->toInternalEventName($eventName);
+        return array_key_exists($eventName, $this->eventListeners);
     }
 }

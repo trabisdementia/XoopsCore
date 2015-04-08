@@ -33,16 +33,19 @@ class XoopsBaseConfig
      * __construct
      * @param string|string[] $config fully qualified name of configuration file
      *                                or configuration array
+     * @throws Exception
      */
     final private function __construct($config)
     {
-
         if (!class_exists('XoopsLoad', false)) {
             include __DIR__ . '/xoopsload.php';
         }
         if (is_string($config)) {
             $yamlString = file_get_contents($config);
-            $libPath = $this->solveChickenEgg($yamlString);
+            if ($yamlString === false) {
+                throw new \Exception('XoopsBaseConfig failed to load configuration.');
+            }
+            $libPath = $this->extractLibPath($yamlString);
             \XoopsLoad::startAutoloader($libPath);
             self::$configs = Yaml::loadWrapped($yamlString);
         } elseif (is_array($config)) {
@@ -58,6 +61,7 @@ class XoopsBaseConfig
      *                                or configuration array
      *
      * @return XoopsBaseConfig instance
+     * @throws Exception
      */
     final public static function getInstance($config = '')
     {
@@ -67,11 +71,14 @@ class XoopsBaseConfig
             $instance = new \XoopsBaseConfig($config);
         }
 
+        if ($instance === false || empty(self::$configs)) {
+            throw new \Exception('XoopsBaseConfig failed.');
+        }
         return $instance;
     }
 
     /**
-     * solveChickenEgg
+     * extractLibPath - solve a which comes first, chicken or egg type problem
      *
      * The yaml file we can load has the path we need to set up the autoloader we need
      * to reach our yaml library. We solve this by looking through the raw yaml file
@@ -84,7 +91,7 @@ class XoopsBaseConfig
      *
      * @return string the extracted lib-path value
      */
-    final private function solveChickenEgg($filecontents)
+    final private function extractLibPath($filecontents)
     {
         $match = array();
         $matched = preg_match('/[.\v]*^lib-path\h*\:\h*[\']?([^\'\v]*)[\']?\h*$[.\v]*/m', $filecontents, $match);
@@ -101,11 +108,7 @@ class XoopsBaseConfig
      */
     final public static function get($name)
     {
-        if (isset(self::$configs[$name])) {
-            return self::$configs[$name];
-        } else {
-            return null;
-        }
+        return (isset(self::$configs[$name])) ? self::$configs[$name] : null;
     }
 
     /**
@@ -192,33 +195,61 @@ class XoopsBaseConfig
     /**
      * Create a working environment from traditional mainfile environment
      *
+     * For the early phases in the installer, these may not be defined. Until it
+     * is converted we try and do the best we can without errors
+     *
      * @return void
      */
     final public static function bootstrapTransition()
     {
-        $parts = parse_url(XOOPS_URL . '/');
+        $path = self::defineDefault('XOOPS_ROOT_PATH', basename(__DIR__));
+        $url = (defined('XOOPS_URL')) ?
+            XOOPS_URL :
+            ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? 'https://' : 'http://')
+            . $_SERVER['SERVER_NAME']
+            . (($_SERVER['SERVER_PORT'] != '80') ? ':' . $_SERVER['SERVER_PORT'] : '');
+
+        $parts = parse_url($url . '/');
+        $host = isset($parts['host']) ? $parts['host'] : $_SERVER['SERVER_NAME'];
+        $urlpath = isset($parts['path']) ? $parts['path'] : '/';
 
         $configs = array(
-            'root-path' => XOOPS_ROOT_PATH,
-            'lib-path' => XOOPS_PATH,
-            'var-path' => XOOPS_VAR_PATH,
-            'trust-path' => XOOPS_TRUST_PATH,
-            'url' => XOOPS_URL,
-            'prot' => XOOPS_PROT, // $parts['scheme'] . '://',
-            'asset-path' => XOOPS_ROOT_PATH . '/assets',
-            'asset-url' => XOOPS_URL . '/assets',
-            'cookie-domain' => $parts['host'],
-            'cookie-path' => $parts['path'],
-            'db-type' => XOOPS_DB_TYPE,
-            'db-charset' => XOOPS_DB_CHARSET,
-            'db-prefix' => XOOPS_DB_PREFIX,
-            'db-host' => XOOPS_DB_HOST,
-            'db-user' => XOOPS_DB_USER,
-            'db-pass' => XOOPS_DB_PASS,
-            'db-name' => XOOPS_DB_NAME,
-            'db-pconnect' => XOOPS_DB_PCONNECT,
-            'db-parameters' => unserialize(XOOPS_DB_PARAMETERS),
+            'root-path' => self::defineDefault('XOOPS_ROOT_PATH'),
+            'lib-path' => self::defineDefault('XOOPS_PATH'),
+            'var-path' => self::defineDefault('XOOPS_VAR_PATH'),
+            'trust-path' => self::defineDefault('XOOPS_TRUST_PATH'),
+            'url' => self::defineDefault('XOOPS_URL'),
+            'prot' => self::defineDefault('XOOPS_PROT'),
+            'asset-path' => $path . '/assets',
+            'asset-url' => $url . '/assets',
+            'cookie-domain' => $host,
+            'cookie-path' => $urlpath,
+            'db-type' => self::defineDefault('XOOPS_DB_TYPE'),
+            'db-charset' => 'utf8',
+            'db-prefix' => self::defineDefault('XOOPS_DB_PREFIX'),
+            'db-host' => self::defineDefault('XOOPS_DB_HOST'),
+            'db-user' => self::defineDefault('XOOPS_DB_USER'),
+            'db-pass' => self::defineDefault('XOOPS_DB_PASS'),
+            'db-name' => self::defineDefault('XOOPS_DB_NAME'),
+            'db-pconnect' => 0,
+            'db-parameters' => defined('XOOPS_DB_PARAMETERS') ? unserialize(XOOPS_DB_PARAMETERS) : array(),
         );
         self::getInstance($configs);
+    }
+
+    /**
+     * defineDefault - return a constant if it is defined, or a default value if not.
+     * If no default is specified, the define name will be used if needed.
+     *
+     * @param string      $define  a define constant name
+     * @param string|null $default default value to return if $define is not defined
+     *
+     * @return string value of define or default
+     */
+    private static function defineDefault($define, $default = null)
+    {
+        $default = ($default === null) ? $define : $default;
+        $return = defined($define) ? constant($define) : $default;
+        return $return;
     }
 }

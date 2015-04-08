@@ -16,7 +16,7 @@ use Xoops\Core\Kernel\CriteriaCompo;
  * Groups Manager
  *
  * @copyright       The XOOPS Project http://sourceforge.net/projects/xoops/
- * @license         GNU GPL 2 (http://www.gnu.org/licenses/gpl-2.0.html)
+ * @license         GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
  * @author          Kazumi Ono (AKA onokazu)
  * @package         system
  * @subpackage      groups
@@ -342,7 +342,7 @@ switch ($op) {
                 $system_breadcrumb->addHelp(system_adminVersion('groups', 'help') . '#edit');
                 $system_breadcrumb->render();
                 // Display message
-                $xoops->confirm(
+                echo $xoops->confirm(
                     array(
                         "ok" => 1,
                         "groups_id" => $_REQUEST["groups_id"],

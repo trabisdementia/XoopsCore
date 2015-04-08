@@ -19,7 +19,7 @@ namespace Xmf\Template;
  * @author    trabis <lusopoemas@gmail.com>
  * @author    The SmartFactory <www.smartfactory.ca>
  * @copyright 2011-2013 The XOOPS Project http://sourceforge.net/projects/xoops/
- * @license   GNU GPL 2 or later (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
+ * @license   GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
  * @version   Release: 1.0
  * @link      http://xoops.org
  * @since     1.0
@@ -29,7 +29,7 @@ class Breadcrumb extends AbstractTemplate
     /**
      * @var array
      */
-    private $_items = array();
+    private $items = array();
 
     /**
      * initialization run by parent::__construct
@@ -53,7 +53,7 @@ class Breadcrumb extends AbstractTemplate
      */
     public function setItems($items)
     {
-        $this->_items = $items;
+        $this->items = $items;
     }
 
     /**
@@ -63,6 +63,6 @@ class Breadcrumb extends AbstractTemplate
      */
     protected function render()
     {
-        $this->tpl->assign('xmf_breadcrumb_items', $this->_items);
+        $this->tpl->assign('xmf_breadcrumb_items', $this->items);
     }
 }

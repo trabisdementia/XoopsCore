@@ -60,8 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     //Reset module lists in cache folder
-    \Xoops_Cache::delete('system_modules_active');
-    \Xoops_Cache::delete('system_modules_preloads');
+    $xoops->cache()->delete('system/modules');
     $xoops->setActiveModules();
 } else {
     if (!$xoops->getConfig('locale')) {
@@ -108,7 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $content .= "    <td class='yesno'>";
         $content .= $moduleYN->render();
         $content .= "    </td></tr>\n";
-        $toinstal++;
+        ++$toinstal;
     }
     $content .= "</table>";
     $content .= "</li></ul><script type='text/javascript'>" . $javascript . "</script>";

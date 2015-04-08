@@ -20,7 +20,7 @@ use Xoops\Core\Yaml;
  * @package   Xoops\Core
  * @author    Richard Griffith <richard@geekwright.com>
  * @copyright 2013-2014 The XOOPS Project https://github.com/XOOPS/XoopsCore
- * @license   GNU GPL 2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
+ * @license   GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
  * @version   Release: 1.0
  * @link      http://xoops.org
  * @since     2.6.0
@@ -74,24 +74,24 @@ class Manager
      *
      * @var array|null
      */
-    protected $provider_prefs = null;
+    protected $providerPrefs = null;
 
     /**
      * @var string config file with provider prefs
      */
-    private $provider_prefs_file = 'var/configs/system_provider_prefs.yml';
+    private $providerPrefsFilename = 'var/configs/system_provider_prefs.yml';
 
     /**
      * @var string config cache key
      */
-    private $provider_prefs_cache = 'system_provider_prefs';
+    private $providerPrefsCacheKey = 'system/provider/prefs';
 
     /**
      * __construct
      */
     protected function __construct()
     {
-        $this->provider_prefs = $this->readProviderPrefs();
+        $this->providerPrefs = $this->readProviderPrefs();
     }
 
     /**
@@ -110,53 +110,62 @@ class Manager
         return $instance;
     }
 
+    /**
+     * readYamlProviderPrefs - read configured provider preferences from file
+     *
+     * @return array of configured provider preferences
+     */
+    public function readYamlProviderPrefs()
+    {
+        $xoops = \Xoops::getInstance();
+
+        $providerPrefs = array();
+
+        try {
+            $file = $xoops->path($this->providerPrefsFilename);
+            if (file_exists($file)) {
+                $providerPrefs = Yaml::read($xoops->path($file));
+            }
+            if (empty($providerPrefs)) {
+                $providerPrefs = array();
+            }
+        } catch (\Exception $e) {
+            $xoops->events()->triggerEvent('core.exception', $e);
+            $providerPrefs = array();
+        }
+        return $providerPrefs;
+    }
 
     /**
-     * readProviderPrefs - read configured provider preferences
+     * readProviderPrefs - read configured provider preferences from cache
      *
      * @return array of configured provider preferences
      */
     protected function readProviderPrefs()
     {
         $xoops = \Xoops::getInstance();
-
-        $provider_prefs = array();
-
-        try {
-            if (!$provider_prefs = \Xoops_Cache::read($this->provider_prefs_cache)) {
-                $file = $xoops->path($this->provider_prefs_file);
-                if (file_exists($file)) {
-                    $provider_prefs = Yaml::read($xoops->path($file));
-                }
-                if ($provider_prefs!==false && is_array($provider_prefs)) {
-                    \Xoops_Cache::write($this->provider_prefs_cache, $provider_prefs);
-                } else {
-                    $provider_prefs = array();
-                }
-            }
-        } catch (\Exception $e) {
-            $xoops->events()->triggerEvent('core.exception', $e);
-            $provider_prefs = array();
-        }
-        return $provider_prefs;
-
+        $providerPrefs = $xoops->cache()->cacheRead(
+            $this->providerPrefsCacheKey,
+            array($this, 'readYamlProviderPrefs')
+        );
+        return $providerPrefs;
     }
 
     /**
      * saveProviderPrefs - record array of provider preferences in config file, and
      * update cache
      *
-     * @param array $provider_prefs array of provider preferences to save
+     * @param array $providerPrefs array of provider preferences to save
      *
      * @return void
      */
-    protected function saveProviderPrefs($provider_prefs)
+    protected function saveProviderPrefs($providerPrefs)
     {
-        if (is_array($provider_prefs)) {
+        if (is_array($providerPrefs)) {
             $xoops = \Xoops::getInstance();
             try {
-                Yaml::save($provider_prefs, $xoops->path($this->provider_prefs_file));
-                \Xoops_Cache::write($this->provider_prefs_cache, $provider_prefs);
+                Yaml::save($providerPrefs, $xoops->path($this->providerPrefsFilename));
+                $xoops->cache()->write($this->providerPrefsCacheKey, $providerPrefs);
             } catch (\Exception $e) {
                 $xoops->events()->triggerEvent('core.exception', $e);
             }
@@ -250,7 +259,7 @@ class Manager
             // get reference to the list of providers and prioritize it.
             $registered=$provider->getRegistered();
             if (count($registered)) {
-                $choices = isset($this->provider_prefs[$service]) ? $this->provider_prefs[$service] : array();
+                $choices = isset($this->providerPrefs[$service]) ? $this->providerPrefs[$service] : array();
                 foreach ($registered as $p) {
                     $name = strtolower($p->getName());
                     if (isset($choices[$name])) {

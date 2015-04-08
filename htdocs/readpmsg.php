@@ -15,7 +15,7 @@ use Xoops\Core\Request;
  * XOOPS message list
  *
  * @copyright       The XOOPS Project http://sourceforge.net/projects/xoops/
- * @license         GNU GPL 2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
+ * @license         GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
  * @package         core
  * @since           2.0.0
  * @version         $Id$
@@ -95,7 +95,7 @@ switch ($op) {
             }
         } else {
             $xoops->tpl()->assign('subject', $obj->getVar("subject"));
-            $xoops->confirm(array("ok" => 1, "msg_id" => $id, "op" => "delete"), 'readpmsg.php', XoopsLocale::Q_ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_MESSAGES . '<br />' . $obj->getVar("subject"));
+            echo $xoops->confirm(array("ok" => 1, "msg_id" => $id, "op" => "delete"), 'readpmsg.php', XoopsLocale::Q_ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_MESSAGES . '<br />' . $obj->getVar("subject"));
         }
         break;
 }
