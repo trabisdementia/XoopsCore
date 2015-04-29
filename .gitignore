@@ -19,6 +19,7 @@ htdocs/uploads/banners/
 htdocs/uploads/images/
 htdocs/uploads/filemanager/
 htdocs/assets/*/
+htdocs/install/*
 /UnitTestXoops/*.lnk
 .idea/
 htdocs/.idea/
