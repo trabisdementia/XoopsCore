@@ -39,43 +39,8 @@ if ($xoops->isUser()) {
     exit();
 }
 
-$xoops->header();
-// ###### Output warn messages for security ######
-/**
- * Error warning messages
- */
-if ($xoops->getConfig('admin_warnings_enable')) {
-    $error_msg = array();
-    if (is_dir(XOOPS_ROOT_PATH . '/install/')) {
-        $error_msg[] = sprintf(XoopsLocale::EF_DIRECTORY_EXISTS, XOOPS_ROOT_PATH . '/install/');
-    }
-
-    if (is_writable(XOOPS_ROOT_PATH . '/mainfile.php')) {
-        $error_msg[] = sprintf(XoopsLocale::EF_FILE_IS_WRITABLE, XOOPS_ROOT_PATH . '/mainfile.php');
-    }
-    // ###### Output warn messages for correct functionality  ######
-    if (!is_writable(XOOPS_CACHE_PATH)) {
-        $error_msg[] = sprintf(XoopsLocale::EF_FOLDER_NOT_WRITABLE, XOOPS_CACHE_PATH);
-    }
-    if (!is_writable(XOOPS_UPLOAD_PATH)) {
-        $error_msg[] = sprintf(XoopsLocale::EF_FOLDER_NOT_WRITABLE, XOOPS_UPLOAD_PATH);
-    }
-    if (!is_writable(XOOPS_COMPILE_PATH)) {
-        $error_msg[] = sprintf(XoopsLocale::EF_FOLDER_NOT_WRITABLE, XOOPS_COMPILE_PATH);
-    }
-
-    //www fits inside www_private, lets add a trailing slash to make sure it doesn't
-    if (strpos(XOOPS_PATH . '/', XOOPS_ROOT_PATH . '/') !== false || strpos(XOOPS_PATH . '/', $_SERVER['DOCUMENT_ROOT'] . '/') !== false) {
-        $error_msg[] = sprintf(XoopsLocale::EF_FOLDER_IS_INSIDE_DOCUMENT_ROOT, XOOPS_PATH);
-    }
-
-    if (strpos(XOOPS_VAR_PATH . '/', XOOPS_ROOT_PATH . '/') !== false || strpos(XOOPS_VAR_PATH . '/', $_SERVER['DOCUMENT_ROOT'] . '/') !== false) {
-        $error_msg[] = sprintf(XoopsLocale::EF_FOLDER_IS_INSIDE_DOCUMENT_ROOT, XOOPS_VAR_PATH);
-    }
-    $xoops->tpl()->assign('error_msg', $error_msg);
-}
-
 $xoopsorgnews = Request::getString('xoopsorgnews', null, 'GET');
+
 if (!empty($xoopsorgnews)) {
     // Multiple feeds
     $myts = MyTextSanitizer::getInstance();
@@ -107,8 +72,95 @@ if (!empty($xoopsorgnews)) {
         $ret .= '</table>';
         echo $ret;
     }
+} else {
+
+    $xoops->header('admin:system/system_index.tpl');
+
+    $admin = new \Xoops\Module\Admin();
+    \Xoops\Core\Helper\PoLocale::getInstance()->loadXoopsLocale();
+// User avatar
+    $avatar_provider = $xoops->service('Avatar');
+    $user_avatar = preg_replace("/s=[0-9]{1,}\&/", 's=96&', $avatar_provider->getAvatarUrl($xoops->user)->getValue());
+    $user_avatar = HydrogenHelper::getInstance()->getIcon($user_avatar);
+    $admin->renderModuleHeader(
+        __('Dashboard', 'xoops'),
+        sprintf(__('Hi %s!', 'xoops'), '' != $xoops->user->name() ? $xoops->user->name() : $xoops->user->uname()),
+        $user_avatar
+    );
+
+    $widgets = $xoops->service('AdminWidget');
+    $modulesCounter = $widgets->loadWidget('counter')->getValue();
+    $modulesCounter->setId('modules');
+    $modulesCounter->counter = 300;
+    $modulesCounter->tagline = 'Modules';
+    $modulesCounter->bgcolor = 'bg-azure';
+    $modulesCounter->icon    = 'xicon-module';
+    $modulesCounter->transport();
+
+    $extCounter = $widgets->loadWidget('counter')->getValue();
+    $extCounter->setId('extensions');
+    $extCounter->counter = 1500;
+    $extCounter->tagline = 'Extensions';
+    $extCounter->icon    = 'xicon-extension';
+    $extCounter->transport();
+
+    $usersCounter = $widgets->loadWidget('counter')->getValue();
+    $usersCounter->setId('users');
+    //$usersCounter->counter = 3254000;
+    //$usersCounter->tagline = 'Users';
+    $usersCounter->icon    = 'xicon-user';
+    $usersCounter->addColumn('active')->counter = 3000000;
+    $usersCounter->column('active')->tagline = 'Active';
+    $usersCounter->addColumn('inactive')->counter = 254000;
+    $usersCounter->column('inactive')->tagline = 'Inactive';
+    $usersCounter->transport();
+
+    $commsCounter = $widgets->loadWidget('counter')->getValue();
+    $commsCounter->setId('comments');
+    $commsCounter->counter = 123;
+    $commsCounter->tagline = 'Comments';
+    $commsCounter->icon    = 'xicon-comment';
+    $commsCounter->transport();
+
+    // ###### Output warn messages for security ######
+    /**
+     * Error warning messages
+     */
+    if ($xoops->getConfig('admin_warnings_enable')) {
+        $error_msg = array();
+        if (is_dir(XOOPS_ROOT_PATH . '/install/')) {
+            $error_msg[] = sprintf(XoopsLocale::EF_DIRECTORY_EXISTS, XOOPS_ROOT_PATH . '/install/');
+        }
+
+        if (is_writable(XOOPS_ROOT_PATH . '/mainfile.php')) {
+            $error_msg[] = sprintf(XoopsLocale::EF_FILE_IS_WRITABLE, XOOPS_ROOT_PATH . '/mainfile.php');
+        }
+        // ###### Output warn messages for correct functionality  ######
+        if (!is_writable(XOOPS_CACHE_PATH)) {
+            $error_msg[] = sprintf(XoopsLocale::EF_FOLDER_NOT_WRITABLE, XOOPS_CACHE_PATH);
+        }
+        if (!is_writable(XOOPS_UPLOAD_PATH)) {
+            $error_msg[] = sprintf(XoopsLocale::EF_FOLDER_NOT_WRITABLE, XOOPS_UPLOAD_PATH);
+        }
+        if (!is_writable(XOOPS_COMPILE_PATH)) {
+            $error_msg[] = sprintf(XoopsLocale::EF_FOLDER_NOT_WRITABLE, XOOPS_COMPILE_PATH);
+        }
+
+        //www fits inside www_private, lets add a trailing slash to make sure it doesn't
+        if (strpos(XOOPS_PATH . '/', XOOPS_ROOT_PATH . '/') !== false || strpos(XOOPS_PATH . '/', $_SERVER['DOCUMENT_ROOT'] . '/') !== false) {
+            $error_msg[] = sprintf(XoopsLocale::EF_FOLDER_IS_INSIDE_DOCUMENT_ROOT, XOOPS_PATH);
+        }
+
+        if (strpos(XOOPS_VAR_PATH . '/', XOOPS_ROOT_PATH . '/') !== false || strpos(XOOPS_VAR_PATH . '/', $_SERVER['DOCUMENT_ROOT'] . '/') !== false) {
+            $error_msg[] = sprintf(XoopsLocale::EF_FOLDER_IS_INSIDE_DOCUMENT_ROOT, XOOPS_VAR_PATH);
+        }
+        $xoops->tpl()->assign('error_msg', $error_msg);
+    }
+
+    $xoops->footer();
+
 }
-$xoops->footer();
+
 
 function buildRssFeedCache($rssurl)
 {

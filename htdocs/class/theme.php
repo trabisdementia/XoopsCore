@@ -174,7 +174,7 @@ class XoopsTheme
      *
      * @var string
      */
-    public $canvasTemplate = 'theme.html';
+    public $canvasTemplate = 'theme.tpl';
 
     /**
      * Theme folder path
@@ -1021,6 +1021,29 @@ class XoopsTheme
 //\Xoops::getInstance()->events()->triggerEvent('debug.log', "drop thru {$path}");
         return $path;
     }
+
+    /**
+     * Add a tool item to main toolbar
+
+     * @param $tool
+     *
+     * @return bool
+     */
+    public function addMainTool( $tool )
+    {
+        if ( empty($tool) || !is_array($tool) ){
+            return false;
+        }
+
+        $this->mainTools[] = $tool;
+        return true;
+    }
+
+    public function renderMainTools(){
+        $xoops = \Xoops::getInstance();
+        $xoops->tpl()->assign('main_toolbar_items', $this->mainTools);
+    }
+
 }
 
 abstract class XoopsThemePlugin

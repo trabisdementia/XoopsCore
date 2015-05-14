@@ -6,7 +6,7 @@
                 <{foreach item=menu from=$xo_admin_index_menu}>
                 <a class="xo-tooltip" href="../<{$menu.link}>" title="<{$menu.title}>">
                     <img src="<{$menu.icon}>" alt="<{$menu.title}>" />
-                    <span><{$menu.title}></span>
+                    <span><{$menu.title}>- Hola</span>
                 </a>
                 <{/foreach}>
             </div>

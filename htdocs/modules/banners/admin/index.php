@@ -43,6 +43,9 @@ $banners_finish = $banner_Handler->getCount($criteria);
 $folder_path = XOOPS_ROOT_PATH . '/uploads/banners';
 
 $admin_page = new \Xoops\Module\Admin();
+// Breadcrumb
+$admin_page->addBreadcrumbLink(__('Banners', 'banners'));
+
 $admin_page->addInfoBox(_MI_BANNERS_BANNERS);
 $admin_page->addInfoBoxLine(sprintf(_AM_BANNERS_INDEX_NBTOTAL, $banners_banner));
 $admin_page->addInfoBoxLine(sprintf(_AM_BANNERS_INDEX_NBCLIENT, '<span class="green">' . $banners_client . '</span>'));

@@ -113,6 +113,12 @@ class Xoops
     public $isAdminSide = false;
 
     /**
+     * The current location (page) identifier for internal use
+     * @var string
+     */
+    public $locationId = '';
+
+    /**
      * Actual Xoops OS
      */
     private function __construct()
@@ -304,12 +310,12 @@ class Xoops
                 $xoopsThemeFactory = null;
                 $xoopsThemeFactory = new XoopsThemeFactory();
                 $xoopsThemeFactory->allowedThemes = $this->getConfig('theme_set_allowed');
-                $xoopsThemeFactory->defaultTheme = $this->getConfig('theme_set');
+                $xoopsThemeFactory->defaultTheme = 'default'; //$this->getConfig('theme_set');
                 $this->setTheme($xoopsThemeFactory->createInstance(array('contentTemplate' => $this->tpl_name)));
             } else {
                 $adminThemeFactory = new XoopsAdminThemeFactory();
                 $this->setTheme($adminThemeFactory->createInstance(array(
-                    'folderName'      => 'default', 'themesPath' => 'modules/system/themes',
+                    'folderName'      => 'hydrogen', 'themesPath' => 'modules/system/themes',
                     'contentTemplate' => $this->tpl_name
                 )));
                 //$this->theme()->loadLocalization('admin');
@@ -576,8 +582,8 @@ class Xoops
 
         if ($this->isAdminSide) {
             $this->events()->triggerEvent('system.class.gui.header');
-            include_once $this->path('modules/system/themes/default/default.php');
-            $gui = new XoopsGuiDefault();
+            include_once $this->path('modules/system/themes/hydrogen/hydrogen.php');
+            $gui = new XoopsGuiHydrogen();
             $gui->header();
         } else {
             $this->events()->triggerEvent('core.header.addmeta');
@@ -650,7 +656,16 @@ class Xoops
             trigger_error("xoopsOption[template_main] should be defined before including header.php", E_USER_WARNING);
             $this->theme()->contentTemplate = $this->tpl_name;
         }
+
+        if ($this->isAdminSide) {
+            $this->events()->triggerEvent('system.class.gui.footer');
+            include_once $this->path('modules/system/themes/hydrogen/hydrogen.php');
+            $gui = new XoopsGuiHydrogen();
+            $gui->footer();
+        }
+
         $this->theme()->render();
+
         $this->events()->triggerEvent('core.footer.end');
         exit();
     }
@@ -1406,7 +1421,7 @@ class Xoops
             }
         }
         if (defined('XOOPS_CPFUNC_LOADED')) {
-            $theme = 'default';
+            $theme = 'hydrogen';
         } else {
             $theme = $this->getConfig('theme_set');
         }
@@ -1414,7 +1429,7 @@ class Xoops
         $xoopsThemeFactory = null;
         $xoopsThemeFactory = new XoopsThemeFactory();
         $xoopsThemeFactory->allowedThemes = $this->getConfig('theme_set_allowed');
-        $xoopsThemeFactory->defaultTheme = $theme;
+        $xoopsThemeFactory->defaultTheme = $theme;echo $theme; die();
         $this->setTheme($xoopsThemeFactory->createInstance(array(
             "plugins" => array(), "renderBanner" => false
         )));

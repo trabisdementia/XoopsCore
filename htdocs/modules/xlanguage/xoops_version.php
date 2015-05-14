@@ -28,6 +28,7 @@ $modversion['license_url'] = 'http://www.gnu.org/licenses/gpl-2.0.html';
 $modversion['official'] = 1;
 $modversion['help'] = 'page=help';
 $modversion['image'] = 'icons/logo.png';
+$modversion['icon'] = 'xicon-language';
 $modversion['dirname'] = 'xlanguage';
 
 //about

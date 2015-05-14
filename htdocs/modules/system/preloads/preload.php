@@ -12,6 +12,7 @@
  * @license         GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
  * @author          Cointin Maxime (AKA Kraven30)
  * @author          Andricq Nicolas (AKA MusS)
+ * @author          Eduardo Cortés <i.bitcero@gmail.com>
  */
 
 use Xoops\Core\PreloadItem;
@@ -95,6 +96,26 @@ class SystemPreload extends PreloadItem
             require $path;
             $object = new CountryFlagProvider();
             $provider->register($object);
+        }
+    }
+
+    /**
+     * Listen for core.service.locate.adminwidget event
+     *
+     * @param Provider $provider
+     *
+     * @return void
+     */
+    public static function eventCoreServiceLocateAdminwidget(Provider $provider)
+    {
+        if (is_a($provider, '\Xoops\Core\Service\Provider')) {
+            $path = dirname(__DIR__) . '/class/WidgetsContainer.php';
+            require $path;
+            $path = dirname(__DIR__) . '/class/AdminWidgetsProvider.php';
+            require $path;
+            $object = new AdminWidgetsProvider();
+            $provider->register($object);
+//        echo "<br /><br /><br />"; \Kint::dump($provider, $path);
         }
     }
 }

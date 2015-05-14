@@ -107,13 +107,10 @@ class Admin
      *
      * @return void
      */
-    public function addBreadcrumbLink($title = '', $link = '', $home = false)
+    public function addBreadcrumbLink($title = '', $link = '', $params = array())
     {
-        if ($title != '') {
-            $this->bread[] = array(
-                'link' => $link, 'title' => $title, 'home' => $home
-            );
-        }
+        $breadCrumb = \Xoops\Core\Helper\Breadcrumb::getInstance();
+        $breadCrumb->addCrumb($title, $link, $params);
     }
 
     /**
@@ -327,9 +324,10 @@ class Admin
      */
     public function renderBreadcrumb()
     {
-        $xoops = \Xoops::getInstance();
+        /*$xoops = \Xoops::getInstance();
         $xoops->tpl()->assign('xo_admin_breadcrumb', $this->bread);
-        return $xoops->tpl()->fetch($this->getTplPath('bread'));
+        return $xoops->tpl()->fetch($this->getTplPath('bread'));*/
+        \Xoops\Core\Helper\Breadcrumb::getInstance()->render();
     }
 
     /**
@@ -339,7 +337,7 @@ class Admin
      */
     public function displayBreadcrumb()
     {
-        echo $this->renderBreadcrumb();
+        return true; //echo $this->renderBreadcrumb();
     }
 
     /**
@@ -567,7 +565,7 @@ class Admin
         $this->module->loadAdminMenu();
         foreach (array_keys($this->module->adminmenu) as $i) {
             if ($this->module->adminmenu[$i]['link'] == "admin/" . $menu) {
-                if (\XoopsLoad::fileExists(
+                /*if (\XoopsLoad::fileExists(
                     $xoops->path("/media/xoops/images/icons/32/" . $this->module->adminmenu[$i]['icon'])
                 )) {
                     $this->module->adminmenu[$i]['icon'] = $xoops->url(
@@ -581,10 +579,22 @@ class Admin
                     );
                 }
                 $xoops->tpl()->assign('xo_sys_navigation', $this->module->adminmenu[$i]);
-                $ret[] = $xoops->tpl()->fetch($this->getTplPath('nav'));
+                $ret[] = $xoops->tpl()->fetch($this->getTplPath('nav'));*/
+                $this->renderModuleHeader($this->module->adminmenu[$i]['title']);
             }
         }
-        return $ret;
+        //return $ret;
+    }
+
+    public function renderModuleHeader($title, $subheading = '', $icon = ''){
+        $xoops = \Xoops::getInstance();
+
+        $header = array(
+            'title'         => $title,
+            'subheading'    => $subheading,
+            'icon'          => $icon
+        );
+        $xoops->tpl()->assign('xo_module_header', $header);
     }
 
     /**
@@ -596,10 +606,11 @@ class Admin
      */
     public function displayNavigation($menu = '')
     {
-        $items = $this->renderNavigation($menu);
+        return true;
+        /*$items = $this->renderNavigation($menu);
         foreach ($items as $item) {
             echo $item;
-        }
+        }*/
     }
 
     /**

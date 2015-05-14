@@ -26,6 +26,7 @@ $modversion['license'] = "GNU GPL 2 or later";
 $modversion['license_url'] = 'http://www.gnu.org/licenses/gpl-2.0.html';
 $modversion['official'] = 0;
 $modversion['image'] = 'icons/logo.png';
+$modversion['icon']  = 'xicon-database';
 
 // About stuff
 $modversion['module_status'] = 'Alpha';

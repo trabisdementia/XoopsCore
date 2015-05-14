@@ -33,6 +33,7 @@ $modversion['official'] = 0;
 $modversion['dirname'] = "xmf";
 
 $modversion['image'] = "icons/logo.png";
+$modversion['icon']  = "xicon-book";
 
 // Admin things
 $modversion['hasAdmin'] = 0;

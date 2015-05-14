@@ -26,7 +26,9 @@ define("_MI_BANNERS_DESC", "Module for managing banners");
 // Menu
 define("_MI_BANNERS_INDEX", "Home");
 define("_MI_BANNERS_CLIENTS", "Clients");
+define("_MI_BANNERS_ADDCLIENT", "Add client");
 define("_MI_BANNERS_BANNERS", "Banners manager");
+define("_MI_BANNERS_ADDBANNER", "Add banner");
 define("_MI_BANNERS_ABOUT", "About");
 // Blocks
 define("_MI_BANNERS_BLOCKS_RANDOM", "Random Banners");

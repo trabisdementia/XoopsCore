@@ -54,6 +54,10 @@ switch ($op) {
         $admin_page->renderTips();
         $admin_page->renderButton();
 
+        // Breadcrumb
+        $admin_page->addBreadcrumbLink(__('Banners', 'banners'), 'index.php');
+        $admin_page->addBreadcrumbLink(__('Clients', 'banners'));
+
         // Display client
         $criteria = new CriteriaCompo();
         $criteria->setSort("bannerclient_name");
@@ -104,6 +108,12 @@ switch ($op) {
     case 'new':
         $admin_page->addItemButton(_AM_BANNERS_CLIENTS_LIST, 'clients.php', 'application-view-detail');
         $admin_page->renderButton();
+
+        // Breadcrumb
+        $admin_page->addBreadcrumbLink(__('Banners', 'banners'), 'index.php');
+        $admin_page->addBreadcrumbLink(__('Clients', 'banners'), 'clients.php');
+        $admin_page->addBreadcrumbLink(__('Add new', 'banners'));
+
         $xoops->tpl()->assign(
             'info_msg',
             $xoops->alert('info', _AM_BANNERS_ALERT_INFO_CLIENT_ADDEDIT, _AM_BANNERS_ALERT_INFO_TITLE)

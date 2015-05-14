@@ -1,0 +1,29 @@
+/**
+* Xoops Icons
+* Next styles support SVG, images and icon font
+*/
+.xo-icon-size(@size: 24px){
+  font-size: @size;
+  > svg{
+    width: @size;
+    height: @size;
+  }
+  > img{
+    width: @size;
+    height: @size;
+  }
+}
+
+.xo-icon-color(@color: currentColor){
+  color: @color;
+  > .svg{
+    fill: @color;
+  }
+}
+
+.xo-icon-svg{
+  fill: currentColor;
+  display: inline-block;
+  line-height: 1;
+  vertical-align: middle;
+}

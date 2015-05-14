@@ -32,6 +32,7 @@ $modversion['help']        = 'page=help';
 $modversion['license']     = 'GNU GPL 2.0';
 $modversion['license_url'] = "http://www.gnu.org/licenses/gpl-2.0.html";
 $modversion['image']       = "images/logo.png";
+$modversion['icon']        = "xicon-profile";
 $modversion['dirname']     = "profile";
 
 //about

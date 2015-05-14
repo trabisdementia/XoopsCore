@@ -1,10 +1,36 @@
-<{include file="admin:system/admin_breadcrumb.tpl"}>
 <{include file="admin:system/admin_tips.tpl"}>
 <{include file="admin:system/admin_buttons.tpl"}>
 <script type="text/javascript">
     IMG_ON = '<{xoAdminIcons 'success.png'}>';
     IMG_OFF = '<{xoAdminIcons 'cancel.png'}>';
 </script>
+
+<div class="row">
+    <div class="col-md-4">
+        <{xowidget id="modules" style="icon" layout="solid" bgcolor="bg-yellow" size="small"}>
+        <{xowidget id="extensions" style="icon" layout="solid" bgcolor="bg-palegreen"}>
+        <{xowidget id="users" style="icon" layout="solid" bgcolor="bg-azure" size="large"}>
+        <{xowidget id="comments" style="icon" layout="solid" bgcolor="bg-pink" size="xlarge"}>
+    </div>
+</div>
+
+<!-- Counters -->
+<div class="row" id="top-counters">
+    <div class="col-xs-6 col-md-3">
+        <{xowidget id="modules" style="icon" layout="split" bgcolor="bg-orange" size="small" orientation="vertical"}>
+    </div>
+    <div class="col-xs-6 col-md-3">
+        <{xowidget id="extensions" style="icon" layout="split" bgcolor="bg-primary" orientation="vertical"}>
+    </div>
+    <div class="col-xs-6 col-md-3">
+        <{xowidget id="users" style="icon" layout="split" bgcolor="bg-success" size="large" orientation="vertical"}>
+    </div>
+    <div class="col-xs-6 col-md-3">
+        <{xowidget id="comments" style="icon" layout="split" bgcolor="bg-danger" size="xlarge" orientation="vertical"}>
+    </div>
+</div>
+<!--// Counters -->
+
 <table class="outer">
     <thead>
         <tr>

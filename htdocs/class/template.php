@@ -55,6 +55,13 @@ class XoopsTpl extends Smarty
         $this->compile_check = ($xoops->getConfig('theme_fromfile') == 1);
         $this->setPluginsDir(XOOPS_PATH . '/smarty/xoops_plugins');
         $this->addPluginsDir(SMARTY_DIR . 'plugins');
+        // Plugins for GUI themes
+        if ($xoops->isAdminSide){
+            $this->addPluginsDir(
+                XOOPS_ROOT_PATH . '/modules/system/themes/' . $xoops->getConfig('cpanel') . '/smarty'
+            );
+        }
+        $this->addPluginsDir(SMARTY_DIR . 'plugins');
         $this->setCompileId();
         $this->assign(
             array('xoops_url' => XOOPS_URL, 'xoops_rootpath' => XOOPS_ROOT_PATH, 'xoops_langcode' => XoopsLocale::getLangCode(), 'xoops_charset' => XoopsLocale::getCharset(), 'xoops_version' => XOOPS_VERSION, 'xoops_upload_url' => XOOPS_UPLOAD_URL)
