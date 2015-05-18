@@ -25,3 +25,4 @@ htdocs/assets/*/
 .idea/
 htdocs/.idea/
 htdocs/xoops_lib/composer.json
+htdocs/modules/system/themes/hydrogen/src/prepros.cfg
