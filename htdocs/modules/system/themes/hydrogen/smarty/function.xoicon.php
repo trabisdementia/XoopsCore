@@ -28,18 +28,36 @@
  * @version       1
  */
 
-function smarty_function_xoicon($params, Smarty_Internal_Template $tpl){
-    if (! array_key_exists('icon', $params)){
-        return null;
+if (! function_exists('smarty_function_xoicon')) {
+    function smarty_function_xoicon($params, Smarty_Internal_Template $tpl)
+    {
+        if (!array_key_exists('icon', $params)) {
+            return null;
+        }
+        $icon = $params['icon'];
+        if ('' == $icon) {
+            return null;
+        }
+        if (array_key_exists('module', $params)) {
+            $module = $params['module'];
+        } else {
+            $module = '';
+        }
+        if (isset($params['class'])) {
+            $class = $params['class'];
+        } else {
+            $class = '';
+        }
+        $xoops = \Xoops::getInstance();
+        $icon = $xoops->getIcon($icon, $module);
+        if(substr($icon, 0, 4)=='<svg'){
+            $icon = sprintf('<span class="xo-icon-svg ' . $class . '">%s</span>', $icon);
+        } elseif (false !== strpos($icon, '/')) {
+            $alt = isset($params['alt']) ? $params['alt'] : '';
+            $icon = sprintf('<span class="xo-icon-svg ' . $class . '"><img src="%s"' . ('' != $alt ? ' alt="' . $alt . '"' : '') . '></span>', $icon, $alt);
+        } else {
+            $icon = sprintf('<span class="xo-icon-svg ' . $class . '"><span class="%s"></span></span>', $icon);
+        }
+        return $icon;
     }
-    $icon = $params['icon'];
-    if ('' == $icon){
-        return null;
-    }
-    if (array_key_exists('module', $params)){
-        $module = $params['module'];
-    } else {
-        $module = '';
-    }
-    return HydrogenHelper::getInstance()->getIcon($icon, $module);
 }

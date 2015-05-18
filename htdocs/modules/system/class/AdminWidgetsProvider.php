@@ -33,7 +33,8 @@ class AdminWidgetsProvider extends AbstractContract implements AdminwidgetInterf
      * @var array
      */
     private $widgets = array(
-        'counter'   => 'WidgetsCounter'
+        'counter'   => 'WidgetCounter',
+        'list'      => 'WidgetList'
     );
     /**
      * Short name for service provider.

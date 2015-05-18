@@ -384,9 +384,13 @@ class Xoops
      *
      * @return string
      */
-    public function url($url)
+    public function url($url = '')
     {
-        return (false !== strpos($url, '://') ? $url : $this->path($url, true));
+        if ('' == $url){
+            return $this->path('', true);
+        } else {
+            return (false !== strpos($url, '://') ? $url : $this->path($url, true));
+        }
     }
 
     /**
@@ -1863,5 +1867,85 @@ class Xoops
     {
         //error_reporting(0);
         $this->events()->triggerEvent('core.disableerrorreporting');
+    }
+
+    /**
+     * Returns an icon formatted correctly as an URL for bitmaps or the svg content (&lt;svg&gt;...&lt;/svg&gt;)
+     *
+     * The icon parameter must be specified as Xoops Icon element (starting with xicon-) or
+     * as a relative URL to an image.
+     *
+     * <pre>
+     * // For Xoops icon
+     * $xoops = Xoops::getInstance();
+     * $icon = $xoops->getIcon('xicon-system');
+     *
+     * // For module SVG icon with relative path. Module dirname
+     * // can be provided, if not, the current module dirname
+     * // will be used to search for icon.
+     * $icon = $xoops->getIcon('images/my-icon.svg', 'mymodule');
+     *
+     * // For module SVG icon with absolute path
+     * // External resources could not work correctly.
+     * $icon = $xoops->getIcon('/some-directory/icon.svg');
+     * $icon = $xoops->getIcon('http://somesite.com/icon.svg');
+     *
+     * // For module bitmap icon (not recommended!!!)
+     * $icon = $xoops->getIcon('images/my-icon.png', 'mymodule');
+     * </pre>
+     *
+     * @param string $icon
+     * @param string $module
+     *
+     * @return string
+     */
+    public function getIcon($icon, $module = '')
+    {
+        $xoops = \Xoops::getInstance();
+
+        // Check if this is a Xoops SVG icon
+        if ('xicon-' == substr($icon, 0, 6)){
+            $file = $xoops->path("media/xoops/icons/".substr($icon, 6).".svg");
+            if (! file_exists($file)){
+                $file = $xoops->path("media/xoops/icons/guess-what.svg");
+            }
+            return file_get_contents($file);
+        }
+
+        // Relative or absolute url?
+        $absolute = preg_match( "/^[http:\/\/|https:\/\/|ftp:\/\/|\/\/]/", $icon );
+        $is_svg = substr($icon, -4) == '.svg';
+
+        // Icon with absolute path
+        if ($absolute){
+            if ($is_svg){
+                return file_get_contents($icon);
+            } else {
+                return $icon;
+            }
+        }
+
+        // Icon with relative path
+        $module_relative = preg_match( "/^[\/|\.\.\/]/", $icon ) ? false : true;
+
+        if ('' == $module && $xoops->isModule()){
+            $module = $xoops->module->dirname();
+        }
+
+        if ('' == $module && $module_relative){
+            return null;
+        }
+
+        if ($is_svg){
+            $file = $module_relative ? $xoops->path("modules/{$module}/{$icon}") : $xoops->path($icon);
+            if(file_exists($file)){
+                return file_get_contents($file);
+            } else {
+                return null;
+            }
+        } else {
+            $file = $module_relative ? $xoops->url("modules/{$module}/{$icon}") : $xoops->url($icon);
+            return $file;
+        }
     }
 }

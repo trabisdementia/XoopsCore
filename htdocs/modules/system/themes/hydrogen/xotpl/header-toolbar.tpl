@@ -19,7 +19,7 @@
         <ul class="nav navbar-nav navbar-right dynamic-tools">
             <li class="dropdown">
                 <a href="#" title="<{$hydrogen.lang.system_module}>" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                    <span class="xicon-settings"></span>
+                    <span class="xicon-system"></span>
                 </a>
                 <ul class="dropdown-menu">
                     <{foreach item=menu from=$hydrogen.systemMenu}>

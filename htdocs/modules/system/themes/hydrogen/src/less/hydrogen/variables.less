@@ -3,19 +3,26 @@
 //== Main toolbar
 //
 //## Color for main toolbar
-@main-toolbar-bgcolor:      #2685EE;
-@main-toolbar-color:        #D7E9FC;
-@main-toolbar-hover-color:  #FFFFFF;
+@main-toolbar-bgcolor:        #2685EE;
+@main-toolbar-hover-bgcolor:  lighten(@main-toolbar-bgcolor, 10%);//#2685EE;
+@main-toolbar-color:          lighten(@main-toolbar-bgcolor, 50%);//#D7E9FC;
+@main-toolbar-hover-color:    #FFFFFF;
 
 //== Sidebar
 //
 //## Colors for sidebar
-@sidebar-bgcolor:       #f9f9f9;
-@sidebar-color:         #707980;
-@sidebar-hover-color:   #333333;
+@sidebar-bgcolor:             @midnight;//#f9f9f9;
+@sidebar-color:               lighten(@sidebar-bgcolor, 30%);//#707980;
+@sidebar-hover-color:         @orange-color;//#333333;
 
 //== Contents column
 //
 //## Colors for contents column
-@contents-bgcolor: #ebeef0;
+@contents-bgcolor:            #ebeef0;
 
+//== Xoops Panels
+//
+//## Colors for contents column
+@xo-panel-bgcolor:            #FFFFFF;
+@xo-panel-color:              #333333;
+@xo-panel-title-color:        #A8B2B8;

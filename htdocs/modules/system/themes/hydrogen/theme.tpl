@@ -3,7 +3,7 @@
 <head>
     <{include file="$theme_tpl/head.tpl"}>
 </head>
-<body id="<{$xoops_dirname}>" class="<{$body_classes}><{if $hydrogen.collapsed}> collapsed-sidebar<{/if}>">
+<body id="<{$xoops_dirname}>" class="<{$hydrogen.body_classes}><{if $hydrogen.collapsed}> collapsed-sidebar<{/if}>">
 
 <!-- 1. Header toolbar -->
 <header id="hydrogen-header">

@@ -1,0 +1,21 @@
+.xo-panel-variation(@bg-color, @color){
+  > .panel-heading{
+    background-color: @bg-color;
+
+    h1,h2,h3,h4,h5,h6{
+      color: @color;
+    }
+
+    >.tools>li>a>.xo-icon-svg{
+      .xo-icon-color(@color);
+    }
+
+    > .collapse{
+      background: url("../../../../../media/xoops/icons/angle-down-white.svg") no-repeat center;
+
+      &.collapsed{
+        border: 1px solid @color;
+      }
+    }
+  }
+}

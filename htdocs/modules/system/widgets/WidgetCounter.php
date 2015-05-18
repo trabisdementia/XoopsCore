@@ -90,20 +90,12 @@ class WidgetCounter extends AbstractWidget
         // Format counter
         if (empty($this->columns)){
             if (is_numeric($this->counter)){
-                if(1000000 <= $this->counter){
-                    $this->counter = number_format($this->counter / 1000000, 1) . 'M';
-                } elseif (1000 <= $this->counter){
-                    $this->counter = number_format($this->counter / 1000, 1) . 'K';
-                }
+                $this->counter = $this->formatCounter($this->counter);
             }
         } else {
             foreach( $this->columns as $id => &$column){
                 if (is_numeric($column->counter)){
-                    if(1000000 <= $column->counter){
-                        $column->counter = number_format($column->counter / 1000000, 1) . 'M';
-                    } elseif (1000 <= $column->counter){
-                        $column->counter = number_format($column->counter / 1000, 1) . 'K';
-                    }
+                    $column->counter = $this->formatCounter($column->counter);
                 }
             }
         }
@@ -118,5 +110,19 @@ class WidgetCounter extends AbstractWidget
             'columns'   => $this->columns
         ));
         return $xoops->tpl()->fetch('widget:system/widget-counter.tpl');
+    }
+
+    private function formatCounter($counter)
+    {
+        if(1000000 <= $counter){
+            $number = str_replace('.0', '', number_format($counter / 1000000, 1));
+            $number .= 'M';
+        } elseif (1000 <= $this->counter){
+            $number = str_replace('.0', '', number_format($this->counter / 1000, 1));
+            $number .= 'K';
+        } else {
+            $number = $counter;
+        }
+        return $number;
     }
 }

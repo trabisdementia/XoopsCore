@@ -1,9 +1,11 @@
+@import '../bootstrap/mixins/buttons.less';
+@import 'mixins/xo-panel.less';
+
 // 1. Modules content header
 .xo-page-header{
   background: #FFF;
   padding: 10px 15px;
   border-bottom: 1px solid darken(@body-bg, 5%);
-  margin-bottom: 20px;
 
   /*-- 1.1 User avatar */
   > .header-icon{
@@ -27,7 +29,7 @@
     > small{
       display: block;
       margin-top: 5px;
-      text-transform: uppercase;
+
       font-size: floor(@font-size-base * 1.2);
     }
   }
@@ -40,3 +42,324 @@
 
 }
 // 1. End module content header
+
+/* 2. Panels --*/
+.xo-panel{
+  background-color: @xo-panel-bgcolor;
+  color: @xo-panel-color;
+  border-radius: @border-radius-base;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+  margin-bottom: 20px;
+
+  &:after{
+    content: '';
+    display: block;
+    clear: both;
+  }
+
+  > .panel-heading{
+    border-bottom: 1px solid rgba(0,0,0,0.07);
+    position: relative;
+
+    &:after{
+      content: '';
+      display: block;
+      clear: both;
+    }
+
+    h1,h2,h3,h4,h5,h6{
+      font-size: ceil(@font-size-base * 0.8);
+      line-height: 1;
+      margin: 0;
+      line-height: 24px;
+      font-weight: 500;
+      text-transform: uppercase;
+      color: @xo-panel-title-color;
+    }
+
+    > .collapse{
+      display: block;
+      width: 24px;
+      height: 24px;
+      float: right;
+      background: url("../../../../../media/xoops/icons/angle-down.svg") no-repeat center;
+      background-size: 20px 20px;
+      transition: ease all 200ms;
+      border: 1px dotted rgba(0,0,0,0);
+      background-color: transparent;
+      border-radius: 50%;
+
+      &.collapsed{
+        transform: rotate(-180deg);
+        border: 1px solid #CCC;
+      }
+
+      &:focus{
+        outline: none;
+      }
+    }
+
+    > .tools{
+      list-style: none;
+      margin: 0;
+      float: right;
+
+      > li{
+        display: inline-block;
+
+        > a{
+          display: block;
+          height: 24px;
+          padding: 0 3px;
+          line-height: 24px;
+          color: @xo-panel-title-color;
+          > .xo-icon-svg{
+            .xo-icon-size(18px);
+            .xo-icon-color(@xo-panel-title-color);
+          }
+          &:hover{
+            color: #333;
+            > .xo-icon-svg{
+              .xo-icon-color(#333333);
+            }
+          }
+        }
+
+        > .btn{
+          .button-size(0, 4px, floor(@font-size-base * 0.8), 24px, @border-radius-base);
+          > .xo-icon-svg{
+            .xo-icon-size(16px);
+          }
+        }
+
+      }
+    }
+
+  }
+
+  > .panel-footer{
+    font-size: floor(@font-size-base * 0.9);
+    color: #666;
+    border-top: 1px solid rgba(0,0,0,0.1);
+     .xo-icon-svg{
+      .xo-icon-size(18px);
+    }
+  }
+
+  .table,
+  .table-responsive > table{
+    box-shadow: none;
+    margin: 0;
+  }
+
+}
+
+.xo-panel-azure{
+  .xo-panel-variation(@azure, @azure-color);
+}
+.xo-panel-palegreen{
+  .xo-panel-variation(@palegreen, @palegreen-color);
+}
+.xo-panel-sky{
+  .xo-panel-variation(@sky, @sky-color);
+}
+.xo-panel-orange{
+  .xo-panel-variation(@orange, @orange-color);
+}
+.xo-panel-yellow{
+  .xo-panel-variation(@yellow, @yellow-color);
+}
+.xo-panel-pink{
+  .xo-panel-variation(@pink, @pink-color);
+}
+.xo-panel-midnight{
+  .xo-panel-variation(@midnight, @midnight-color);
+}
+.xo-panel-indigo{
+  .xo-panel-variation(@indigo, @indigo-color);
+}
+.xo-panel-green{
+  .xo-panel-variation(@green, @green-color);
+}
+.xo-panel-brown{
+  .xo-panel-variation(@brown, @brown-color);
+}
+.xo-panel-magenta{
+  .xo-panel-variation(@magenta, @magenta-color);
+}
+.xo-panel-purple{
+  .xo-panel-variation(@purple, @purple-color);
+}
+.xo-panel-alizarin{
+  .xo-panel-variation(@alizarin, @alizarin-color);
+}
+/*--/ 2. Panels */
+
+/*-- 3. Toolbar */
+.xo-toolbar{
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  background-color: #FFF;
+
+  > ul.tools{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    white-space: nowrap;
+    height: 61px;
+
+    > li{
+      display: inline-block;
+      border-right: 1px solid rgba(0,0,0,0.1);
+
+      > a{
+        display: block;
+        padding: 8px 12px;
+        text-align: center;
+        line-height: 1;
+        color: @xo-panel-title-color;
+        transition: ease color 250ms;
+        text-decoration: none;
+
+        > .caption{
+          display: block;
+          padding: 4px 0 0 0;
+        }
+
+        .xo-icon-svg{
+          .xo-icon-color(@xo-panel-title-color);
+          .xo-icon-size(24px);
+        }
+
+        &:hover{
+          color: @gray;
+          .xo-icon-svg{
+            .xo-icon-color(@gray);
+          }
+        }
+
+      }
+
+    }
+
+  }
+}
+/*--/ 3. Toolbar */
+
+/*-- 4. Dashboard */
+body.system.dashboard{
+  #installed-modules,
+  #installed-extensions{
+    max-height: 350px;
+    position: relative;
+
+    .xo-icon-svg{
+      color: @xo-panel-title-color;
+      .xo-icon-size(24px);
+    }
+
+    table{
+      a{
+        display: block;
+        text-decoration: none;
+        .help-block{
+          margin: 0;
+        }
+      }
+    }
+
+  }
+
+  #dashboard-users-list{
+    .table-responsive{
+      max-height: 400px;
+      position: relative;
+    }
+    table{
+      td{
+        vertical-align: middle;
+
+        img{
+          max-height: 30px;
+        }
+      }
+    }
+  }
+}
+/*--/ 4. Dashboard */
+
+/*-- 5. Admin index */
+body.xo-admin-index{
+
+  .xo-admin-index-links{
+
+    .panel-body{
+      text-align: center;
+    }
+
+    .xo-menu-item{
+      display: inline-block;
+      padding: 10px;
+      text-align: center;
+      border: 1px solid rgba(0,0,0,0.1);
+      margin: 3px 2px;
+      border-radius: @border-radius-base;
+
+      .xo-icon-svg{
+        .xo-icon-size(48px);
+      }
+
+      > span.caption{
+        display: block;
+        margin-top: 5px;
+      }
+    }
+  }
+
+  .xo-admin-box{
+    ul{
+      list-style: none;
+      margin: 0;
+      padding: 0;
+
+      > li{
+        padding: 4px 0 4px 20px;
+        position: relative;
+
+        &:before{
+          content: '';
+          display: block;
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          background-color: @green;
+          position: absolute;
+          top: 50%; left: 0;
+          margin-top: -5px;
+        }
+
+        &:nth-child(2):before{
+          background-color: @azure;
+        }
+
+        &:nth-child(3):before{
+          background-color: @sky;
+        }
+
+        &:nth-child(4):before{
+          background-color: @orange;
+        }
+
+        &:nth-child(5):before{
+          background-color: @yellow;
+        }
+
+      }
+
+    }
+
+  }
+
+}
+/*--/ 5. Amin index */

@@ -77,11 +77,12 @@ if (!empty($xoopsorgnews)) {
     $xoops->header('admin:system/system_index.tpl');
 
     $admin = new \Xoops\Module\Admin();
+    $admin->addBodyClass('dashboard');
     \Xoops\Core\Helper\PoLocale::getInstance()->loadXoopsLocale();
 // User avatar
     $avatar_provider = $xoops->service('Avatar');
     $user_avatar = preg_replace("/s=[0-9]{1,}\&/", 's=96&', $avatar_provider->getAvatarUrl($xoops->user)->getValue());
-    $user_avatar = HydrogenHelper::getInstance()->getIcon($user_avatar);
+    //$user_avatar = HydrogenHelper::getInstance()->getIcon($user_avatar);
     $admin->renderModuleHeader(
         __('Dashboard', 'xoops'),
         sprintf(__('Hi %s!', 'xoops'), '' != $xoops->user->name() ? $xoops->user->name() : $xoops->user->uname()),
@@ -93,8 +94,6 @@ if (!empty($xoopsorgnews)) {
     $modulesCounter->setId('modules');
     $modulesCounter->counter = 300;
     $modulesCounter->tagline = 'Modules';
-    $modulesCounter->bgcolor = 'bg-azure';
-    $modulesCounter->icon    = 'xicon-module';
     $modulesCounter->transport();
 
     $extCounter = $widgets->loadWidget('counter')->getValue();
@@ -106,22 +105,97 @@ if (!empty($xoopsorgnews)) {
 
     $usersCounter = $widgets->loadWidget('counter')->getValue();
     $usersCounter->setId('users');
-    //$usersCounter->counter = 3254000;
-    //$usersCounter->tagline = 'Users';
     $usersCounter->icon    = 'xicon-user';
-    $usersCounter->addColumn('active')->counter = 3000000;
-    $usersCounter->column('active')->tagline = 'Active';
-    $usersCounter->addColumn('inactive')->counter = 254000;
-    $usersCounter->column('inactive')->tagline = 'Inactive';
+    $usersCounter->counter = 58960;
+    $usersCounter->tagline = 'Users';
     $usersCounter->transport();
 
     $commsCounter = $widgets->loadWidget('counter')->getValue();
     $commsCounter->setId('comments');
     $commsCounter->counter = 123;
     $commsCounter->tagline = 'Comments';
-    $commsCounter->icon    = 'xicon-comment';
     $commsCounter->transport();
 
+    // Installed modules
+    XoopsLoad::load('module', 'system');
+    $system_module = new SystemModule();
+    $module_list = $system_module->getModuleList();
+
+    foreach ($module_list as $module){
+        if ('system' == $module->modinfo['dirname']){
+            continue;
+        }
+        $xoops->tpl()->append('installed_modules', array(
+            'dirname'   => $module->modinfo['dirname'],
+            'name'      => $module->getVar('name'),
+            'admin'     => $module->getInfo('adminindex'),
+            'icon'      => $module->modinfo['icon'],
+            'desc'      => $module->modinfo['description'],
+            'version'   => $module->modinfo['version']
+        ));
+    }
+
+    // Installed extensions
+    XoopsLoad::load('extension', 'system');
+    $system_extension = new SystemExtension();
+    $extension_list = $system_extension->getExtensionList();
+
+    foreach ($extension_list as $module){
+        $xoops->tpl()->append('installed_extensions', array(
+            'dirname'   => $module->modinfo['dirname'],
+            'name'      => $module->getVar('name'),
+            'admin'     => $module->getInfo('adminindex'),
+            'icon'      => $module->modinfo['icon'],
+            'desc'      => $module->modinfo['description'],
+            'version'   => $module->modinfo['version']
+        ));
+    }
+
+    // Last registered users
+    $users_handler = $xoops->getHandler('user');
+    $criteria = new \Xoops\Core\Kernel\CriteriaCompo();
+    $criteria->setSort('user_regdate');
+    $criteria->setOrder('DESC');
+    $criteria->setLimit('50');
+    $uobjects = $users_handler->getAll($criteria);
+    $users = array();
+    foreach( $uobjects as $user ){
+        $users[] = array(
+            'id'        => $user->getVar('uid'),
+            'uname'     => $user->getVar('uname'),
+            'name'      => $user->getVar('name'),
+            'avatar'    => $avatar_provider->getAvatarUrl(array('email'=>$user->getVar('email')))->getValue(),
+            'date'      => XoopsLocale::formatTimestamp($user->getVar("user_regdate"), "M d, Y"),
+            'active'    => $user->getVar('level') > 0
+        );
+    }
+    $xoops->tpl()->assign('recent_users', $users);
+    unset($users_handler, $users, $criteria, $uobjects);
+
+    // System toolbar
+    include $xoops->path('modules/system/menu.php');
+    foreach($adminmenu as $menu){
+        $admin->addTool(
+            $menu['title'],
+            $menu['icon'],
+            array(
+                'href'  => 'modules/system/' . $menu['link']
+            )
+        );
+    }
+
+    // System language
+    $language = array(
+        'xoops_version'     => XOOPS_VERSION,
+        'installed_mods'    => __('Modules', 'system'),
+        'installed_exts'    => __('Extensions', 'system'),
+        'modules_manager'   => __('Modules manager', 'system'),
+        'users_manager'     => __('Users manager', 'system'),
+        'add_user'          => __('Add user', 'system'),
+        'last_users'        => __('Last 50 users', 'system'),
+    );
+
+    $xoops->tpl()->assign('sysLang', $language);
     // ###### Output warn messages for security ######
     /**
      * Error warning messages

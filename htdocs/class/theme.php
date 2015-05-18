@@ -228,6 +228,13 @@ class XoopsTheme
     public $template = false;
 
     /**
+     * CSS classes to be assigned to BODY element
+     *
+     * @var array
+     */
+    public $bodyClasses = array();
+
+    /**
      * Array containing the document meta-information
      *
      * @var array
@@ -867,6 +874,24 @@ class XoopsTheme
         if (!$repeat) {
             $this->htmlHeadStrings[] = $content;
         }
+    }
+
+    /**
+     * Add a new CSS class to be assigned to BODY element.
+     *
+     * @param $class
+     */
+    public function addBodyClass($class)
+    {
+        if (is_array($class) && ! empty($class)){
+            $this->bodyClasses = array_merge($this->bodyClasses, $class);
+        } else {
+            $this->bodyClasses[] = $class;
+        }
+    }
+
+    public function renderBodyClasses(){
+        return implode(" ", $this->bodyClasses);
     }
 
     /**

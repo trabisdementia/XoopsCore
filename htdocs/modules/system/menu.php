@@ -34,7 +34,7 @@ $adminmenu = array(
     array(
         'title'     => __('Blocks', 'hydrogen'),
         'link'      => 'blocks.php',
-        'icon'      => 'xicon-dashboard'
+        'icon'      => 'xicon-tiles'
     ),
 
     // Extensions management

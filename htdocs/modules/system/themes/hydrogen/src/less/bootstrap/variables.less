@@ -21,9 +21,24 @@
 @brand-danger:          #d9534f;
 
 // Additional colors
+@primary:               @brand-primary;
+@primary-color:         @btn-primary-color;
+
+@info:               @brand-info;
+@info-color:         @btn-info-color;
+
+@success:               @brand-success;
+@success-color:         @btn-success-color;
+
+@warning:               @brand-warning;
+@warning-color:         @btn-warning-color;
+
+@danger:               @brand-danger;
+@danger-color:         @btn-danger-color;
+
 @azure:                 #2DC3E8;
 @azure-color:           #FFFFFF; // Text color over azure bg
-@sky:                   #37C2E2;
+@sky:                   #76c4ed;
 @sky-color:             #FFFFFF;
 @palegreen:             #A0D468;
 @palegreen-color:       #FFFFFF;
@@ -33,7 +48,20 @@
 @yellow-color:          #FFFFFF;
 @pink:                  #E75B8D;
 @pink-color:            #FFFFFF;
-
+@midnight:              #37444e;
+@midnight-color:        lighten(@midnight, 50%);
+@indigo:                #9358ac;
+@indigo-color:          #FFFFFF;
+@brown:                 #c0392b;
+@brown-color:           lighten(@brown, 50%);
+@magenta:               #e06d94;
+@magenta-color:         #FFFFFF;
+@green:                 #16a085;
+@green-color:           #FFFFFF;
+@purple:                #e044ab;
+@purple-color:          #FFFFFF;
+@alizarin:              #e74c3c;
+@alizarin-color:        #FFFFFF;
 
 //== Scaffolding
 //
@@ -42,7 +70,7 @@
 //** Background color for `<body>`.
 @body-bg:               #ebeef0;
 //** Global text color on `<body>`.
-@text-color:            @gray-dark;
+@text-color:            #434749; //@gray-dark;
 
 //** Global textual link color.
 @link-color:            @brand-primary;
@@ -205,6 +233,34 @@
 @btn-pink-color:                 @pink-color;
 @btn-pink-bg:                    @pink;
 @btn-pink-border:                transparent;
+
+@btn-midnight-color:                 @midnight-color;
+@btn-midnight-bg:                    @midnight;
+@btn-midnight-border:                transparent;
+
+@btn-indigo-color:                 @indigo-color;
+@btn-indigo-bg:                    @indigo;
+@btn-indigo-border:                transparent;
+
+@btn-brown-color:                 @brown-color;
+@btn-brown-bg:                    @brown;
+@btn-brown-border:                transparent;
+
+@btn-magenta-color:                 @magenta-color;
+@btn-magenta-bg:                    @magenta;
+@btn-magenta-border:                transparent;
+
+@btn-purple-color:                 @purple-color;
+@btn-purple-bg:                    @purple;
+@btn-purple-border:                transparent;
+
+@btn-alizarin-color:                 @alizarin-color;
+@btn-alizarin-bg:                    @alizarin;
+@btn-alizarin-border:                transparent;
+
+@btn-green-color:                 @green-color;
+@btn-green-bg:                    @green;
+@btn-green-border:                transparent;
 
 @btn-link-disabled-color:        @gray-light;
 
@@ -406,7 +462,7 @@
 @navbar-default-link-hover-color:          #333;
 @navbar-default-link-hover-bg:             transparent;
 @navbar-default-link-active-color:         #555;
-@navbar-default-link-active-bg:            darken(@navbar-default-bg, 6.5%);
+@navbar-default-link-active-bg:            @main-toolbar-hover-bgcolor;//darken(@navbar-default-bg, 6.5%);
 @navbar-default-link-disabled-color:       #ccc;
 @navbar-default-link-disabled-bg:          transparent;
 
@@ -616,6 +672,13 @@
 @label-pink-bg:               @pink;
 @label-orange-bg:             @orange;
 @label-sky-bg:                @sky;
+@label-midnight-bg:           @midnight;
+@label-green-bg:              @green;
+@label-indigo-bg:             @indigo;
+@label-brown-bg:              @brown;
+@label-magenta-bg:            @magenta;
+@label-purple-bg:             @purple;
+@label-alizarin-bg:           @alizarin;
 
 //** Default label text color
 @label-color:                 #fff;
@@ -709,6 +772,13 @@
 @progress-bar-palegreen-bg:   @palegreen;
 @progress-bar-pink-bg:        @pink;
 @progress-bar-yellow-bg:      @yellow;
+@progress-bar-midnight-bg:    @midnight;
+@progress-bar-green-bg:       @green;
+@progress-bar-indigo-bg:      @indigo;
+@progress-bar-brown-bg:       @brown;
+@progress-bar-magenta-bg:     @magenta;
+@progress-bar-purple-bg:      @purple;
+@progress-bar-alizarin-bg:    @alizarin;
 
 
 //== List group
@@ -803,10 +873,37 @@
 @panel-yellow-border:          transparent;
 @panel-yellow-heading-bg:      @yellow;
 
-@panel-pink-text:            @pink-color;
+@panel-pink-text:               @pink-color;
 @panel-pink-border:          transparent;
 @panel-pink-heading-bg:      @pink;
 
+@panel-green-text:            @green-color;
+@panel-green-border:          transparent;
+@panel-green-heading-bg:      @green;
+
+@panel-midnight-text:            @midnight-color;
+@panel-midnight-border:          transparent;
+@panel-midnight-heading-bg:      @midnight;
+
+@panel-indigo-text:            @indigo-color;
+@panel-indigo-border:          transparent;
+@panel-indigo-heading-bg:      @indigo;
+
+@panel-brown-text:            @brown-color;
+@panel-brown-border:          transparent;
+@panel-brown-heading-bg:      @brown;
+
+@panel-magenta-text:            @magenta-color;
+@panel-magenta-border:          transparent;
+@panel-magenta-heading-bg:      @magenta;
+
+@panel-purple-text:            @purple-color;
+@panel-purple-border:          transparent;
+@panel-purple-heading-bg:      @purple;
+
+@panel-alizarin-text:            @alizarin-color;
+@panel-alizarin-border:          transparent;
+@panel-alizarin-heading-bg:      @alizarin;
 
 //== Thumbnails
 //

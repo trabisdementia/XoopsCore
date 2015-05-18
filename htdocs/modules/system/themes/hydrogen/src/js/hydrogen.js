@@ -10,6 +10,24 @@
         // Sets the height of sidebar
         $("#hydrogen-sidebar").perfectScrollbar();
 
+        if ($("#installed-modules").length > 0){
+            $("#installed-modules, #installed-extensions").perfectScrollbar({
+                useBothWheelAxes: false,
+                suppressScrollX: true
+            });
+        }
+
+        if ($("#dashboard-users-list").length > 0){
+            $("#dashboard-users-list .table-responsive").perfectScrollbar();
+        }
+
+        if ($(".xo-toolbar").length > 0){
+            $(".xo-toolbar").perfectScrollbar({
+                useBothWheelAxes: true,
+                suppressScrollY: true
+            });
+        }
+
         /**
          * Menu accordion
          */
@@ -50,6 +68,12 @@
 
             $(".hydrogen-sidebar li." + siblings).fadeToggle(250);
             return false;
+        });
+
+        /* Xoops Panels */
+        $("body").on('click', ".xo-panel > .panel-heading > .collapse", function(){
+            $(this).toggleClass("collapsed");
+            $(this).parent().siblings(".collapsable").slideToggle(250);
         });
 
     } );

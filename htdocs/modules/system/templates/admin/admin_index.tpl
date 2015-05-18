@@ -1,18 +1,30 @@
-<div class="xo-moduleadmin-icon outer">
-    <div class="xo-window">
-        <div class="xo-window-title"><span class="ico ico-lightning"></span>&nbsp;<{translate key='LINKS'}></div>
-        <div class="xo-window-data">
-            <div class="moduleadmin-icon">
-                <{foreach item=menu from=$xo_admin_index_menu}>
-                <a class="xo-tooltip" href="../<{$menu.link}>" title="<{$menu.title}>">
-                    <img src="<{$menu.icon}>" alt="<{$menu.title}>" />
-                    <span><{$menu.title}>- Hola</span>
-                </a>
-                <{/foreach}>
+<div class="row">
+    <div class="col-sm-6">
+    <{if $xo_admin_box}>
+        <{foreach item=box from=$xo_admin_box}>
+            <div class="xo-panel xo-panel-green xo-admin-box <{$class}>" <{$box.extra}>>
+                <div class="panel-heading">
+                    <h3><{$box.title}></h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="list-unstyled">
+                        <{foreach item=line from=$box.line}>
+                            <li>
+                                <{$line.text}>
+                            </li>
+                        <{/foreach}>
+                    </ul>
+                </div>
             </div>
-        </div>
+        <{/foreach}>
+    <{/if}>
+    </div>
+
+    <div class="col-sm-6">
+
     </div>
 </div>
+
 <{include file="admin:system/admin_infobox.tpl" class="xo-moduleadmin-box"}>
 <div class="clear"></div>
 <div class="xo-moduleadmin-config outer">

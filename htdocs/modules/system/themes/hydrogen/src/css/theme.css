@@ -381,23 +381,23 @@ fieldset[disabled] .btn-azure.active {
   background-image: none;
 }
 .btn-sky {
-  background-image: -webkit-linear-gradient(top, #37c2e2 0%, #1ca1c0 100%);
-  background-image: -o-linear-gradient(top, #37c2e2 0%, #1ca1c0 100%);
-  background-image: linear-gradient(to bottom, #37c2e2 0%, #1ca1c0 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff37c2e2', endColorstr='#ff1ca1c0', GradientType=0);
+  background-image: -webkit-linear-gradient(top, #74e2eb 0%, #3ed7e3 100%);
+  background-image: -o-linear-gradient(top, #74e2eb 0%, #3ed7e3 100%);
+  background-image: linear-gradient(to bottom, #74e2eb 0%, #3ed7e3 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff74e2eb', endColorstr='#ff3ed7e3', GradientType=0);
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
   background-repeat: repeat-x;
-  border-color: #1b9ab7;
+  border-color: #36d5e2;
 }
 .btn-sky:hover,
 .btn-sky:focus {
-  background-color: #1ca1c0;
+  background-color: #3ed7e3;
   background-position: 0 -15px;
 }
 .btn-sky:active,
 .btn-sky.active {
-  background-color: #1ca1c0;
-  border-color: #1b9ab7;
+  background-color: #3ed7e3;
+  border-color: #36d5e2;
 }
 .btn-sky.disabled,
 .btn-sky[disabled],
@@ -417,7 +417,7 @@ fieldset[disabled] .btn-sky:active,
 .btn-sky.disabled.active,
 .btn-sky[disabled].active,
 fieldset[disabled] .btn-sky.active {
-  background-color: #1ca1c0;
+  background-color: #3ed7e3;
   background-image: none;
 }
 .btn-orange {

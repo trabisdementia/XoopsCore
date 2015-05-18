@@ -306,6 +306,27 @@ class Admin
     }
 
     /**
+     * Add CSS classes to BODY element.
+     *
+     * @param $class
+     */
+    public function addBodyClass($class){
+        $xoops = \Xoops::getInstance();
+        $xoops->theme()->addBodyClass($class);
+    }
+
+    /**
+     * Add a tool to Xoops toolbar. This is an interface of
+     * \Xoops\Core\Helper\Toolbar::add_tool() method.
+     *
+     * @param string $caption
+     * @param array  $attributes
+     */
+    public function addTool($caption, $icon, $attributes){
+        \Xoops\Core\Helper\Toolbar::getInstance()->addTool($caption, $icon, $attributes);
+    }
+
+    /**
      * Construct template path
      *
      * @param string $type type
@@ -401,33 +422,26 @@ class Admin
     public function renderIndex()
     {
         $xoops = \Xoops::getInstance();
+        $this->addBodyClass('xo-admin-index');
         $this->module->loadAdminMenu();
-        foreach (array_keys($this->module->adminmenu) as $i) {
-            if (\XoopsLoad::fileExists(
-                $xoops->path(
-                    "/media/xoops/images/icons/32/" . $this->module->adminmenu[$i]['icon']
-                )
-            )) {
-                $this->module->adminmenu[$i]['icon'] = $xoops->url(
-                    "/media/xoops/images/icons/32/"
-                    . $this->module->adminmenu[$i]['icon']
-                );
-            } else {
-                $this->module->adminmenu[$i]['icon'] = $xoops->url(
-                    "/modules/" . $xoops->module->dirname()
-                    . "/icons/32/" . $this->module->adminmenu[$i]['icon']
-                );
-            }
-            $xoops->tpl()->append('xo_admin_index_menu', $this->module->adminmenu[$i]);
+        foreach ($this->module->adminmenu as $menu){
+            $this->addTool($menu['title'], $menu['icon'], array(
+                'href' => $menu['link']
+            ));
         }
+
         if ($this->module->getInfo('help')) {
             $help = array();
-            $help['link'] = '../system/help.php?mid=' . $this->module->getVar('mid', 's')
-                . "&amp;" . $this->module->getInfo('help');
-            $help['icon'] = $xoops->url("/media/xoops/images/icons/32/help.png");
-            $help['title'] = \XoopsLocale::HELP;
-            $xoops->tpl()->append('xo_admin_index_menu', $help);
+            $this->addTool(
+                \XoopsLocale::HELP,
+                'xicon-help',
+                array(
+                    'href' => '../system/help.php?mid=' . $this->module->getVar('mid', 's')
+                        . "&amp;" . $this->module->getInfo('help')
+                )
+            );
         }
+
         $xoops->tpl()->assign('xo_admin_box', $this->itemInfoBox);
 
         // If you use a config label

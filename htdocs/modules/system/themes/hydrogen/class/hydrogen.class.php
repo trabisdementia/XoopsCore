@@ -105,53 +105,26 @@ class HydrogenHelper
         return $link;
     }
 
-    public function getIcon($icon, $module = '')
+    /**
+     * Returns de icon formated between $this->icon_tpl content.
+     * This method uses Xoops::getIcon() method
+     *
+     * @param string $icon
+     * @param string $module
+     * @param string $alt
+     *
+     * @return string
+     */
+    public function getIcon($icon, $module = '', $alt = '')
     {
         $xoops = \Xoops::getInstance();
+        $file = $xoops->getIcon( $icon, $module );
 
-        // Check if this is a Xoops SVG icon
-        if ('xicon-' == substr($icon, 0, 6)){
-            $file = $xoops->path("media/xoops/icons/".substr($icon, 6).".svg");
-            if (! file_exists($file)){
-                $file = $xoops->path("media/xoops/icons/guess-what.svg");
-            }
-            return sprintf($this->icon_tpl, file_get_contents($file));
-        }
-
-        // Relative or absolute url?
-        $absolute = preg_match( "/^[http:\/\/|https:\/\/|ftp:\/\/|\/\/]/", $icon );
-        $is_svg = substr($icon, -4) == '.svg';
-
-        // Icon with absolute path
-        if ($absolute){
-            if ($is_svg){
-                return sprintf($this->icon_tpl, file_get_contents($icon));
-            } else {
-                return sprintf($this->icon_tpl, '<img src="'. $icon . '">');
-            }
-        }
-
-        // Icon with relative path
-        $module_relative = preg_match( "/^[\/|\.\.\/]/", $icon ) ? false : true;
-
-        if ('' == $module && $xoops->isModule()){
-            $module = $xoops->module->dirname();
-        }
-
-        if ('' == $module && $module_relative){
-            return null;
-        }
-
-        if ($is_svg){
-            $file = $module_relative ? $xoops->path("modules/{$module}/{$icon}") : $xoops->path($icon);
-            if(file_exists($file)){
-                return sprintf($this->icon_tpl, file_get_contents($file));
-            } else {
-                return null;
-            }
+        if ('<svg' == substr($file, 0, 4)){
+            return sprintf($this->icon_tpl, $file);
         } else {
-            $file = $module_relative ? $xoops->url("modules/{$module}/{$icon}") : $xoops->url($icon);
-            return sprintf($this->icon_tpl, '<img src="' . $file . '">');
+            $img = '<img src="' . $file . '" alt="' . $alt . '">';
+            return sprintf($this->icon_tpl, $img);
         }
     }
 
