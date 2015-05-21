@@ -50,11 +50,11 @@ if (! function_exists('smarty_function_xoicon')) {
         }
         $xoops = \Xoops::getInstance();
         $icon = $xoops->getIcon($icon, $module);
-        if(substr($icon, 0, 4)){
+        if(substr($icon, 0, 4)=='<svg'){
             $icon = sprintf('<span class="xo-icon-svg ' . $class . '">%s</span>', $icon);
         } elseif (false !== strpos($icon, '/')) {
             $alt = isset($params['alt']) ? $params['alt'] : '';
-            $icon = sprintf('<img src="%s"' . ('' != $alt ? ' alt="' . $alt . '"' : '') . '>');
+            $icon = sprintf('<span class="xo-icon-svg ' . $class . '"><img src="%s"' . ('' != $alt ? ' alt="' . $alt . '"' : '') . '></span>', $icon, $alt);
         } else {
             $icon = sprintf('<span class="xo-icon-svg ' . $class . '"><span class="%s"></span></span>', $icon);
         }

@@ -155,6 +155,12 @@ class XoopsGuiHydrogen
         // Toolbar
         $hydrogen->add_data('toolbar', \Xoops\Core\Helper\Toolbar::getInstance()->render());
 
+        // Location
+        $hydrogen->add_data('location', $xoops->locationId);
+
+        //Alerts
+        $hydrogen->add_data('alerts', \Xoops\Core\Helper\GuiAlerts::getInstance()->get());
+
         $hydrogen->render_data();
     }
 }

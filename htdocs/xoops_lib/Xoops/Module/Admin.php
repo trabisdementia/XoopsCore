@@ -283,12 +283,13 @@ class Admin
      *
      * @return bool
      */
-    public function addItemButton($title, $link, $icon = 'add', $extra = '')
+    public function addItemButton($title, $link, $icon = 'add', $extra = '', $color = 'default')
     {
-        $ret['title'] = $title;
-        $ret['link'] = $link;
-        $ret['icon'] = $icon;
-        $ret['extra'] = $extra;
+        $ret['title']   = $title;
+        $ret['link']    = $link;
+        $ret['icon']    = $icon;
+        $ret['color']   = $color;
+        $ret['extra']   = $extra;
         $this->itemButton[] = $ret;
         return true;
     }
@@ -302,7 +303,8 @@ class Admin
      */
     public function addTips($text = '')
     {
-        $this->tips = $text;
+        $alerts = \Xoops\Core\Helper\GuiAlerts::getInstance();
+        $alerts->addInfo($text, 'xicon-info', $this->module ? $this->module->name() : '');
     }
 
     /**
@@ -369,12 +371,9 @@ class Admin
      *
      * @return string
      */
-    public function renderButton($position = "floatright", $delimiter = "&nbsp;")
+    public function renderButton()
     {
         $xoops = \Xoops::getInstance();
-
-        $xoops->tpl()->assign('xo_admin_buttons_position', $position);
-        $xoops->tpl()->assign('xo_admin_buttons_delim', $delimiter);
         $xoops->tpl()->assign('xo_admin_buttons', $this->itemButton);
         return $xoops->tpl()->fetch($this->getTplPath('button'));
     }
@@ -425,9 +424,14 @@ class Admin
         $this->addBodyClass('xo-admin-index');
         $this->module->loadAdminMenu();
         foreach ($this->module->adminmenu as $menu){
-            $this->addTool($menu['title'], $menu['icon'], array(
-                'href' => $menu['link']
-            ));
+            $is_absolute = preg_match('/^[(https?|ftps?|ed2k)\:\/\/|\/]/i', $menu['link']);
+            $this->addTool(
+                $menu['title'],
+                $menu['icon'],
+                array(
+                    'href' => $is_absolute ? $menu['link'] : $xoops->url("modules/" . $xoops->module->dirname() . '/' . $menu['link'])
+                )
+            );
         }
 
         if ($this->module->getInfo('help')) {
@@ -594,7 +598,7 @@ class Admin
                 }
                 $xoops->tpl()->assign('xo_sys_navigation', $this->module->adminmenu[$i]);
                 $ret[] = $xoops->tpl()->fetch($this->getTplPath('nav'));*/
-                $this->renderModuleHeader($this->module->adminmenu[$i]['title']);
+                $this->renderModuleHeader($this->module->adminmenu[$i]['title'], '', $this->module->adminmenu[$i]['icon']);
             }
         }
         //return $ret;
@@ -606,7 +610,8 @@ class Admin
         $header = array(
             'title'         => $title,
             'subheading'    => $subheading,
-            'icon'          => $icon
+            'icon'          => $icon,
+            'module'        => $this->module ? $this->module->dirname() : ''
         );
         $xoops->tpl()->assign('xo_module_header', $header);
     }
@@ -634,9 +639,11 @@ class Admin
      */
     public function renderTips()
     {
-        $xoops = \Xoops::getInstance();
+        return true;
+        /*$xoops = \Xoops::getInstance();
         $xoops->tpl()->assign('xo_admin_tips', $this->tips);
-        return $xoops->tpl()->fetch($this->getTplPath('tips'));
+
+        return $xoops->tpl()->fetch($this->getTplPath('tips'));*/
     }
 
     /**

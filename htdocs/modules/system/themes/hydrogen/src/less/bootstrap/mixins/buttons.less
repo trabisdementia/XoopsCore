@@ -8,6 +8,10 @@
   background-color: @background;
   border-color: @border;
 
+  > .xo-icon-svg{
+    .xo-icon-color(@color);
+  }
+
   &:focus,
   &.focus {
     color: @color;
@@ -65,4 +69,8 @@
   font-size: @font-size;
   line-height: @line-height;
   border-radius: @border-radius;
+
+  > .xo-icon-svg{
+    .xo-icon-size(@font-size + 4);
+  }
 }

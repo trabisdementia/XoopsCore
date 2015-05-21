@@ -114,7 +114,7 @@ class Text extends Element
         } else {
             $maxcols = $this->getSize();
         }
-        $this->addAttribute('class', 'span' . $maxcols);
+        $this->addAttribute('class', 'form-control');
         $dlist = $this->isDatalist();
         if (!empty($dlist)) {
             $this->addAttribute('list', 'list_' . $this->getName());

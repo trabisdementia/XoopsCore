@@ -44,13 +44,16 @@ $start = Request::getInt('start', 0);
 $admin_page = new \Xoops\Module\Admin();
 $admin_page->renderNavigation('clients.php');
 
+// Set location
+$xoops->locationId = 'banners-clients';
+
 switch ($op) {
 
     case 'list':
     default:
 
         $admin_page->addTips(_AM_BANNERS_TIPS_CLIENTS);
-        $admin_page->addItemButton(_AM_BANNERS_CLIENTS_ADD, 'clients.php?op=new', 'add');
+        $admin_page->addItemButton(_AM_BANNERS_CLIENTS_ADD, 'clients.php?op=new', 'xicon-plus', '', 'success');
         $admin_page->renderTips();
         $admin_page->renderButton();
 
@@ -106,7 +109,7 @@ switch ($op) {
         break;
 
     case 'new':
-        $admin_page->addItemButton(_AM_BANNERS_CLIENTS_LIST, 'clients.php', 'application-view-detail');
+        $admin_page->addItemButton(_AM_BANNERS_CLIENTS_LIST, 'clients.php', 'xicon-list', '', 'indigo');
         $admin_page->renderButton();
 
         // Breadcrumb
@@ -124,7 +127,7 @@ switch ($op) {
         break;
 
     case 'edit':
-        $admin_page->addItemButton(_AM_BANNERS_CLIENTS_LIST, 'clients.php', 'application-view-detail');
+        $admin_page->addItemButton(_AM_BANNERS_CLIENTS_LIST, 'clients.php', 'xicon-list', '', 'indigo');
         $admin_page->renderButton();
         $xoops->tpl()->assign(
             'info_msg',

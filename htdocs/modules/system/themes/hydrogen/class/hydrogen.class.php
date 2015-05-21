@@ -83,7 +83,8 @@ class HydrogenHelper
             'system_module'     => __('System Menu', 'hydrogen'),
             'dashboard'         => __('Dashboard', 'hydrogen'),
             'modules'           => __('Modules', 'hydrogen'),
-            'extensions'           => __('Extensions', 'hydrogen')
+            'extensions'        => __('Extensions', 'hydrogen'),
+            'alerts'            => __('Alerts', 'hydrogen')
         );
     }
 

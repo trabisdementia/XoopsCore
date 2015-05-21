@@ -109,7 +109,7 @@ class TextArea extends Element
         } else {
             $maxcols = $this->getCols();
         }
-        $this->addAttribute('class', 'span' . $maxcols);
+        $this->addAttribute('class', 'form-control');
 
         $attributes = $this->renderAttributeString();
         return '<textarea ' . $attributes . ' ' . $this->getExtra() .' >'

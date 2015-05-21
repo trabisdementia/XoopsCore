@@ -199,6 +199,7 @@ class Select extends Element
         $ele_optgroup = $this->getOptgroup();
 
         $extra = ($this->getExtra() != '' ? " " . $this->getExtra() : '');
+        $this->setAttribute('class', 'form-control');
         $attributes = $this->renderAttributeString();
         $ret = '<select ' . $attributes . $extra .' >' . NWLINE;
 

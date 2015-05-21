@@ -37,6 +37,9 @@ $client_Handler = $helper->getHandlerBannerclient();
 // Call header
 $xoops->header('admin:banners/banners_admin_banners.tpl');
 
+// Location
+$xoops->locationId = 'banners-banners';
+
 // Get start pager
 $start = Request::getInt('start', 0);
 $startF = Request::getInt('startF', 0);
@@ -56,13 +59,18 @@ switch ($op) {
         $xoops->theme()->addBaseScriptAssets(array('@jqueryui', 'modules/system/js/admin.js'));
 
         $admin_page->addTips(_AM_BANNERS_TIPS_BANNERS);
-        $admin_page->addItemButton(_AM_BANNERS_BANNERS_ADD, 'banners.php?op=new', 'add');
+        $admin_page->addItemButton(_AM_BANNERS_BANNERS_ADD, 'banners.php?op=new', 'xicon-plus', '', 'success');
         $admin_page->renderTips();
         if ($client_Handler->getCount() == 0) {
             echo $xoops->alert('error', _AM_BANNERS_BANNERS_ERROR_NOCLIENT);
         } else {
             $admin_page->renderButton();
         }
+
+        // Breadcrumb
+        $admin_page->addBreadcrumbLink(__('Banners', 'banners'), 'index.php');
+        $admin_page->addBreadcrumbLink(__('Banners', 'banners'));
+
         // Display banner
         $criteria = new CriteriaCompo();
         $criteria->add(new Criteria('banner_status', 0, '!='));
@@ -194,8 +202,14 @@ switch ($op) {
         break;
 
     case 'new':
-        $admin_page->addItemButton(_AM_BANNERS_BANNERS_LIST, 'banners.php', 'application-view-detail');
+        $admin_page->addItemButton(_AM_BANNERS_BANNERS_LIST, 'banners.php', 'xicon-list', '', 'indigo');
         $admin_page->renderButton();
+
+        // Breadcrumb
+        $admin_page->addBreadcrumbLink(__('Banners', 'banners'), 'index.php');
+        $admin_page->addBreadcrumbLink(__('Banners', 'banners'), 'banners.php');
+        $admin_page->addBreadcrumbLink(__('Add new', 'banners'));
+
         $xoops->tpl()->assign('info_msg', $xoops->alert('info', $info_msg, _AM_BANNERS_ALERT_INFO_TITLE_UPLOADS));
         $obj = $banner_Handler->create();
         $form = $helper->getForm($obj, 'banner');
@@ -203,8 +217,14 @@ switch ($op) {
         break;
 
     case 'edit':
-        $admin_page->addItemButton(_AM_BANNERS_BANNERS_LIST, 'banners.php', 'application-view-detail');
+        $admin_page->addItemButton(_AM_BANNERS_BANNERS_LIST, 'banners.php', 'xicon-list', '', 'indigo');
         $admin_page->renderButton();
+
+        // Breadcrumb
+        $admin_page->addBreadcrumbLink(__('Banners', 'banners'), 'index.php');
+        $admin_page->addBreadcrumbLink(__('Banners', 'banners'), 'banners.php');
+        $admin_page->addBreadcrumbLink(__('Editing', 'banners'));
+
         $xoops->tpl()->assign('info_msg', $xoops->alert('info', $info_msg, _AM_BANNERS_ALERT_INFO_TITLE_UPLOADS));
         $bid = Request::getInt('bid', 0);
         if ($bid > 0) {

@@ -59,10 +59,13 @@ class Button extends Element
      */
     public function render()
     {
-        $this->addAttribute('class', 'btn');
+        if (false !== strpos($this->attributes['type'], 'submit')){
+            $this->addAttribute('class', 'btn btn-primary btn-lg');
+        } else {
+            $this->addAttribute('class', 'btn btn-default btn-lg');
+        }
 
         $attributes = $this->renderAttributeString();
-        return '<input ' . $attributes . 'value="' . $this->getValue()
-            . '" ' . $this->getExtra() .' >';
+        return '<button ' . $attributes . ' ' . $this->getExtra() .' >' . $this->getValue() . '</button>';
     }
 }

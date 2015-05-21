@@ -14,7 +14,7 @@
                 </a>
             </li>
             <{foreach item=menu from=$hydrogen.currentModule.menu}>
-                <li class="currents <{if $menu.options}> menu<{/if}>">
+                <li class="currents <{if $menu.options}> menu<{/if}><{if $menu.location && $menu.location==$hydrogen.location}> current-menu<{/if}>">
                     <a href="<{menuLink menu=$menu module=$hydrogen.currentModule.dirname}>">
                         <{xoicon icon=$menu.icon}>
                         <span class="caption"><{$menu.title}></span>
@@ -40,23 +40,25 @@
             </a>
         </li>
         <{foreach item=module from=$hydrogen.modules}>
-        <li class="modules <{if $module.menu}> menu<{/if}>">
-            <a href="<{$module.link}>">
-                <{$module.icon}>
-                <span class="caption"><{$module.name}></span>
-            </a>
-            <{if $module.menu}>
-            <ul class="nav-menu">
-                <{foreach item=menu from=$module.menu}>
-                    <li>
-                        <a href="<{menulink menu=$menu module=$module.dirname}>">
-                            <{$menu.title}>
-                        </a>
-                    </li>
-                <{/foreach}>
-            </ul>
+            <{if $module.dirname!=$hydrogen.currentModule.dirname}>
+                <li class="modules <{if $module.menu}> menu<{/if}>">
+                    <a href="<{$module.link}>">
+                        <{$module.icon}>
+                        <span class="caption"><{$module.name}></span>
+                    </a>
+                    <{if $module.menu}>
+                        <ul class="nav-menu">
+                            <{foreach item=menu from=$module.menu}>
+                                <li>
+                                    <a href="<{menulink menu=$menu module=$module.dirname}>">
+                                        <{$menu.title}>
+                                    </a>
+                                </li>
+                            <{/foreach}>
+                        </ul>
+                    <{/if}>
+                </li>
             <{/if}>
-        </li>
         <{/foreach}>
         <li class="nav-separator">
             <a href="#" data-siblings="extension">

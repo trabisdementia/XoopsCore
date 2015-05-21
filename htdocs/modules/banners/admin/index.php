@@ -23,6 +23,9 @@ include __DIR__ . '/header.php';
 $xoops = Xoops::getInstance();
 $helper = Banners::getInstance();
 
+// Location
+$xoops->locationId = 'banners-dashboard';
+
 // Get banners handler
 $banner_Handler = $helper->getHandlerBanner();
 $client_Handler = $helper->getHandlerBannerclient();

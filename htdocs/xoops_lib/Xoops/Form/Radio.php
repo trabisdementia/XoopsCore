@@ -168,10 +168,19 @@ class Radio extends Element
             $this->setAttribute('value', $value);
             ++$id_ele;
             $this->setAttribute('id', $ele_name . $id_ele);
-            $ret .= '<label class="radio' . $this->getInline() . '">' . NWLINE;
-            $ret .= '<input ' . $this->renderAttributeString() . $extra . ">" . NWLINE;
-            $ret .= $buttonCaption . NWLINE;
-            $ret .= "</label>" . NWLINE;
+
+            if ($this->inline){
+                $ret .= '<label class="radio-inline">';
+                $ret .= '<input ' . $this->renderAttributeString() . $extra . "> ";
+                $ret .= $buttonCaption . '</label>';
+            } else {
+                $ret .= '<div class="radio">';
+                $ret .= '<label>';
+                $ret .= '<input ' . $this->renderAttributeString() . $extra . "> ";
+                $ret .= $buttonCaption;
+                $ret .= '</label>';
+                $ret .= '</div>';
+            }
         }
         return $ret;
     }

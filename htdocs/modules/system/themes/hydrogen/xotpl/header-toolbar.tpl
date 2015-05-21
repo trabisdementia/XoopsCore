@@ -19,7 +19,7 @@
         <ul class="nav navbar-nav navbar-right dynamic-tools">
             <li class="dropdown">
                 <a href="#" title="<{$hydrogen.lang.system_module}>" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                    <span class="xicon-system"></span>
+                    <{xoicon icon="xicon-system"}>
                 </a>
                 <ul class="dropdown-menu">
                     <{foreach item=menu from=$hydrogen.systemMenu}>
@@ -44,6 +44,38 @@
             </li>
             <{/foreach}>
             <!--// Dynamic buttons -->
+
+            <!-- Alerts -->
+            <{if $hydrogen.alerts}>
+                <li class="dropdown alert-button">
+                    <a href="#" title="<{$hydrogen.lang.alerts}>" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                        <{xoicon icon="xicon-bell"}>
+                        <span class="counter"><{$hydrogen.alerts|count}></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <div class="messages-container">
+                                <ul>
+                                    <{foreach item=alert from=$hydrogen.alerts}>
+                                        <li>
+                                            <div class="message <{$alert.type}>">
+                                    <span class="icon">
+                                        <{xoicon icon="<{$alert.icon}>"}>
+                                    </span>
+                                                <div class="text">
+                                                    <{$alert.text}>
+                                                    <small><{$alert.module}></small>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    <{/foreach}>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            <{/if}>
+            <!--// Alerts -->
 
             <!-- Current admin button -->
             <li class="dropdown" id="xo-admin-button">

@@ -25,29 +25,19 @@ $i = 1;
 $adminmenu[$i]['title'] = _MI_BANNERS_INDEX;
 $adminmenu[$i]['link'] = "admin/index.php";
 $adminmenu[$i]['icon'] = 'xicon-dashboard';
+$adminmenu[$i]['location'] = 'banners-dashboard';
 ++$i;
 $adminmenu[$i]['title'] = _MI_BANNERS_CLIENTS;
 $adminmenu[$i]['link'] = "admin/clients.php";
 $adminmenu[$i]['icon'] = 'xicon-customers';
-$adminmenu[$i]['options'] = array(
-    array(
-        'title' => _MI_BANNERS_ADDCLIENT,
-        'link'  => 'admin/clients.php?op=new',
-        'icon'  => ''
-    )
-);
+$adminmenu[$i]['location'] = 'banners-clients';
 ++$i;
 $adminmenu[$i]['title'] = _MI_BANNERS_BANNERS;
 $adminmenu[$i]['link'] = "admin/banners.php";
 $adminmenu[$i]['icon'] = 'xicon-tiles';
-$adminmenu[$i]['options'] = array(
-    array(
-        'title' => _MI_BANNERS_ADDBANNER,
-        'link'  => 'admin/banners.php?op=new',
-        'icon'  => ''
-    )
-);
+$adminmenu[$i]['location'] = 'banners-banners';
 ++$i;
 $adminmenu[$i]['title'] = _MI_BANNERS_ABOUT;
 $adminmenu[$i]['link'] = 'admin/about.php';
 $adminmenu[$i]['icon'] = 'xicon-info';
+$adminmenu[$i]['location'] = 'banners-about';

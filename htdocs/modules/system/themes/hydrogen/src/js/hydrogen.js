@@ -21,6 +21,12 @@
             $("#dashboard-users-list .table-responsive").perfectScrollbar();
         }
 
+        if ($("#xo-toolbar .alert-button").length > 0){
+            $("#xo-toolbar .alert-button .messages-container").perfectScrollbar({
+                suppressScrollX: true
+            });
+        }
+
         if ($(".xo-toolbar").length > 0){
             $(".xo-toolbar").perfectScrollbar({
                 useBothWheelAxes: true,
