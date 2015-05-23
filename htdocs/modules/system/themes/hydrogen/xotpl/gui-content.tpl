@@ -5,6 +5,6 @@
     <{$hydrogen.toolbar}>
 <{/if}>
 
-<div class="container-fluid">
+<div class="container-fluid hydrogen-xoops-contents">
     <{$xoops_contents}>
 </div>
