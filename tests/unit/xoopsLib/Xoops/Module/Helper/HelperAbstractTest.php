@@ -1,5 +1,5 @@
 <?php
-require_once(dirname(__FILE__).'/../../../../init_mini.php');
+require_once(dirname(__FILE__).'/../../../../init_new.php');
 
 class Xoops_Module_Helper_AbstractTestInstance extends Xoops\Module\Helper\HelperAbstract
 {
@@ -40,7 +40,8 @@ class Xoops_Module_Helper_AbstractTest extends \PHPUnit_Framework_TestCase
 
     public function test___construct()
 	{
-		$dir = XOOPS_ROOT_PATH.'/modules/avatar';
+        $xoops_root_path = \XoopsBaseConfig::get('root-path');
+		$dir = $xoops_root_path.'/modules/avatar';
 		$instance = new $this->myClass($dir);
 		$this->assertInstanceOf($this->myClass, $instance);
     }
@@ -162,15 +163,6 @@ class Xoops_Module_Helper_AbstractTest extends \PHPUnit_Framework_TestCase
     public function test_isUserAdmin()
 	{
 		$this->markTestIncomplete();
-    }
-
-	public function test_getUserGroups()
-	{
-		$class = $this->myClass;
-		$instance = $class::getInstance();
-
-		$x = $instance->getUserGroups();
-		$this->assertSame(XOOPS_GROUP_ANONYMOUS, $x);
     }
 
     public function test_url()

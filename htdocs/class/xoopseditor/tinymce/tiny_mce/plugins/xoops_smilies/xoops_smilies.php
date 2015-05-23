@@ -13,15 +13,18 @@
 
 use Xoops\Core\Request;
 
-$xoops_root_path = dirname(dirname(dirname(dirname(dirname(dirname(__DIR__))))));
-include_once $xoops_root_path . '/mainfile.php';
-defined('XOOPS_ROOT_PATH') or die('Restricted access');
+$helper = Xoops\Module\Helper::getHelper('smilies');
+if (!$helper) {
+    ob_end_flush();
+    return;
+}
+
+require_once dirname(__FILE__).'/../../../../../../mainfile.php';
 
 $xoops = Xoops::getInstance();
 $xoops->disableErrorReporting();
 $xoops->simpleHeader(false);
 
-$helper = Xoops\Module\Helper::getHelper('smilies');
 $helper->loadLanguage('admin');
 $helper->loadLanguage('tinymce');
 
@@ -44,7 +47,7 @@ if ($op == 'save') {
 
     $mimetypes = array('image/gif', 'image/jpeg', 'image/pjpeg', 'image/x-png', 'image/png');
     $upload_size = 500000;
-    $uploader = new XoopsMediaUploader(XOOPS_UPLOAD_PATH . '/smilies', $mimetypes, $upload_size, null, null);
+    $uploader = new XoopsMediaUploader(\XoopsBaseConfig::get('uploads-path') . '/smilies', $mimetypes, $upload_size, null, null);
     if ($uploader->fetchMedia($xoops_upload_file[0])) {
         $uploader->setPrefix('smil');
         if (!$uploader->upload()) {
@@ -68,7 +71,7 @@ if ($op == 'more') {
 }
 
 // check user/group
-$groups = $xoops->isUser() ? $xoops->user->getGroups() : array(XOOPS_GROUP_ANONYMOUS);
+$groups = $xoops->getUserGroups();
 $gperm_handler = $xoops->getHandlerGroupperm();
 $admin = $gperm_handler->checkRight('system_admin', $xoops->getHandlerModule()->getByDirName('smilies')->getVar('mid'), $groups);
 

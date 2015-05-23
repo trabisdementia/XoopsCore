@@ -9,6 +9,8 @@
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 */
 
+use Xoops\Core\FixedGroups;
+
 /**
  * XOOPS Register
  *
@@ -19,9 +21,10 @@
  * @author          Kazumi Ono <webmaster@myweb.ne.jp>
  * @version         $Id$
  */
-include __DIR__ . DIRECTORY_SEPARATOR . 'mainfile.php';
+include __DIR__ . '/mainfile.php';
 
 $xoops = Xoops::getInstance();
+$xoops_url = \XoopsBaseConfig::get('url');
 $xoops->events()->triggerEvent('core.register.start');
 $xoops->loadLanguage('user');
 
@@ -164,7 +167,7 @@ switch ($op) {
                 $xoops->footer();
             }
             $newid = $newuser->getVar('uid');
-            if (!$member_handler->addUserToGroup(XOOPS_GROUP_USERS, $newid)) {
+            if (!$member_handler->addUserToGroup(FixedGroups::USERS, $newid)) {
                 echo XoopsLocale::E_USER_NOT_REGISTERED;
                 $xoops->footer();
             }
@@ -183,7 +186,7 @@ switch ($op) {
                 $xoopsMailer->setTemplate('register.tpl');
                 $xoopsMailer->assign('SITENAME', $xoops->getConfig('sitename'));
                 $xoopsMailer->assign('ADMINMAIL', $xoops->getConfig('adminmail'));
-                $xoopsMailer->assign('SITEURL', XOOPS_URL . "/");
+                $xoopsMailer->assign('SITEURL', $xoops_url . "/");
                 $xoopsMailer->setToUsers(new XoopsUser($newid));
                 $xoopsMailer->setFromEmail($xoops->getConfig('adminmail'));
                 $xoopsMailer->setFromName($xoops->getConfig('sitename'));
@@ -204,11 +207,11 @@ switch ($op) {
                 $xoopsMailer->assign('USEREMAIL', $email);
                 $xoopsMailer->assign(
                     'USERACTLINK',
-                    XOOPS_URL . '/register.php?op=actv&id=' . $newid . '&actkey=' . $actkey
+                    $xoops_url . '/register.php?op=actv&id=' . $newid . '&actkey=' . $actkey
                 );
                 $xoopsMailer->assign('SITENAME', $xoops->getConfig('sitename'));
                 $xoopsMailer->assign('ADMINMAIL', $xoops->getConfig('adminmail'));
-                $xoopsMailer->assign('SITEURL', XOOPS_URL . "/");
+                $xoopsMailer->assign('SITEURL', $xoops_url . "/");
                 $member_handler = $xoops->getHandlerMember();
                 $xoopsMailer->setToGroups($member_handler->getGroup($xoopsConfigUser['activation_group']));
                 $xoopsMailer->setFromEmail($xoops->getConfig('adminmail'));
@@ -271,7 +274,7 @@ switch ($op) {
                         $xoopsMailer->setTemplate('activated.tpl');
                         $xoopsMailer->assign('SITENAME', $xoops->getConfig('sitename'));
                         $xoopsMailer->assign('ADMINMAIL', $xoops->getConfig('adminmail'));
-                        $xoopsMailer->assign('SITEURL', XOOPS_URL . "/");
+                        $xoopsMailer->assign('SITEURL', $xoops_url . "/");
                         $xoopsMailer->setToUsers($thisuser);
                         $xoopsMailer->setFromEmail($xoops->getConfig('adminmail'));
                         $xoopsMailer->setFromName($xoops->getConfig('sitename'));

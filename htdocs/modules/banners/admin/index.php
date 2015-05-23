@@ -25,6 +25,10 @@ $helper = Banners::getInstance();
 
 // Location
 $xoops->locationId = 'banners-dashboard';
+$xoops_root_path = \XoopsBaseConfig::get('root-path');
+$xoops_upload_path = \XoopsBaseConfig::get('uploads-path');
+$xoops_upload_url = \XoopsBaseConfig::get('uploads-url');
+$xoops_url = \XoopsBaseConfig::get('url');
 
 // Get banners handler
 $banner_Handler = $helper->getHandlerBanner();
@@ -43,7 +47,7 @@ $criteria = new CriteriaCompo();
 $criteria->add(new Criteria('banner_status', 0));
 $banners_finish = $banner_Handler->getCount($criteria);
 // folder path
-$folder_path = XOOPS_ROOT_PATH . '/uploads/banners';
+$folder_path = $xoops_root_path . '/uploads/banners';
 
 $admin_page = new \Xoops\Module\Admin();
 // Breadcrumb

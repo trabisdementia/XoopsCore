@@ -11,6 +11,7 @@
 
 use Xoops\Core\Kernel\Criteria;
 use Xoops\Core\Kernel\CriteriaCompo;
+use Xoops\Core\FixedGroups;
 
 /**
  * Blocks Administration
@@ -47,7 +48,7 @@ $selmod = $selgen = $selgrp = $selvis = null;
 $sel = array(
     'selmod' => -2,
     'selgen' => -1,
-    'selgrp' => XOOPS_GROUP_USERS,
+    'selgrp' => FixedGroups::USERS,
     'selvis' => -1
 );
 foreach ($sel as $key => $value) {
@@ -80,7 +81,7 @@ switch ($op) {
         $xoops->theme()->addScript('modules/system/js/blocks.js');
         // Define Breadcrumb and tips
         $admin_page = new \Xoops\Module\Admin();
-        $admin_page->addBreadcrumbLink(SystemLocale::CONTROL_PANEL, XOOPS_URL . '/admin.php', true);
+        $admin_page->addBreadcrumbLink(SystemLocale::CONTROL_PANEL, \XoopsBaseConfig::get('url') . '/admin.php', true);
         $admin_page->addBreadcrumbLink(
             SystemLocale::BLOCKS_ADMINISTRATION,
             $system->adminVersion('blocksadmin', 'adminpath')
@@ -202,7 +203,7 @@ switch ($op) {
         $xoops->theme()->addScript('modules/system/js/blocks.js');
         // Define Breadcrumb and tips
         $admin_page = new \Xoops\Module\Admin();
-        $admin_page->addBreadcrumbLink(SystemLocale::CONTROL_PANEL, XOOPS_URL . '/admin.php', true);
+        $admin_page->addBreadcrumbLink(SystemLocale::CONTROL_PANEL, \XoopsBaseConfig::get('url') . '/admin.php', true);
         $admin_page->addBreadcrumbLink(
             SystemLocale::BLOCKS_ADMINISTRATION,
             $system->adminVersion('blocksadmin', 'adminpath')
@@ -408,7 +409,7 @@ switch ($op) {
             $xoops->theme()->addScript('modules/system/js/admin.js');
             // Define Breadcrumb and tips
             $admin_page = new \Xoops\Module\Admin();
-            $admin_page->addBreadcrumbLink(SystemLocale::CONTROL_PANEL, XOOPS_URL . '/admin.php', true);
+            $admin_page->addBreadcrumbLink(SystemLocale::CONTROL_PANEL, \XoopsBaseConfig::get('url') . '/admin.php', true);
             $admin_page->addBreadcrumbLink(
                 SystemLocale::BLOCKS_ADMINISTRATION,
                 $system->adminVersion('blocksadmin', 'adminpath')
@@ -434,7 +435,7 @@ switch ($op) {
         $xoops->theme()->addStylesheet('modules/system/css/admin.css');
         // Define Breadcrumb and tips
         $admin_page = new \Xoops\Module\Admin();
-        $admin_page->addBreadcrumbLink(SystemLocale::CONTROL_PANEL, XOOPS_URL . '/admin.php', true);
+        $admin_page->addBreadcrumbLink(SystemLocale::CONTROL_PANEL, \XoopsBaseConfig::get('url') . '/admin.php', true);
         $admin_page->addBreadcrumbLink(
             SystemLocale::BLOCKS_ADMINISTRATION,
             $system->adminVersion('blocksadmin', 'adminpath')

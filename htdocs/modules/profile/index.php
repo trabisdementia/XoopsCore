@@ -9,6 +9,8 @@
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 */
 
+use Xoops\Core\FixedGroups;
+
 /**
  * Extended User Profile
  *
@@ -21,7 +23,7 @@
  * @version         $Id$
  */
 
-include __DIR__ . DIRECTORY_SEPARATOR . 'header.php';
+include __DIR__ . '/header.php';
 $xoops = Xoops::getInstance();
 
 $op = 'main';
@@ -55,7 +57,7 @@ if ($op == 'main') {
         $redirect = trim($_GET['xoops_redirect']);
         $isExternal = false;
         if ($pos = strpos($redirect, '://')) {
-            $xoopsLocation = substr(XOOPS_URL, strpos(XOOPS_URL, '://') + 3);
+            $xoopsLocation = substr(\XoopsBaseConfig::get('url'), strpos(\XoopsBaseConfig::get('url'), '://') + 3);
             if (strcasecmp(substr($redirect, $pos + 3, strlen($xoopsLocation)), $xoopsLocation)) {
                 $isExternal = true;
             }
@@ -83,7 +85,7 @@ if ($op == 'logout') {
         $xoops->getHandlerOnline()->destroy($xoops->user->getVar('uid'));
     }
     $message = XoopsLocale::S_YOU_ARE_NOW_LOGGED_OUT . '<br />' . XoopsLocale::S_THANK_YOU_FOR_VISITING_OUR_SITE;
-    $xoops->redirect(XOOPS_URL . '/', 1, $message);
+    $xoops->redirect(\XoopsBaseConfig::get('url') . '/', 1, $message);
 }
 
 if ($op == 'actv') {
@@ -94,12 +96,12 @@ if ($op == 'actv') {
 
 if ($op == 'delete') {
     if (!$xoops->isUser() || $xoops->getConfig('self_delete') != 1) {
-        $xoops->redirect(XOOPS_URL . '/', 5, XoopsLocale::E_NO_ACTION_PERMISSION);
+        $xoops->redirect(\XoopsBaseConfig::get('url') . '/', 5, XoopsLocale::E_NO_ACTION_PERMISSION);
     } else {
         $groups = $xoops->user->getGroups();
-        if (in_array(XOOPS_GROUP_ADMIN, $groups)) {
+        if (in_array(FixedGroups::ADMIN, $groups)) {
             // users in the webmasters group may not be deleted
-            $xoops->redirect(XOOPS_URL . '/', 5, XoopsLocale::E_USER_IN_WEBMASTER_GROUP_CANNOT_BE_REMOVED);
+            $xoops->redirect(\XoopsBaseConfig::get('url') . '/', 5, XoopsLocale::E_USER_IN_WEBMASTER_GROUP_CANNOT_BE_REMOVED);
         }
         $ok = !isset($_POST['ok']) ? 0 : intval($_POST['ok']);
         if ($ok != 1) {
@@ -109,7 +111,7 @@ if ($op == 'delete') {
                 'user.php',
                 XoopsLocale::Q_ARE_YOU_SURE_TO_DELETE_ACCOUNT . '<br/>' . XoopsLocale::THIS_WILL_REMOVE_ALL_YOUR_INFO
             );
-            include __DIR__ . DIRECTORY_SEPARATOR . 'footer.php';
+            include __DIR__ . '/footer.php';
         } else {
             $del_uid = $xoops->user->getVar("uid");
             if (false != $xoops->getHandlerMember()->deleteUser($xoops->user)) {

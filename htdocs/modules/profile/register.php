@@ -9,6 +9,8 @@
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 */
 
+use Xoops\Core\FixedGroups;
+
 /**
  * Extended User Profile
  *
@@ -22,7 +24,7 @@
  * @version         $Id$
  */
 
-include __DIR__ . DIRECTORY_SEPARATOR . 'header.php';
+include __DIR__ . '/header.php';
 $xoops = Xoops::getInstance();
 
 if ($xoops->isUser()) {
@@ -57,7 +59,7 @@ $criteria->setSort("step_order");
 $regstep_handler = $xoops->getModuleHandler('regstep');
 
 if (!$steps = $regstep_handler->getAll($criteria, null, false, false)) {
-    $xoops->redirect(XOOPS_URL . '/', 6, _PROFILE_MA_NOSTEPSAVAILABLE);
+    $xoops->redirect(\XoopsBaseConfig::get('url') . '/', 6, _PROFILE_MA_NOSTEPSAVAILABLE);
 }
 
 foreach (array_keys($steps) as $key) {
@@ -240,7 +242,7 @@ if ($current_step > 0 && empty($stop) && (!empty($steps[$current_step - 1]['step
             }
 
             $message = "";
-            if (!$member_handler->addUserToGroup(XOOPS_GROUP_USERS, $newuser->getVar('uid'))) {
+            if (!$member_handler->addUserToGroup(FixedGroups::USERS, $newuser->getVar('uid'))) {
                 $message = _PROFILE_MA_REGISTER_NOTGROUP . "<br />";
             } else {
                 if ($xoops->getConfig('activation_type') == 1) {
@@ -253,7 +255,7 @@ if ($current_step > 0 && empty($stop) && (!empty($steps[$current_step - 1]['step
                         $xoopsMailer->setTemplate('register.tpl');
                         $xoopsMailer->assign('SITENAME', $xoops->getConfig('sitename'));
                         $xoopsMailer->assign('ADMINMAIL', $xoops->getConfig('adminmail'));
-                        $xoopsMailer->assign('SITEURL', XOOPS_URL . "/");
+                        $xoopsMailer->assign('SITEURL', \XoopsBaseConfig::get('url') . "/");
                         $xoopsMailer->assign('X_UPASS', $_POST['vpass']);
                         $xoopsMailer->setToUsers($newuser);
                         $xoopsMailer->setFromEmail($xoops->getConfig('adminmail'));
@@ -272,10 +274,10 @@ if ($current_step > 0 && empty($stop) && (!empty($steps[$current_step - 1]['step
                             $xoopsMailer->setTemplate('adminactivate.tpl');
                             $xoopsMailer->assign('USERNAME', $newuser->getVar('uname'));
                             $xoopsMailer->assign('USEREMAIL', $newuser->getVar('email'));
-                            $xoopsMailer->assign('USERACTLINK', XOOPS_URL . "/modules/" . $xoops->module->getVar('dirname', 'n') . '/activate.php?id=' . $newuser->getVar('uid') . '&actkey=' . $newuser->getVar('actkey', 'n'));
+                            $xoopsMailer->assign('USERACTLINK', \XoopsBaseConfig::get('url') . "/modules/" . $xoops->module->getVar('dirname', 'n') . '/activate.php?id=' . $newuser->getVar('uid') . '&actkey=' . $newuser->getVar('actkey', 'n'));
                             $xoopsMailer->assign('SITENAME', $xoops->getConfig('sitename'));
                             $xoopsMailer->assign('ADMINMAIL', $xoops->getConfig('adminmail'));
-                            $xoopsMailer->assign('SITEURL', XOOPS_URL . "/");
+                            $xoopsMailer->assign('SITEURL', \XoopsBaseConfig::get('url') . "/");
                             $xoopsMailer->setToGroups($member_handler->getGroup($xoops->getConfig('activation_group')));
                             $xoopsMailer->setFromEmail($xoops->getConfig('adminmail'));
                             $xoopsMailer->setFromName($xoops->getConfig('sitename'));
@@ -326,4 +328,4 @@ if (!empty($stop) || isset($steps[$current_step])) {
     $_SESSION['profile_post'] = null;
 }
 
-include __DIR__ . DIRECTORY_SEPARATOR . 'footer.php';
+include __DIR__ . '/footer.php';

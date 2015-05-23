@@ -10,6 +10,7 @@
 */
 
 use Xoops\Core\Kernel\Criteria;
+use Xoops\Core\FixedGroups;
 
 /**
  * System admin
@@ -48,7 +49,7 @@ if ($system->checkRight()) {
 
             if ($category > 0) {
                 $group = $xoopsUser->getGroups();
-                if (in_array(XOOPS_GROUP_ADMIN, $group) || false != $sysperm_handler->checkRight('system_admin', $category, $group, $xoopsModule->getVar('mid'))) {
+                if (in_array(FixedGroups::ADMIN, $group) || false != $sysperm_handler->checkRight('system_admin', $category, $group, $xoopsModule->getVar('mid'))) {
                     if (XoopsLoad::fileExists($file = $xoops->path('modules/' . $xoopsModule->getVar('dirname', 'n') . '/admin/' . $fct . '/main.php'))) {
                         include_once $file;
                         unset($file);
@@ -103,21 +104,21 @@ if (false != $error) {
     //$xoops->theme()->addBaseScriptAssets('modules/system/js/admin.js');
     // Define Breadcrumb and tips
     $admin_page = new \Xoops\Module\Admin();
-    $admin_page->addBreadcrumbLink(SystemLocale::CONTROL_PANEL, XOOPS_URL . '/admin.php');
+    $admin_page->addBreadcrumbLink(SystemLocale::CONTROL_PANEL, \XoopsBaseConfig::get('url') . '/admin.php', true);
     $admin_page->addBreadcrumbLink(SystemLocale::SYSTEM_CONFIGURATION);
     //$admin_page->renderBreadcrumb();
     $admin_page->addTips(SystemLocale::TIPS_MAIN);
     $admin_page->renderTips();
     $groups = $xoopsUser->getGroups();
     $all_ok = false;
-    if (!in_array(XOOPS_GROUP_ADMIN, $groups)) {
+    if (!in_array(FixedGroups::ADMIN, $groups)) {
         $sysperm_handler = $xoops->getHandlerGroupperm();
         $ok_syscats = $sysperm_handler->getItemIds('system_admin', $groups);
     } else {
         $all_ok = true;
     }
 
-    $admin_dir = XOOPS_ROOT_PATH . '/modules/system/admin';
+    $admin_dir = \XoopsBaseConfig::get('root-path') . '/modules/system/admin';
     $dirlist = XoopsLists::getDirListAsArray($admin_dir);
     $inactive_section = array('blocksadmin', 'groups', 'modulesadmin', 'preferences', 'tplsets', 'extensions', 'users', 'services');
     foreach ($dirlist as $directory) {

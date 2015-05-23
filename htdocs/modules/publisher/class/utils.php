@@ -19,11 +19,7 @@ use Xmf\Module\Session;
  * @author          trabis <lusopoemas@gmail.com>
  * @author          The SmartFactory <www.smartfactory.ca>
  * @author          trabis <lusopoemas@gmail.com>
- * @version         $Id$
  */
-
-defined("XOOPS_ROOT_PATH") or die("XOOPS root path not defined");
-
 class PublisherUtils
 {
     /**
@@ -502,7 +498,7 @@ class PublisherUtils
      */
     public static function getCurrentUrls()
     {
-        $http = strpos(XOOPS_URL, "https://") === false ? "http://" : "https://";
+        $http = strpos(\XoopsBaseConfig::get('url'), "https://") === false ? "http://" : "https://";
         $phpself = $_SERVER['PHP_SELF'];
         $httphost = $_SERVER['HTTP_HOST'];
         $querystring = isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : '';
@@ -910,7 +906,7 @@ class PublisherUtils
         $rating1 = @number_format($current_rating / $count, 1);
         $rating2 = @number_format($current_rating / $count, 2);
 
-        $groups = $xoops->isUser() ? $xoops->user->getGroups() : XOOPS_GROUP_ANONYMOUS;
+        $groups = $xoops->getUserGroups();
         $gperm_handler = $publisher->getGrouppermHandler();
 
         if (!$gperm_handler->checkRight('global', _PUBLISHER_RATE, $groups, $publisher->getModule()->getVar('mid'))) {
@@ -1090,7 +1086,7 @@ class PublisherUtils
 
             if ($publisher->getConfig('seo_url_rewrite') == 'htaccess') {
                 // generate SEO url using htaccess
-                return XOOPS_URL . '/' . $publisher->getConfig('seo_module_name') . ".${op}.${id}/${short_url}";
+                return \XoopsBaseConfig::get('url') . '/' . $publisher->getConfig('seo_module_name') . ".${op}.${id}/${short_url}";
             } else {
                 if ($publisher->getConfig('seo_url_rewrite') == 'path-info') {
                     // generate SEO url using path-info

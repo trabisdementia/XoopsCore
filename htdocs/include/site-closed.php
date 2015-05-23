@@ -19,12 +19,14 @@
  * @version         $Id$
  */
 
+use Xoops\Core\FixedGroups;
+
 $xoops = Xoops::getInstance();
 
 $allowed = false;
 if ($xoops->isUser()) {
     foreach ($xoops->user->getGroups() as $group) {
-        if (in_array($group, $xoops->getConfig('closesite_okgrp')) || XOOPS_GROUP_ADMIN == $group) {
+        if (in_array($group, $xoops->getConfig('closesite_okgrp')) || FixedGroups::ADMIN == $group) {
             $allowed = true;
             break;
         }
@@ -47,7 +49,7 @@ if (!$allowed) {
     $xoops->setTpl($xoops->theme()->template);
     $xoops->tpl()->assign(array(
                            'xoops_theme' => $xoops->getConfig('theme_set'),
-                           'xoops_imageurl' => XOOPS_THEME_URL . '/' . $xoops->getConfig('theme_set') . '/',
+                           'xoops_imageurl' => \XoopsBaseConfig::get('themes-url'); . '/' . $xoops->getConfig('theme_set') . '/',
                            'xoops_themecss' => $xoops->getCss($xoops->getConfig('theme_set')),
                            'xoops_requesturi' => htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES),
                            'xoops_sitename' => htmlspecialchars($xoops->getConfig('sitename'), ENT_QUOTES),

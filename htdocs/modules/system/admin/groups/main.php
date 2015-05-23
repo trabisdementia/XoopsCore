@@ -11,6 +11,7 @@
 
 use Xoops\Core\Kernel\Criteria;
 use Xoops\Core\Kernel\CriteriaCompo;
+use Xoops\Core\FixedGroups;
 
 /**
  * Groups Manager
@@ -54,7 +55,7 @@ switch ($op) {
         $xoops->theme()->addScript('modules/system/js/admin.js');
         // Define Breadcrumb and tips
         $admin_page = new \Xoops\Module\Admin();
-        $admin_page->addBreadcrumbLink(SystemLocale::CONTROL_PANEL, XOOPS_URL . '/admin.php', true);
+        $admin_page->addBreadcrumbLink(SystemLocale::CONTROL_PANEL, \XoopsBaseConfig::get('url') . '/admin.php', true);
         $admin_page->addBreadcrumbLink(SystemLocale::GROUPS_MANAGER, $system->adminVersion('groups', 'adminpath'));
         $admin_page->addBreadcrumbLink(XoopsLocale::MAIN);
         $admin_page->addItemButton(SystemLocale::ADD_NEW_GROUP, 'admin.php?fct=groups&amp;op=groups_add', 'add');
@@ -92,7 +93,7 @@ switch ($op) {
             $edit_delete = '<a href="admin.php?fct=groups&amp;op=groups_edit&amp;groups_id=' . $groups_id . '">'
                 . '<img src="./images/icons/edit.png" border="0" alt="' . SystemLocale::EDIT_GROUP
                 . '" title="' . SystemLocale::EDIT_GROUP . '"></a>';
-            if (!in_array($group->getVar("groupid"), array(XOOPS_GROUP_ADMIN, XOOPS_GROUP_USERS, XOOPS_GROUP_ANONYMOUS))
+            if (!in_array($group->getVar("groupid"), array(FixedGroups::ADMIN, FixedGroups::USERS, FixedGroups::ANONYMOUS))
             ) {
                 $groups['delete'] = 1;
                 $edit_delete .= '<a href="admin.php?fct=groups&amp;op=groups_delete&amp;groups_id=' . $groups_id . '">'
@@ -116,7 +117,7 @@ switch ($op) {
         $xoops->theme()->addStylesheet('modules/system/css/admin.css');
         // Define Breadcrumb and tips
         $admin_page = new \Xoops\Module\Admin();
-        $admin_page->addBreadcrumbLink(SystemLocale::CONTROL_PANEL, XOOPS_URL . '/admin.php', true);
+        $admin_page->addBreadcrumbLink(SystemLocale::CONTROL_PANEL, \XoopsBaseConfig::get('url') . '/admin.php', true);
         $admin_page->addBreadcrumbLink(SystemLocale::GROUPS_MANAGER, $system->adminVersion('groups', 'adminpath'));
         $admin_page->addBreadcrumbLink(SystemLocale::ADD_NEW_GROUP);
         $admin_page->addTips(SystemLocale::GROUPS_TIPS_2);
@@ -135,7 +136,7 @@ switch ($op) {
         $xoops->theme()->addStylesheet('modules/system/css/admin.css');
         // Define Breadcrumb and tips
         $admin_page = new \Xoops\Module\Admin();
-        $admin_page->addBreadcrumbLink(SystemLocale::CONTROL_PANEL, XOOPS_URL . '/admin.php', true);
+        $admin_page->addBreadcrumbLink(SystemLocale::CONTROL_PANEL, \XoopsBaseConfig::get('url') . '/admin.php', true);
         $admin_page->addBreadcrumbLink(SystemLocale::GROUPS_MANAGER, $system->adminVersion('groups', 'adminpath'));
         $admin_page->addBreadcrumbLink(SystemLocale::EDIT_GROUP);
         $admin_page->addTips(SystemLocale::GROUPS_TIPS_2);
@@ -236,7 +237,7 @@ switch ($op) {
             $group->setVar('name', $_POST["name"]);
             $group->setVar('description', $_POST["desc"]);
             // if this group is not one of the default groups
-            if (!in_array($group->getVar('groupid'), array(XOOPS_GROUP_ADMIN, XOOPS_GROUP_USERS, XOOPS_GROUP_ANONYMOUS))
+            if (!in_array($group->getVar('groupid'), array(FixedGroups::ADMIN, FixedGroups::USERS, FixedGroups::ANONYMOUS))
             ) {
                 if (count($system_catids) > 0) {
                     $group->setVar('group_type', 'Admin');
@@ -308,7 +309,7 @@ switch ($op) {
     case 'groups_delete':
         // Define Breadcrumb and tips
         $admin_page = new \Xoops\Module\Admin();
-        $admin_page->addBreadcrumbLink(SystemLocale::CONTROL_PANEL, XOOPS_URL . '/admin.php', true);
+        $admin_page->addBreadcrumbLink(SystemLocale::CONTROL_PANEL, \XoopsBaseConfig::get('url') . '/admin.php', true);
         $admin_page->addBreadcrumbLink(SystemLocale::GROUPS_MANAGER, $system->adminVersion('groups', 'adminpath'));
         $admin_page->addBreadcrumbLink(SystemLocale::DELETE_GROUP);
         $admin_page->renderBreadcrumb();
@@ -320,9 +321,9 @@ switch ($op) {
                     $xoops->redirect("admin.php?fct=groups", 3, implode(",", $xoops->security()->getErrors()));
                 }
                 if ($groups_id > 0 && !in_array($groups_id, array(
-                        XOOPS_GROUP_ADMIN,
-                        XOOPS_GROUP_USERS,
-                        XOOPS_GROUP_ANONYMOUS
+                        FixedGroups::ADMIN,
+                        FixedGroups::USERS,
+                        FixedGroups::ANONYMOUS
                     ))
                 ) {
                     $member_handler = $xoops->getHandlerMember();

@@ -13,19 +13,20 @@
 
 use Xoops\Core\Request;
 
-$xoops_root_path = dirname(dirname(dirname(dirname(dirname(dirname(__DIR__))))));
-include_once $xoops_root_path . '/mainfile.php';
-defined('XOOPS_ROOT_PATH') or die('Restricted access');
+$helper = Xoops\Module\Helper::getHelper('xlanguage');
+if (!$helper) {
+    ob_end_flush();
+    return;
+}
+
+require_once dirname(__FILE__).'/../../../../../../mainfile.php';
 
 $xoops = Xoops::getInstance();
 $xoops->disableErrorReporting();
 $xoops->simpleHeader(false);
 
-$helper = Xoops\Module\Helper::getHelper('xlanguage');
-if ($helper) {
-    $helper->loadLanguage('admin');
-    $helper->loadLanguage('tinymce');
-}
+$helper->loadLanguage('admin');
+$helper->loadLanguage('tinymce');
 
 $op = Request::getCmd('op', '');
 if ($op == 'save') {
@@ -44,7 +45,7 @@ if ($op == 'save') {
 }
 
 // check user/group
-$groups = $xoops->isUser() ? $xoops->user->getGroups() : array(XOOPS_GROUP_ANONYMOUS);
+$groups = $xoops->getUserGroups();
 $gperm_handler = $xoops->getHandlerGroupperm();
 $admin = false;
 if ($gperm_handler) {

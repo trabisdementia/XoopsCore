@@ -715,10 +715,10 @@ class PublisherItem extends XoopsObject
         if (is_object($images['main'])) {
             /* @var $image ImagesImage */
             $image = $images['main'];
-            $dimensions = getimagesize(XOOPS_ROOT_PATH . '/uploads/' . $image->getVar('image_name'));
+            $dimensions = getimagesize(\XoopsBaseConfig::get('root-path') . '/uploads/' . $image->getVar('image_name'));
             $item['image_width'] = $dimensions[0];
             $item['image_height'] = $dimensions[1];
-            $item['image_path'] = XOOPS_URL . '/uploads/' . $image->getVar('image_name');
+            $item['image_path'] = \XoopsBaseConfig::get('url') . '/uploads/' . $image->getVar('image_name');
             // pass this on since some consumers build custom thumbnails
             $item['image_vpath'] = 'uploads/' . $image->getVar('image_name');
             $item['image_thumb'] = \Xoops::getInstance()
@@ -743,10 +743,10 @@ class PublisherItem extends XoopsObject
         $i = 0;
         /* @var $image ImagesImage */
         foreach ($images['others'] as $image) {
-            $dimensions = getimagesize(XOOPS_ROOT_PATH . '/uploads/' . $image->getVar('image_name'));
+            $dimensions = getimagesize(\XoopsBaseConfig::get('root-path') . '/uploads/' . $image->getVar('image_name'));
             $item['images'][$i]['width'] = $dimensions[0];
             $item['images'][$i]['height'] = $dimensions[1];
-            $item['images'][$i]['path'] = XOOPS_URL . '/uploads/' . $image->getVar('image_name');
+            $item['images'][$i]['path'] = \XoopsBaseConfig::get('url') . '/uploads/' . $image->getVar('image_name');
             $item['images'][$i]['thumb'] = $thumbService
                 ->getImgUrl('uploads/' . $image->getVar('image_name'), 240, 0)
                 ->getValue();
@@ -1428,7 +1428,7 @@ class PublisherItemHandler extends XoopsPersistableObjectHandler
         $xoops = Xoops::getInstance();
         $ret = array();
         $gperm_handler = $xoops->getHandlerGroupperm();
-        $groups = $xoops->isUser() ? $xoops->user->getGroups() : XOOPS_GROUP_ANONYMOUS;
+        $groups = $xoops->getUserGroups();
         $searchin = empty($searchin) ? array(
             "title",
             "body",

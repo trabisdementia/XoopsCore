@@ -11,6 +11,7 @@
 
 use Xoops\Core\Kernel\Criteria;
 use Xoops\Core\Kernel\CriteriaCompo;
+use Xoops\Core\FixedGroups;
 
 /**
  * Blocks Form Class
@@ -53,7 +54,7 @@ class SystemBlockForm extends Xoops\Form\ThemeForm
         if ($this->obj->isNew()) {
             $title = SystemLocale::ADD_BLOCK;
             $modules = array(-1);
-            $groups = array(XOOPS_GROUP_USERS, XOOPS_GROUP_ANONYMOUS, XOOPS_GROUP_ADMIN);
+            $groups = array(FixedGroups::USERS, FixedGroups::ANONYMOUS, FixedGroups::ADMIN);
             $this->obj->setVar('block_type', 'C');
             $this->obj->setVar('visible', 1);
             $op = 'save';
@@ -150,7 +151,7 @@ class SystemBlockForm extends Xoops\Form\ThemeForm
                 if (count($btemplate) > 0) {
                     $this->addElement(new Xoops\Form\Label(
                         XoopsLocale::CONTENT,
-                        '<a href="' . XOOPS_URL . '/modules/system/admin.php?fct=tplsets&amp;op=edittpl&amp;id='
+                        '<a href="' . \XoopsBaseConfig::get('url') . '/modules/system/admin.php?fct=tplsets&amp;op=edittpl&amp;id='
                         . $btemplate[0]->getVar('tpl_id') . '">' . SystemLocale::EDIT_TEMPLATE . '</a>'
                     ));
                 } else {
@@ -158,7 +159,7 @@ class SystemBlockForm extends Xoops\Form\ThemeForm
                     if (count($btemplate2) > 0) {
                         $this->addElement(new Xoops\Form\Label(
                             XoopsLocale::CONTENT,
-                            '<a href="' . XOOPS_URL . '/modules/system/admin.php?fct=tplsets&amp;op=edittpl&amp;id='
+                            '<a href="' . \XoopsBaseConfig::get('url') . '/modules/system/admin.php?fct=tplsets&amp;op=edittpl&amp;id='
                             . $btemplate2[0]->getVar('tpl_id') . '" rel="external">'
                             . SystemLocale::EDIT_TEMPLATE . '</a>'
                         ));
