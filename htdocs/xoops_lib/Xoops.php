@@ -10,6 +10,7 @@
 */
 
 use Xoops\Core\Request;
+use Xoops\Core\FixedGroups;
 
 /**
  * XOOPS
@@ -24,6 +25,8 @@ use Xoops\Core\Request;
  */
 class Xoops
 {
+    const VERSION = 'XOOPS 2.6.0-Alpha 3';
+
     /**
      * @var null|Xoops\Core\Session\Manager
      */
@@ -123,6 +126,27 @@ class Xoops
      */
     private function __construct()
     {
+        $root = \XoopsBaseConfig::get('root-path');
+        $lib = \XoopsBaseConfig::get('lib-path');
+        $var = \XoopsBaseConfig::get('var-path');
+
+        $url = \XoopsBaseConfig::get('url');
+
+        $this->paths['www'] = array($root, $url);
+        $this->paths['var'] = array($var, null);
+        $this->paths['lib'] = array($lib, $url . '/browse.php');
+        $this->paths['XOOPS'] = array($lib, $url . '/browse.php');
+
+        $this->paths['assets'] = array(\XoopsBaseConfig::get('asset-path'), \XoopsBaseConfig::get('asset-url'));
+        $this->paths['images'] = array($root . '/images', $url . '/images');
+        $this->paths['install'] = array($root . '/install', $url . '/install');
+        $this->paths['language'] = array($root . '/language', $url . '/language');
+        $this->paths['locale'] = array($root . '/locale', $url . '/locale');
+        $this->paths['media'] = array(\XoopsBaseConfig::get('media-path'), \XoopsBaseConfig::get('media-url'));
+        $this->paths['modules'] = array($root . '/modules', $url . '/modules');
+        $this->paths['themes'] = array(\XoopsBaseConfig::get('themes-path'), \XoopsBaseConfig::get('themes-url'));
+        $this->paths['uploads'] = array(\XoopsBaseConfig::get('uploads-path'), \XoopsBaseConfig::get('uploads-url'));
+
         $this->paths['XOOPS'] = array(\XoopsBaseConfig::get('lib-path'), \XoopsBaseConfig::get('url') . '/browse.php');
         $this->paths['www'] = array(\XoopsBaseConfig::get('root-path'), \XoopsBaseConfig::get('url'));
         $this->paths['var'] = array(\XoopsBaseConfig::get('var-path'), null);
@@ -131,9 +155,7 @@ class Xoops
         $this->paths['themes'] = array(\XoopsBaseConfig::get('root-path') . '/themes', \XoopsBaseConfig::get('url') . '/themes');
         $this->paths['media'] = array(\XoopsBaseConfig::get('root-path') . '/media', \XoopsBaseConfig::get('url') . '/media');
         $this->paths['assets'] = array(\XoopsBaseConfig::get('root-path') . '/assets', \XoopsBaseConfig::get('url') . '/assets');
-
         $this->pathTranslation();
-
     }
 
     /**
@@ -360,9 +382,12 @@ class Xoops
      */
     public function path($url, $virtual = false)
     {
-        $url = str_replace('\\', '/', $url);
-        $url = str_replace(\XoopsBaseConfig::get('root-path'), '', $url);
-        $url = ltrim($url, '/');
+        $url = $this->normalizePath($url);
+        $rootPath = $this->normalizePath(\XoopsBaseConfig::get('root-path') . '/');
+        if (0 === strpos($url, $rootPath)) {
+            $url = substr($url, strlen($rootPath));
+        }
+        //$url = ltrim($url, '/');
         $parts = explode('/', $url, 2);
         $root = isset($parts[0]) ? $parts[0] : '';
         $path = isset($parts[1]) ? $parts[1] : '';
@@ -371,10 +396,22 @@ class Xoops
         }
         if (!$virtual) { // Returns a physical path
             $path = $this->paths[$root][0] . '/' . $path;
-            $path = str_replace('/', DIRECTORY_SEPARATOR, $path);
+            //$path = str_replace('/', DIRECTORY_SEPARATOR, $path);
             return $path;
         }
         return !isset($this->paths[$root][1]) ? '' : ($this->paths[$root][1] . '/' . $path);
+    }
+
+    /**
+     * Convert path separators to unix style
+     *
+     * @param string $path path to normalize
+     *
+     * @return string normalized path
+     */
+    public function normalizePath($path)
+    {
+        return str_replace('\\', '/', $path);
     }
 
     /**
@@ -422,6 +459,8 @@ class Xoops
     }
 
     /**
+     * Check if a path exists
+     *
      * @param string $path
      * @param string $error_type
      *
@@ -444,6 +483,8 @@ class Xoops
     }
 
     /**
+     * Start gzipCompression output buffer
+     *
      * @return void
      */
     public function gzipCompression()
@@ -464,6 +505,8 @@ class Xoops
     }
 
     /**
+     * Translate a path
+     *
      * @return void
      */
     public function pathTranslation()
@@ -494,6 +537,8 @@ class Xoops
     }
 
     /**
+     * Select Theme
+     *
      * @return void
      */
     public function themeSelect()
@@ -562,6 +607,8 @@ class Xoops
     }
 
     /**
+     * Render Header
+     *
      * @param string|null $tpl_name
      *
      * @return null|boolean
@@ -637,6 +684,8 @@ class Xoops
     }
 
     /**
+     * Render Footer
+     *
      * @return false|null
      */
     public function footer()
@@ -675,6 +724,8 @@ class Xoops
     }
 
     /**
+     * Check if a module is set
+     *
      * @return bool
      */
     public function isModule()
@@ -683,6 +734,8 @@ class Xoops
     }
 
     /**
+     * Check if a user is set
+     *
      * @return bool
      */
     public function isUser()
@@ -691,6 +744,8 @@ class Xoops
     }
 
     /**
+     * Check if user is admin
+     *
      * @return bool
      */
     public function isAdmin()
@@ -699,6 +754,8 @@ class Xoops
     }
 
     /**
+     * Get handler of Block
+     *
      * @param mixed $optional
      *
      * @return XoopsBlockHandler
@@ -709,6 +766,8 @@ class Xoops
     }
 
     /**
+     * Get handler of Block Module Link
+     *
      * @param mixed $optional
      *
      * @return XoopsBlockmodulelinkHandler
@@ -719,6 +778,8 @@ class Xoops
     }
 
     /**
+     * Get handler of Config
+     *
      * @param mixed $optional
      *
      * @return XoopsConfigHandler
@@ -729,6 +790,8 @@ class Xoops
     }
 
     /**
+     * Get handler of Config  Item
+     *
      * @param mixed $optional
      *
      * @return XoopsConfigitemHandler
@@ -739,6 +802,8 @@ class Xoops
     }
 
     /**
+     * Get handler of Config Option
+     *
      * @param mixed $optional
      *
      * @return XoopsConfigoptionHandler
@@ -749,6 +814,8 @@ class Xoops
     }
 
     /**
+     * Get handler of Group
+     *
      * @param mixed $optional
      *
      * @return XoopsGroupHandler
@@ -759,6 +826,8 @@ class Xoops
     }
 
     /**
+     * Get handler of Group Permission
+     *
      * @param mixed $optional
      *
      * @return XoopsGrouppermHandler
@@ -769,6 +838,8 @@ class Xoops
     }
 
     /**
+     * Get handler of Member
+     *
      * @param mixed $optional
      *
      * @return XoopsMemberHandler
@@ -779,6 +850,8 @@ class Xoops
     }
 
     /**
+     * Get handler of Membership
+     *
      * @param mixed $optional
      *
      * @return XoopsMembershipHandler
@@ -789,6 +862,8 @@ class Xoops
     }
 
     /**
+     * Get handler of Module
+     *
      * @param mixed $optional
      *
      * @return XoopsModuleHandler
@@ -799,6 +874,8 @@ class Xoops
     }
 
     /**
+     * Get handler of Online
+     *
      * @param mixed $optional
      *
      * @return XoopsOnlineHandler
@@ -809,6 +886,8 @@ class Xoops
     }
 
     /**
+     * Get handler of Private Message
+     *
      * @param mixed $optional
      *
      * @return XoopsPrivmessageHandler
@@ -819,6 +898,8 @@ class Xoops
     }
 
     /**
+     * Get handler of Ranks
+     *
      * @param mixed $optional
      *
      * @return XoopsRanksHandler
@@ -842,6 +923,8 @@ class Xoops
     }
 
     /**
+     * Get handler of Template File
+     *
      * @param mixed $optional
      *
      * @return XoopsTplfileHandler
@@ -852,6 +935,8 @@ class Xoops
     }
 
     /**
+     * Get handler of Template Set
+     *
      * @param mixed $optional
      *
      * @return XoopsTplsetHandler
@@ -862,6 +947,8 @@ class Xoops
     }
 
     /**
+     * Get handler of User
+     *
      * @param mixed $optional
      *
      * @return XoopsUserHandler
@@ -872,6 +959,8 @@ class Xoops
     }
 
     /**
+     * Get handler
+     *
      * @param string $name
      * @param mixed  $optional
      *
@@ -899,6 +988,8 @@ class Xoops
     }
 
     /**
+     * Get Module Handler
+     *
      * @param string|null $name
      * @param string|null $module_dir
      * @param bool        $optional
@@ -938,6 +1029,8 @@ class Xoops
     }
 
     /**
+     * Get Module Form
+     *
      * @param XoopsObject $obj
      * @param string      $name
      * @param string      $module_dir
@@ -970,6 +1063,8 @@ class Xoops
     }
 
     /**
+     * Get Module Helper
+     *
      * @param string $dirname
      *
      * @return bool|Xoops\Module\Helper\HelperAbstract
@@ -1029,6 +1124,8 @@ class Xoops
     }
 
     /**
+     * Translate a key value
+     *
      * @param string $key
      * @param string $dirname
      *
@@ -1108,6 +1205,8 @@ class Xoops
     }
 
     /**
+     * Get Module By Id
+     *
      * @param int $id Id of the module
      *
      * @return bool|XoopsModule
@@ -1123,6 +1222,8 @@ class Xoops
     }
 
     /**
+     * Render Simple Header
+     *
      * @param bool $closehead
      *
      * @return void
@@ -1132,6 +1233,7 @@ class Xoops
         $this->events()->triggerEvent('core.header.start');
         $this->theme();
         $xoopsConfigMetaFooter = $this->getConfigs();
+        $xoops = \Xoops::getInstance();
 
         if (!headers_sent()) {
             header('Content-Type:text/html; charset=' . XoopsLocale::getCharset());
@@ -1142,6 +1244,7 @@ class Xoops
         }
 
         echo "<!DOCTYPE html>\n";
+        $xoops_url = \XoopsBaseConfig::get('url');
         echo '<html lang="' . XoopsLocale::getLangCode() . '">
               <head>
               <meta http-equiv="content-type" content="text/html; charset=' . XoopsLocale::getCharset() . '" />
@@ -1152,14 +1255,14 @@ class Xoops
               <meta name="author" content="' . htmlspecialchars($xoopsConfigMetaFooter['meta_author']) . '" />
               <meta name="generator" content="XOOPS" />
               <title>' . htmlspecialchars($this->getConfig('sitename')) . '</title>
-              <script type="text/javascript" src="' . \XoopsBaseConfig::get('url') . '/include/xoops.js"></script>
-              <script type="text/javascript" src="' . \XoopsBaseConfig::get('url') . '/media/jquery/jquery.js"></script>
-              <script type="text/javascript" src="' . \XoopsBaseConfig::get('url') . '/media/bootstrap/js/bootstrap.min.js"></script>';
+              <script type="text/javascript" src="' . $xoops_url . '/include/xoops.js"></script>
+              <script type="text/javascript" src="' . $xoops_url . '/media/jquery/jquery.js"></script>
+              <script type="text/javascript" src="' . $xoops_url . '/media/bootstrap/js/bootstrap.min.js"></script>';
         $themecss = $this->getCss($this->getConfig('theme_set'));
-        echo '<link rel="stylesheet" type="text/css" media="all" href="' . \XoopsBaseConfig::get('url') . '/xoops.css" />';
+        echo '<link rel="stylesheet" type="text/css" media="all" href="' . $xoops_url . '/xoops.css" />';
         $locale = $this->getConfig('locale');
         if (XoopsLoad::fileExists($this->path('locale/' . $locale . '/style.css'))) {
-            echo '<link rel="stylesheet" type="text/css" media="all" href="' . \XoopsBaseConfig::get('url') . '/locale/' . $locale . '/style.css" />';
+            echo '<link rel="stylesheet" type="text/css" media="all" href="' . $xoops_url . '/locale/' . $locale . '/style.css" />';
         }
         if ($themecss) {
             echo '<link rel="stylesheet" type="text/css" media="all" href="' . $themecss . '" />';
@@ -1172,7 +1275,7 @@ class Xoops
     }
 
     /**
-     * simpleFooter
+     * Render simpleFooter
      *
      * @return void
      */
@@ -1284,6 +1387,8 @@ class Xoops
     }
 
     /**
+     * Get User Timestamp
+     *
      * @param mixed  $time
      * @param string $timeoffset
      *
@@ -1320,6 +1425,16 @@ class Xoops
     }
 
     /**
+     * @return array of groups the current user is associted with
+     */
+    public function getUserGroups()
+    {
+        $groups = $this->isUser() ? $this->user->getGroups() : array(FixedGroups::ANONYMOUS);
+
+        return $groups;
+    }
+
+    /**
      * @return string
      */
     public function makePass()
@@ -1344,6 +1459,8 @@ class Xoops
     }
 
     /**
+     * Check Email
+     *
      * @param string $email
      * @param bool   $antispam
      *
@@ -1413,15 +1530,17 @@ class Xoops
             $url, $time, $message, $addredirect, $allowExternalLink
         ));
 
+        $xoops_url = \XoopsBaseConfig::get('url');
+
         if (preg_match("/[\\0-\\31]|about:|script:/i", $url)) {
             if (!preg_match('/^\b(java)?script:([\s]*)history\.go\(-[0-9]*\)([\s]*[;]*[\s]*)$/si', $url)) {
-                $url = \XoopsBaseConfig::get('url');
+                $url = $xoops_url;
             }
         }
         if (!$allowExternalLink && $pos = strpos($url, '://')) {
-            $xoopsLocation = substr(\XoopsBaseConfig::get('url'), strpos(\XoopsBaseConfig::get('url'), '://') + 3);
+            $xoopsLocation = substr($xoops_url, strpos($xoops_url, '://') + 3);
             if (strcasecmp(substr($url, $pos + 3, strlen($xoopsLocation)), $xoopsLocation)) {
-                $url = \XoopsBaseConfig::get('url');
+                $url = $xoops_url;
             }
         }
         if (defined('XOOPS_CPFUNC_LOADED')) {
@@ -1439,7 +1558,7 @@ class Xoops
         )));
         $this->setTpl($this->theme()->template);
         $this->tpl()->assign(array(
-            'xoops_theme'      => $theme, 'xoops_imageurl' => XOOPS_THEME_URL . '/' . $theme . '/',
+            'xoops_theme'      => $theme, 'xoops_imageurl' => \XoopsBaseConfig::get('themes-url') . '/' . $theme . '/',
             'xoops_themecss'   => $this->getCss($theme),
             'xoops_requesturi' => htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES),
             'xoops_sitename'   => htmlspecialchars($this->getConfig('sitename'), ENT_QUOTES),
@@ -1465,6 +1584,8 @@ class Xoops
     }
 
     /**
+     * Get Environment Value
+     *
      * @param string $key
      *
      * @return string
@@ -1503,24 +1624,28 @@ class Xoops
         } else {
             $str_css = 'styleNN.css';
         }
-        if (is_dir(XOOPS_THEME_PATH . '/' . $theme)) {
-            if (XoopsLoad::fileExists(XOOPS_THEME_PATH . '/' . $theme . '/' . $str_css)) {
-                return XOOPS_THEME_URL . '/' . $theme . '/' . $str_css;
-            } elseif (XoopsLoad::fileExists(XOOPS_THEME_PATH . '/' . $theme . '/style.css')) {
-                return XOOPS_THEME_URL . '/' . $theme . '/style.css';
+        $xoops_theme_path = \XoopsBaseConfig::get('themes-path');
+        $xoops_theme_url = \XoopsBaseConfig::get('themes-url');
+        if (is_dir($xoops_theme_path . '/' . $theme)) {
+            if (XoopsLoad::fileExists($xoops_theme_path . '/' . $theme . '/' . $str_css)) {
+                return $xoops_theme_url . '/' . $theme . '/' . $str_css;
+            } elseif (XoopsLoad::fileExists($xoops_theme_path . '/' . $theme . '/style.css')) {
+                return $xoops_theme_url . '/' . $theme . '/style.css';
             }
         }
-        if (is_dir(XOOPS_THEME_PATH . '/' . $theme . '/css')) {
-            if (XoopsLoad::fileExists(XOOPS_THEME_PATH . '/' . $theme . '/css/' . $str_css)) {
-                return XOOPS_THEME_URL . '/' . $theme . '/css/' . $str_css;
-            } elseif (XoopsLoad::fileExists(XOOPS_THEME_PATH . '/' . $theme . '/css/style.css')) {
-                return XOOPS_THEME_URL . '/' . $theme . '/css/style.css';
+        if (is_dir($xoops_theme_path . '/' . $theme . '/css')) {
+            if (XoopsLoad::fileExists($xoops_theme_path . '/' . $theme . '/css/' . $str_css)) {
+                return $xoops_theme_url . '/' . $theme . '/css/' . $str_css;
+            } elseif (XoopsLoad::fileExists($xoops_theme_path . '/' . $theme . '/css/style.css')) {
+                return $xoops_theme_url . '/' . $theme . '/css/style.css';
             }
         }
         return '';
     }
 
     /**
+     * Get Mailer
+     *
      * @return XoopsMailer|XoopsMailerLocale
      */
     public function getMailer()
@@ -1576,6 +1701,8 @@ class Xoops
     }
 
     /**
+     * Get Option
+     *
      * @param string $key
      *
      * @return string
@@ -1590,6 +1717,8 @@ class Xoops
     }
 
     /**
+     * Set Option
+     *
      * @param string $key
      * @param null   $value
      *
@@ -1603,6 +1732,8 @@ class Xoops
     }
 
     /**
+     * Get Config value
+     *
      * @param string $key
      *
      * @return mixed
@@ -1613,6 +1744,8 @@ class Xoops
     }
 
     /**
+     * Get all Config Values
+     *
      * @return array
      */
     public function getConfigs()
@@ -1621,6 +1754,8 @@ class Xoops
     }
 
     /**
+     * Add Config Values
+     *
      * @param array  $configs array of configs
      * @param string $dirname module name
      *
@@ -1638,6 +1773,8 @@ class Xoops
     }
 
     /**
+     * Set Config Value
+     *
      * @param string $key
      * @param mixed  $value
      * @param string $dirname
@@ -1656,6 +1793,8 @@ class Xoops
     }
 
     /**
+     * Append Config Value
+     *
      * @param string $key
      * @param array  $values
      * @param bool   $appendWithKey
@@ -1709,6 +1848,8 @@ class Xoops
     }
 
     /**
+     * Get Module Configs
+     *
      * @param string $dirname
      *
      * @return array

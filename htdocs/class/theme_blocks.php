@@ -20,8 +20,6 @@
  * @version         $Id$
  */
 
-defined('XOOPS_ROOT_PATH') or die('Restricted access');
-
 /**
  * XoopsThemeBlocksPlugin main class
  *
@@ -93,7 +91,7 @@ class XoopsThemeBlocksPlugin extends XoopsThemePlugin
             $isStart = $xoops->getOption('show_cblock');
         }
 
-        $groups = $xoops->isUser() ? $xoops->user->getGroups() : array(XOOPS_GROUP_ANONYMOUS);
+        $groups = $xoops->getUserGroups();
 
         $oldzones = array(
             XOOPS_SIDEBLOCK_LEFT => 'canvas_left', XOOPS_SIDEBLOCK_RIGHT => 'canvas_right',
@@ -169,8 +167,11 @@ class XoopsThemeBlocksPlugin extends XoopsThemePlugin
             $template->cache_lifetime = $bcachetime;
         }
         $template->setCompileId($dirname);
-        $tplName = ($tplName = $xobject->getVar('template')) ? "block:{$dirname}/{$tplName}"
+        $tplName = ($tplName = $xobject->getVar('template'))
+                ? "block:{$dirname}/{$tplName}"
                 : "module:system/system_block_dummy.tpl";
+        //$tplName = str_replace('.html', '.tpl', $tplName);
+
         $cacheid = $this->generateCacheId('blk_' . $xobject->getVar('bid'));
 
         $xoops->preload()->triggerEvent('core.themeblocks.buildblock.start', array($xobject, $template->isCached($tplName, $cacheid)));

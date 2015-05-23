@@ -34,7 +34,7 @@ function b_system_main_show()
     $criteria->add(new Criteria('weight', 0, '>'));
     $modules = $module_handler->getObjectsArray($criteria, true);
     $moduleperm_handler = $xoops->getHandlerGroupperm();
-    $groups = $xoops->isUser() ? $xoops->user->getGroups() : XOOPS_GROUP_ANONYMOUS;
+    $groups = $xoops->getUserGroups();
     $read_allowed = $moduleperm_handler->getItemIds('module_read', $groups);
     /* @var $module XoopsModule */
     foreach ($modules as $i => $module) {
@@ -58,7 +58,7 @@ function b_system_main_show()
                 foreach ($sublinks as $sublink) {
                     $block['modules'][$i]['sublinks'][] = array(
                         'name' => $sublink['name'],
-                        'url'  => XOOPS_URL . '/modules/' . $module->getVar('dirname') . '/' . $sublink['url']
+                        'url'  => \XoopsBaseConfig::get('url') . '/modules/' . $module->getVar('dirname') . '/' . $sublink['url']
                     );
                 }
             }

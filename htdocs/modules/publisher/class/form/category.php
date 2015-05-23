@@ -69,7 +69,7 @@ class PublisherCategoryForm extends Xoops\Form\ThemeForm
         $this->addElement(new Xoops\Form\TextArea(_AM_PUBLISHER_COLDESCRIPT, 'description', $obj->getVar('description', 'e'), 7, 60));
 
         // EDITOR
-        $groups = $xoops->isUser() ? $xoops->user->getGroups() : XOOPS_GROUP_ANONYMOUS;
+        $groups = $xoops->getUserGroups();
         $gperm_handler = $publisher->getGrouppermHandler();
         $module_id = $publisher->getModule()->mid();
         $allowed_editors = PublisherUtils::getEditors($gperm_handler->getItemIds('editors', $groups, $module_id));
@@ -109,7 +109,7 @@ class PublisherCategoryForm extends Xoops\Form\ThemeForm
         $image_select = new Xoops\Form\Select('', 'image', $obj->image());
         //$image_select -> addOption ('-1', '---------------');
         $image_select->addOptionArray($image_array);
-        $image_select->setExtra("onchange='showImgSelected(\"image3\", \"image\", \"" . 'uploads/' . PUBLISHER_DIRNAME . '/images/category/' . "\", \"\", \"" . XOOPS_URL . "\")'");
+        $image_select->setExtra("onchange='showImgSelected(\"image3\", \"image\", \"" . 'uploads/' . PUBLISHER_DIRNAME . '/images/category/' . "\", \"\", \"" . \XoopsBaseConfig::get('url') . "\")'");
         $image_tray = new Xoops\Form\ElementTray(_AM_PUBLISHER_IMAGE, '&nbsp;');
         $image_tray->addElement($image_select);
         $image_tray->addElement(new Xoops\Form\Label('', "<br /><br /><img src='" . PublisherUtils::getImageDir('category', false) . $obj->image() . "' name='image3' id='image3' alt='' />"));
@@ -205,7 +205,6 @@ class PublisherCategoryForm extends Xoops\Form\ThemeForm
 
         // No ID for category -- then it's new category, button says 'Create'
         if (!$obj->getVar('categoryid')) {
-
             $button_tray->addElement(new Xoops\Form\Button('', 'addcategory', _AM_PUBLISHER_CREATE, 'submit'));
 
             $butt_clear = new Xoops\Form\Button('', '', _AM_PUBLISHER_CLEAR, 'reset');
@@ -217,7 +216,6 @@ class PublisherCategoryForm extends Xoops\Form\ThemeForm
 
             $this->addElement($button_tray);
         } else {
-
             $button_tray->addElement(new Xoops\Form\Button('', 'addcategory', _AM_PUBLISHER_MODIFY, 'submit'));
 
             $butt_cancel = new Xoops\Form\Button('', '', _AM_PUBLISHER_CANCEL, 'button');

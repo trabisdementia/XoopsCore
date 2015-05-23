@@ -1,5 +1,5 @@
 <?php
-require_once(dirname(__FILE__).'/../../../init_mini.php');
+require_once(dirname(__FILE__).'/../../../init_new.php');
 
 /**
  * PHPUnit special settings :
@@ -10,6 +10,15 @@ require_once(dirname(__FILE__).'/../../../init_mini.php');
 class RegistryTest extends \PHPUnit_Framework_TestCase
 {
     protected $myClass = 'Xoops\Core\Registry';
+
+    public function testContracts()
+    {
+        $class = $this->myClass;
+        $instance = new $class();
+
+        $this->assertInstanceOf('ArrayObject', $instance);
+        $this->assertInstanceOf('Xoops\Core\AttributeInterface', $instance);
+    }
 
     public function test_get()
     {
@@ -32,7 +41,7 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($testvalue, $value);
     }
 
-    public function test_isRegistered()
+    public function test_has()
     {
         $class = $this->myClass;
         $instance = new $class();
@@ -41,14 +50,14 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
         $testvalue = 'testvalue';
 
         $this->assertInstanceOf($class, $instance);
-        $value = $instance->isRegistered($testkey);
+        $value = $instance->has($testkey);
         $this->assertFalse($value);
 
-        $value = $instance->isRegistered($testkey);
+        $value = $instance->has($testkey);
         $this->assertFalse($value);
 
         $instance->set($testkey, $testvalue);
-        $value = $instance->isRegistered($testkey);
+        $value = $instance->has($testkey);
         $this->assertTrue($value);
     }
 }

@@ -34,16 +34,16 @@ class XoopsGuiHydrogen
 
     function header()
     {
+        $xoops = Xoops::getInstance();
         // Hydrogen helper
-        include XOOPS_ADMINTHEME_PATH . '/hydrogen/class/hydrogen.class.php';
-        include XOOPS_ADMINTHEME_PATH . '/hydrogen/include/hy.translate.php';
+        include $xoops->path('modules/system/themes/hydrogen/class/hydrogen.class.php');
+        include $xoops->path('modules/system/themes/hydrogen/include/hy.translate.php');
         $hydrogen = HydrogenHelper::getInstance();
 
-        $xoops = Xoops::getInstance();
         $xoops->loadLocale('system');
 
         // URL for theme resources
-        $res_url = XOOPS_ADMINTHEME_URL . '/hydrogen';
+        $res_url = $xoops->url('modules/system/themes/hydrogen');
 
         $xoops->theme()->addStylesheet("http://fonts.googleapis.com/css?family=Roboto:300,400,500,700");
         $xoops->theme()->addStylesheet( $res_url . '/css/bootstrap.min.css' );
@@ -57,7 +57,7 @@ class XoopsGuiHydrogen
         $xoops->theme()->addScript( $res_url . '/js/js.ck.min.js' );
         $xoops->theme()->addScript( $res_url . '/js/hydrogen.min.js' );
 
-        $xoops->tpl()->assign( 'xoops_cp_url', XOOPS_URL . '/admin.php' );
+        $xoops->tpl()->assign( 'xoops_cp_url', $xoops->url('admin.php') );
         $xoops->tpl()->assign('xoops_url', rtrim($xoops->url(), '/'));
         $hydrogen->add_data('url', $res_url);
 
