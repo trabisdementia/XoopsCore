@@ -30,10 +30,11 @@ use Xoops\Core\FixedGroups;
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * -----------------------------------------------------------------
- * @copyright    The XOOPS project http://sf.net/projects/xoops/
+ * @copyright    The XOOPS project http://xoops.org
  * @license      GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
  * @package      system
  * @since        2.6
+ * @author      Kazumi Ono (AKA onokazu)
  * @author       Eduardo Cortés (AKA bitcero)    <i.bitcero@gmail.com>
  * @version      1
  */
@@ -128,7 +129,7 @@ foreach ($dirlist as $file) {
         unset($fileinc);
         if ($modversion['hasAdmin']) {
             if ($xoops->getModuleConfig('active_' . $file, 'system')) {
-                $category = isset($modversion['category']) ? intval($modversion['category']) : 0;
+                $category = isset($modversion['category']) ? (int)($modversion['category']) : 0;
                 if (false != $all_ok || in_array($modversion['category'], $ok_syscats)) {
                     $adminmenu[$index]['title'] = trim($modversion['name']);
                     $adminmenu[$index]['link'] = 'admin.php?fct=' . $file;
