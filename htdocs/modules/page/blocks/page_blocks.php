@@ -12,7 +12,7 @@
 /**
  * page module
  *
- * @copyright       The XOOPS Project http://sourceforge.net/projects/xoops/
+ * @copyright       XOOPS Project (http://xoops.org)
  * @license         GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
  * @package         page
  * @since           2.6.0
@@ -48,7 +48,8 @@ function page_blocks_show($options)
         $block['mode'] = $options[0];
 
         if ($options[0] == 'random') {
-            $content = Page::getInstance()->getContentHandler()->getPagePublished(0, $options[3], 'RAND()');
+            $sort = ('sqlite' == \XoopsBaseConfig::get('db-type')) ? 'RANDOM()' : 'RAND()';
+            $content = Page::getInstance()->getContentHandler()->getPagePublished(0, $options[3], $sort);
         } else {
             $content = Page::getInstance()->getContentHandler()->getPagePublished(0, $options[3], 'content_' . $options[1], $options[2]);
         }

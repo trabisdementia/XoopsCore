@@ -12,7 +12,7 @@
 /**
  * banners module
  *
- * @copyright       The XOOPS Project http://sourceforge.net/projects/xoops/
+ * @copyright       XOOPS Project (http://xoops.org)
  * @license         GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
  * @package         banners
  * @since           2.6.0
@@ -49,7 +49,8 @@ class BannerRender
             // Display banner
             $criteria = new CriteriaCompo();
             $criteria->add(new Criteria('banner_status', 0, '!='));
-            $criteria->setSort('RAND()');
+            $sort = ('sqlite' == \XoopsBaseConfig::get('db-type')) ? 'RANDOM()' : 'RAND()';
+            $criteria->setSort($sort);
             if (!empty($client)) {
                 if (!in_array(0, $client)) {
                     $criteria->add(new Criteria('banner_cid', '(' . implode(',', $client) . ')', 'IN'));
@@ -61,7 +62,7 @@ class BannerRender
             } else {
                 $criteria->add(new Criteria('banner_bid', '(' . $ids . ')', 'IN'));
             }
-            $banner_arr = $banner_Handler->getall($criteria);
+            $banner_arr = $banner_Handler->getAll($criteria);
             $numrows = count($banner_arr);
             $bannerobject = '';
             if ($numrows > 0) {
