@@ -509,3 +509,90 @@ ul.xo-list{
   }
 }
 /*--/ 7. Admin buttons */
+
+/*
+--------------------------------------
+8. Inline Options
+--------------------------------------
+*/
+.btn-options-toggle{
+  background-color: #fFF;
+  border: 0;
+  border-radius: 0;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.13);
+
+  &:hover{
+    box-shadow: 0 1px 2px @brand-primary;
+  }
+
+  &:focus{
+    outline: none;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.16);
+  }
+}
+
+table.options-activated{
+  tr{
+    background-color: @options-siblings-bg;
+    color: @options-siblings-color;
+    transition: ease all 250ms;
+  }
+
+  tr.active-options{
+    background-color: @options-bg;
+    color: @options-color;
+
+    &+ .xo-options-row{
+      > td{
+        border-top: 1px solid darken(@options-bg, 13%)!important;
+      }
+    }
+  }
+}
+
+.xo-options-row{
+
+  > td{
+    padding: 0!important;
+    border-top: 0!important;
+    text-align: right;
+
+    > .xo-item-options{
+      display: none;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      width: auto;
+      overflow: hidden;
+      margin-top: -1px;
+      margin-bottom: 5px;
+
+      > li{
+        float: right;
+        //border-right: 1px solid rgba(0,0,0,0.1);
+        background-color: @options-bg;
+        border-bottom: 1px solid darken(@options-bg, 13%);
+
+        &:last-child{
+          border-left: 1px solid darken(@options-bg, 13%);
+          border-radius: 0 0 0 3px;
+        }
+
+        > a {
+          display: block;
+          padding: 10px 15px;
+          font-size: floor(@font-size-base * 0.8);
+          font-weight: 700;
+          text-transform: uppercase;
+          text-decoration: none;
+
+          .xo-icon-svg {
+            .xo-icon-size(16px);
+          }
+        }
+      }
+
+    }
+
+  }
+}

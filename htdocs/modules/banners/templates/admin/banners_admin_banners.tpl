@@ -10,30 +10,41 @@
         <table id="xo-bannerslist-sorter" class="table">
             <thead>
             <tr>
-                <th class="text-center"><{$smarty.const._AM_BANNERS_BANNERS_IMPRESSIONS}></th>
+                <th class="text-center" width="60"><{$smarty.const._AM_BANNERS_BANNERS_IMPRESSIONS}></th>
                 <th class="text-center"><{$smarty.const._AM_BANNERS_BANNERS_IMPRESIONLEFT}></th>
                 <th class="text-center"><{$smarty.const._AM_BANNERS_BANNERS_CLICKS}></th>
                 <th class="text-center"><{$smarty.const._AM_BANNERS_BANNERS_NCLICKS}></th>
                 <th class="text-center"><{$smarty.const._AM_BANNERS_CLIENTS_NAME}></th>
-                <th class="text-center"><{$smarty.const._AM_BANNERS_ACTION}></th>
+                <th width="30">&nbsp;</th>
             </tr>
             </thead>
             <tbody>
             <{foreach item=banneritem from=$banner}>
-                <tr class="<{cycle values='even,odd'}>">
+                <tr>
                     <td class="text-center"><{$banneritem.impmade}></td>
                     <td class="text-center"><{$banneritem.left}></td>
                     <td class="text-center"><{$banneritem.clicks}></td>
                     <td class="text-center"><{$banneritem.percent}>%</td>
                     <td class="text-center"><{$banneritem.name}></td>
-                    <td class="xo-actions text-center">
-                        <img onclick="display_dialog(<{$banneritem.bid}>, true, true, 'slide', 'slide', 200, 520);" src="<{xoAdminIcons 'display.png'}>" alt="<{$smarty.const._AM_BANNERS_VIEW}>" title="<{$smarty.const._AM_BANNERS_VIEW}>" />
-                        <a href="banners.php?op=edit&amp;bid=<{$banneritem.bid}>" title="<{$smarty.const._AM_BANNERS_EDIT}>">
-                            <img src="<{xoAdminIcons 'edit.png'}>" alt="<{$smarty.const._AM_BANNERS_EDIT}>" />
-                        </a>
-                        <a href="banners.php?op=delete&amp;bid=<{$banneritem.bid}>" title="<{$smarty.const._AM_BANNERS_DELETE}>">
-                            <img src="<{xoAdminIcons 'delete.png'}>" alt="<{$smarty.const._AM_BANNERS_DELETE}>" />
-                        </a>
+                    <td class="text-center"><button type="button" class="btn btn-options-toggle"><{xoicon icon="xicon-more-vertical"}></button></td>
+                </tr>
+                <tr class="xo-options-row">
+                    <td colspan="6">
+                        <ul class="xo-item-options">
+                            <li><a href="#" onclick="display_dialog(<{$banneritem.bid}>, true, true, 'slide', 'slide', 200, 520);"><{xoicon icon="xicon-search"}> <{$smarty.const._AM_BANNERS_VIEW}></a></li>
+                            <li>
+                                <a href="banners.php?op=edit&amp;bid=<{$banneritem.bid}>">
+                                    <{xoicon icon="xicon-pencil"}>
+                                    <{$smarty.const._AM_BANNERS_EDIT}>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="banners.php?op=delete&amp;bid=<{$banneritem.bid}>" class="text-danger">
+                                    <{xoicon icon="xicon-times" class="text-danger"}>
+                                    <{$smarty.const._AM_BANNERS_DELETE}>
+                                </a>
+                            </li>
+                        </ul>
                     </td>
                 </tr>
             <{/foreach}>
