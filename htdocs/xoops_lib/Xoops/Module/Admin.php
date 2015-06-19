@@ -10,6 +10,7 @@
 */
 
 namespace Xoops\Module;
+use Xoops\Core\Helper\HeaderCommands;
 
 /**
  * Xoops ModuleAdmin Classes
@@ -371,10 +372,10 @@ class Admin
      *
      * @return string
      */
-    public function renderButton()
+    public function renderButton($align = '')
     {
         $xoops = \Xoops::getInstance();
-        $xoops->tpl()->assign('xo_admin_buttons', $this->itemButton);
+        $xoops->tpl()->assign(array('xo_admin_buttons' => $this->itemButton,'xo_buttons_align' => $align));
         return $xoops->tpl()->fetch($this->getTplPath('button'));
     }
 
@@ -583,7 +584,7 @@ class Admin
 
         $this->module->loadAdminMenu();
         foreach (array_keys($this->module->adminmenu) as $i) {
-            if ($this->module->adminmenu[$i]['link'] == "admin/" . $menu) {
+            if ($this->module->adminmenu[$i]['link'] == "admin/" . $menu || $this->module->adminmenu[$i]['link'] == $menu ) {
                 /*if (\XoopsLoad::fileExists(
                     $xoops->path("/media/xoops/images/icons/32/" . $this->module->adminmenu[$i]['icon'])
                 )) {
@@ -615,6 +616,9 @@ class Admin
             'module'        => $this->module ? $this->module->dirname() : ''
         );
         $xoops->tpl()->assign('xo_module_header', $header);
+
+        $commands = HeaderCommands::getInstance();
+        $xoops->tpl()->assign('xo_header_commands', $commands->getArrayCopy());
     }
 
     /**

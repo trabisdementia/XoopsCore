@@ -1,29 +1,27 @@
 <?php
+/*
+ You may not change or alter any portion of this comment or credits
+ of supporting developers from this source code or any supporting source code
+ which is considered copyrighted (c) material of the original comment or credit authors.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+*/
+
+namespace Xoops\Core\Helper;
+
 /**
- * Localization with PO files
+ * Breadcrumbs handler
  *
- * Copyright © 2015 The XOOPS project http://sf.net/projects/xoops/
+ * Copyright © 2015 The XOOPS project http://xoops.org
  * -----------------------------------------------------------------
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- * -----------------------------------------------------------------
- * @copyright     The XOOPS project http://sf.net/projects/xoops/
- * @license       GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
- * @package       core
- * @subpackage    helpers
- * @since         2.6
- * @author        bitcero <i.bitcero@gmail.com>
+ * @copyright    2015 The XOOPS project http://xoops.org
+ * @license      GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
+ * @package      Helpers
+ * @link         http://xoops.org
+ * @since        2.6
+ * @author       Eduardo Cortés <i.bitcero@gmail.com>
  */
 
 namespace Xoops\Core\Helper;

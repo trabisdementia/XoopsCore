@@ -75,7 +75,8 @@ $adminmenu = array(
     array(
         'title'     => __('Modules', 'hydrogen'),
         'link'      => 'modules.php',
-        'icon'      => 'xicon-module'
+        'icon'      => 'xicon-module',
+        'location'  => 'system-modules'
     ),
 
     // Preferences

@@ -1,0 +1,125 @@
+//
+// Alerts
+// --------------------------------------------------
+
+
+// Base styles
+// -------------------------
+
+.alert {
+  padding: @alert-padding;
+  margin-bottom: @line-height-computed;
+  border: 1px solid transparent;
+  border-radius: @alert-border-radius;
+
+  // Headings for larger alerts
+  h4 {
+    margin-top: 0;
+    // Specified for the h4 to prevent conflicts of changing @headings-color
+    color: inherit;
+  }
+
+  // Provide class for links that match alerts
+  .alert-link {
+    font-weight: @alert-link-font-weight;
+  }
+
+  // Improve alignment and spacing of inner content
+  > p,
+  > ul {
+    margin-bottom: 0;
+  }
+
+  > p + p {
+    margin-top: 5px;
+  }
+}
+
+// Dismissible alerts
+//
+// Expand the right padding and account for the close button's positioning.
+
+.alert-dismissable, // The misspelled .alert-dismissable was deprecated in 3.2.0.
+.alert-dismissible {
+  padding-right: (@alert-padding + 20);
+
+  // Adjust close link position
+  .close {
+    position: relative;
+    top: -2px;
+    right: -21px;
+    color: inherit;
+  }
+}
+
+// Alternate styles
+//
+// Generate contextual modifier classes for colorizing the alert.
+
+.alert-success {
+  .alert-variant(@alert-success-bg; @alert-success-border; @alert-success-text);
+}
+
+.alert-info {
+  .alert-variant(@alert-info-bg; @alert-info-border; @alert-info-text);
+}
+
+.alert-warning {
+  .alert-variant(@alert-warning-bg; @alert-warning-border; @alert-warning-text);
+}
+
+.alert-danger {
+  .alert-variant(@alert-danger-bg; @alert-danger-border; @alert-danger-text);
+}
+
+.alert-azure {
+  .alert-variant(@alert-azure-bg; @alert-azure-border; @alert-azure-text);
+}
+
+.alert-sky {
+  .alert-variant(@alert-sky-bg; @alert-sky-border; @alert-sky-text);
+}
+
+.alert-palegreen {
+  .alert-variant(@alert-palegreen-bg; @alert-palegreen-border; @alert-palegreen-text);
+}
+
+.alert-orange {
+  .alert-variant(@alert-orange-bg; @alert-orange-border; @alert-orange-text);
+}
+
+.alert-yellow {
+  .alert-variant(@alert-yellow-bg; @alert-yellow-border; @alert-yellow-text);
+}
+
+.alert-pink {
+  .alert-variant(@alert-pink-bg; @alert-pink-border; @alert-pink-text);
+}
+
+.alert-midnight {
+  .alert-variant(@alert-midnight-bg; @alert-midnight-border; @alert-midnight-text);
+}
+
+.alert-indigo {
+  .alert-variant(@alert-indigo-bg; @alert-indigo-border; @alert-indigo-text);
+}
+
+.alert-brown {
+  .alert-variant(@alert-brown-bg; @alert-brown-border; @alert-brown-text);
+}
+
+.alert-magenta {
+  .alert-variant(@alert-magenta-bg; @alert-magenta-border; @alert-magenta-text);
+}
+
+.alert-green {
+  .alert-variant(@alert-green-bg; @alert-green-border; @alert-green-text);
+}
+
+.alert-purple {
+  .alert-variant(@alert-purple-bg; @alert-purple-border; @alert-purple-text);
+}
+
+.alert-alizarin {
+  .alert-variant(@alert-alizarin-bg; @alert-alizarin-border; @alert-alizarin-text);
+}

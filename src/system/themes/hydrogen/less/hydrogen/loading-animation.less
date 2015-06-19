@@ -1,0 +1,142 @@
+.xo-preload-overlay{
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: @preload-overlay-bg;
+  display: none;
+}
+.xo-preload-animation {
+  text-align: center;
+  width:80px;
+  height:50px;
+  top: 50%; left: 50%;
+  margin-top: -25px;
+  margin-height: -40px;
+  display: none;
+}
+
+.xo-preload-animation span {
+  display: inline-block;
+  vertical-align: middle;
+  width: 10px;
+  height: 10px;
+  margin: 25px auto;
+  background: @main-toolbar-bgcolor;
+  -moz-border-radius: 50px;
+  -moz-animation: xo-preload-animation 0.6s infinite alternate;
+  -webkit-border-radius: 50px;
+  -webkit-animation: xo-preload-animation 0.6s infinite alternate;
+  -ms-border-radius: 50px;
+  -ms-animation: xo-preload-animation 0.6s infinite alternate;
+  -o-border-radius: 50px;
+  -o-animation: xo-preload-animation 0.6s infinite alternate;
+  border-radius: 50px;
+  animation: xo-preload-animation 0.6s infinite alternate;
+}
+
+#xo-preload-animation_1 {
+  -moz-animation-delay: 0s;
+  -webkit-animation-delay: 0s;
+  -ms-animation-delay: 0s;
+  -o-animation-delay: 0s;
+  animation-delay: 0s;
+}
+
+#xo-preload-animation_2 {
+  -moz-animation-delay: 0.18s;
+  -webkit-animation-delay: 0.18s;
+  -ms-animation-delay: 0.18s;
+  -o-animation-delay: 0.18s;
+  animation-delay: 0.18s;
+}
+
+#xo-preload-animation_3 {
+  -moz-animation-delay: 0.36s;
+  -webkit-animation-delay: 0.36s;
+  -ms-animation-delay: 0.36s;
+  -o-animation-delay: 0.36s;
+  animation-delay: 0.36s;
+}
+
+@-moz-keyframes xo-preload-animation {
+  0% {
+    width: 10px;
+    height: 10px;
+    background-color:@main-toolbar-bgcolor;
+    -moz-transform: translateY(0);
+  }
+
+  100% {
+    width: 24px;
+    height: 24px;
+    background-color:transparent;
+    -moz-transform: translateY(-21px);
+  }
+
+}
+
+@-webkit-keyframes xo-preload-animation {
+  0% {
+    width: 10px;
+    height: 10px;
+    background-color:@main-toolbar-bgcolor;
+    -webkit-transform: translateY(0);
+  }
+
+  100% {
+    width: 24px;
+    height: 24px;
+    background-color:transparent;
+    -webkit-transform: translateY(-21px);
+  }
+
+}
+
+@-ms-keyframes xo-preload-animation {
+  0% {
+    width: 10px;
+    height: 10px;
+    background-color:@main-toolbar-bgcolor;
+    -ms-transform: translateY(0);
+  }
+
+  100% {
+    width: 24px;
+    height: 24px;
+    background-color:transparent;
+    -ms-transform: translateY(-21px);
+  }
+
+}
+
+@-o-keyframes xo-preload-animation {
+  0% {
+    width: 10px;
+    height: 10px;
+    background-color:@main-toolbar-bgcolor;
+    -o-transform: translateY(0);
+  }
+
+  100% {
+    width: 24px;
+    height: 24px;
+    background-color:transparent;
+    -o-transform: translateY(-21px);
+  }
+
+}
+
+@keyframes xo-preload-animation {
+  0% {
+    width: 10px;
+    height: 10px;
+    background-color:@main-toolbar-bgcolor;
+    transform: translateY(0);
+  }
+
+  100% {
+    width: 24px;
+    height: 24px;
+    background-color:transparent;
+    transform: translateY(-21px);
+  }
+
+}

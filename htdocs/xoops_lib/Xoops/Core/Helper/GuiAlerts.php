@@ -14,11 +14,11 @@ namespace Xoops\Core\Helper;
 /**
  * Controller for Admin GUI alerts
  *
- * Copyright © 2015 The XOOPS project http://sf.net/projects/xoops/
+ * Copyright © 2015 The XOOPS project http://xoops.org
  * -----------------------------------------------------------------
  * @copyright    2015 The XOOPS project http://sf.net/projects/xoops/
  * @license      GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
- * @package      CoreHelpers
+ * @package      Helpers
  * @link         http://xoops.org
  * @since        2.6
  * @author       Eduardo Cortés <i.bitcero@gmail.com>

@@ -53,7 +53,7 @@ class XoopsGuiHydrogen
 
         $xoops->theme()->addBaseScriptAssets('@jquery');
         $xoops->theme()->addScript( $res_url . '/js/bootstrap.min.js' );
-        $xoops->theme()->addScript( $res_url . '/js/perfect-scrollbar.jquery.min.js' );
+        //$xoops->theme()->addScript( $res_url . '/js/perfect-scrollbar.jquery.min.js' );
         $xoops->theme()->addScript( $res_url . '/js/js.ck.min.js' );
         $xoops->theme()->addScript( $res_url . '/js/hydrogen.min.js' );
 
@@ -76,7 +76,7 @@ class XoopsGuiHydrogen
         unset($adminmenu);
 
         // Current module menu
-        if ($xoops->isModule() && 'system' != $xoops->module->dirname()){
+        if ($xoops->isModule()){
             $hydrogen->add_data('currentModule', array(
                 'dirname'   => $xoops->module->dirname(),
                 'name'      => $xoops->module->getVar('name'),
@@ -92,7 +92,7 @@ class XoopsGuiHydrogen
         $module_list = $system_module->getModuleList();
 
         foreach ($module_list as $module){
-            if ('system' == $module->modinfo['dirname']){
+            if ('system' == $module->modinfo['dirname'] || !$module->getVar('isactive')){
                 continue;
             }
             $hydrogen->append_data('modules', array(
@@ -137,6 +137,7 @@ class XoopsGuiHydrogen
         \Xoops\Core\Helper\PoLocale::getInstance()->loadThemeLocale('hydrogen', true);
 
         $hydrogen->buildLanguage();
+        $xoops->tpl()->assign('token_value', $xoops->security()->createToken());
 
     }
 

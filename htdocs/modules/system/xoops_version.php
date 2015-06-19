@@ -25,7 +25,6 @@
 $modversion['name']        = SystemLocale::MODULE_NAME;
 $modversion['description'] = SystemLocale::MODULE_DESCRIPTION;
 $modversion['version']     = 2.10;
-$modversion['author']      = 'Andricq Nicolas,Cointin Maxime,Mage Gregory';
 $modversion['nickname']    = 'MusS,Kraven30,Mage';
 $modversion['credits']     = 'The XOOPS Project';
 $modversion['license']     = 'GNU GPL 2.0';
@@ -33,7 +32,38 @@ $modversion['license_url'] = 'http://www.gnu.org/licenses/gpl-2.0.html';
 $modversion['official']    = 1;
 $modversion['help']        = 'system.html';
 $modversion['image']       = 'images/logo.png';
+$modversion['icon']        = 'xicon-system';
 $modversion['dirname']     = 'system';
+
+/**
+ * Author credits for module
+ */
+$modversion['author']      = array(
+    array(
+        'name'      => 'Andricq Nicolas',
+        'email'     => '',
+        'aka'       => 'MusS',
+        'url'       => 'http://xoops.org'
+    ),
+    array(
+        'name'      => 'Cointin Maxime',
+        'email'     => '',
+        'aka'       => 'Kraven30',
+        'url'       => 'http://xoops.org'
+    ),
+    array(
+        'name'      => 'Mage Gregory',
+        'email'     => '',
+        'aka'       => 'Mage',
+        'url'       => 'http://xoops.org'
+    ),
+    array(
+        'name'      => 'Eduardo Cortés',
+        'aka'       => 'bitcero',
+        'email'     => 'i.bitcero@gmail.com',
+        'url'       => 'http://eduardocortes.mx'
+    )
+);
 
 /*
  Settings for configs

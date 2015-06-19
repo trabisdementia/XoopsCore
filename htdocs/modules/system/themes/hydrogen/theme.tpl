@@ -25,5 +25,6 @@
     </div>
 </div>
 <!--// Contents wrapper -->
+<input type="hidden" id="xo-token" value="<{$token_value}>">
 </body>
 </html>
