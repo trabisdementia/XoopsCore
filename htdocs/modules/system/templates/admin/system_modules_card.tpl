@@ -5,8 +5,12 @@
             <section>
                 <div class="module-card">
                     <div class="module-image">
-                        <a class="rounded xo-tooltip" href="<{$xoops_url}>/modules/<{$module->getVar('dirname')}>/<{$module->getInfo('adminindex')}>" title="<{translate key='MANAGE_MODULE' dirname='system'}> <{$module->getVar('name')}>">
-                            <img src="../<{$module->getVar('dirname')}>/<{$module->getInfo('image')}>" alt="<{$module->getVar('name')}>">
+                        <a class="xo-module-icon" href="<{$xoops_url}>/modules/<{$module->getVar('dirname')}>/<{$module->getInfo('adminindex')}>">
+                            <{if $logo_mode=='icons'}>
+                                <{xoicon icon=$module->getInfo('icon')}>
+                            <{else}>
+                                <img src="../<{$module->getVar('dirname')}>/<{$module->getInfo('image')}>" alt="<{$module->getVar('name')}>">
+                            <{/if}>
                         </a>
                     </div>
                     <div class="module-data">
@@ -32,7 +36,7 @@
                         <{xoicon icon="xicon-update"}>
                     </a>
 
-                    <a href="#" onclick="module_Detail(<{$module->getVar('mid')}>);" title="<{translate key='DETAILS'}>">
+                    <a href="#" class="module-info" data-mid="<{$module->getVar('mid')}>" title="<{translate key='DETAILS'}>">
                         <{xoicon icon="xicon-info-circle"}>
                     </a>
 

@@ -4,8 +4,11 @@
 @import '../themes/hydrogen/less/bootstrap/mixins/vendor-prefixes.less';
 
 .xo-module-icon{
+  > img{
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  }
   .xo-icon-svg{
-    .xo-icon-size(24px);
+    .xo-icon-size(48px);
     .xo-icon-color(@text-color);
   }
 }
@@ -129,11 +132,10 @@
   overflow: hidden;
 
   .module-item{
-    padding: 0;
     border: 0;
     display: inline-block;
     width: 100%;
-    padding: 5px;
+    padding: 10px;
     transition: ease all 500ms;
 
     @media(min-width: @screen-sm-min){
@@ -247,6 +249,52 @@
         }
       }
 
+    }
+
+  }
+
+}
+
+/*------------------------------------------------
+                  MODULE DETAILS
+------------------------------------------------*/
+.module-details{
+
+  #general{
+    header{
+      padding-bottom: 8px;
+      border-bottom: 1px solid @gray-lighter;
+      margin-bottom: 8px;
+
+      .module-links{
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+
+        > li{
+          float: left;
+        }
+
+      }
+    }
+  }
+
+  .details-item{
+
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid @gray-lighter;
+
+    > strong{
+      display: block;
+    }
+
+    > span{
+      display: block;
+      font-size: ceil(@font-size-base * 1.1);
+      color: @gray-light;
+      font-weight: 300;
     }
 
   }

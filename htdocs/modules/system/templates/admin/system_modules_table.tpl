@@ -20,7 +20,11 @@
                 <tr<{if !$module->getVar('isactive')}> class="disabled"<{/if}>>
                     <td class="text-center">
                         <a class="xo-module-icon" href="<{$xoops_url}>/modules/<{$module->getVar('dirname')}>/<{$module->getInfo('adminindex')}>">
-                            <img src="../<{$module->getVar('dirname')}>/<{$module->getInfo('image')}>" alt="<{$module->getVar('name')}>">
+                            <{if $logo_mode=='icons'}>
+                                <{xoicon icon=$module->getInfo('icon')}>
+                            <{else}>
+                                <img src="../<{$module->getVar('dirname')}>/<{$module->getInfo('image')}>" alt="<{$module->getVar('name')}>">
+                            <{/if}>
                         </a>
                     </td>
                     <td>
@@ -61,34 +65,30 @@
                         <ul class="xo-item-options">
                             <li>
                                 <{if $module->getInfo('can_delete')}>
-                                    <a class="xo-tooltip" href="#" onclick="module_Uninstall(<{$module->getVar('mid')}>); return false;">
+                                    <a class="xo-tooltip" href="#" onclick="module_Uninstall(<{$module->getVar('mid')}>); return false;" title="<{translate key='A_UNINSTALL'}>">
                                         <{xoicon icon="xicon-minus-circle-o" class="text-danger"}>
-                                        <{translate key='A_UNINSTALL'}>
                                     </a>
                                 <{/if}>
                             </li>
                             <li>
-                                <a data-action="update-module" href="#" data-id="<{$module->getVar('mid')}>">
+                                <a data-action="update-module" href="#" data-id="<{$module->getVar('mid')}>" title="<{translate key='A_UPDATE'}>">
                                     <{xoicon icon="xicon-refresh"}>
-                                    <{translate key='A_UPDATE'}>
                                 </a>
                             </li>
                             <li>
                                 <{if $module->getInfo('can_disable')}>
-                                    <a id="active-table-<{$module->getVar('mid')}>" href="#" onclick="module_Disable(<{$module->getVar('mid')}>,'',''); return false;">
+                                    <a id="active-table-<{$module->getVar('mid')}>" href="#" onclick="module_Disable(<{$module->getVar('mid')}>,'',''); return false;" title="<{if $module->getVar('isactive')}><{translate key='A_DISABLE'}><{else}><{translate key='A_ENABLE'}><{/if}>">
                                         <{if $module->getVar('isactive')}>
-                                            <{xoicon icon="xicon-pause-circle" class="text-warning"}>
+                                            <{xoicon icon="xicon-pause-circle" class="text-orange"}>
                                         <{else}>
                                             <{xoicon icon="xicon-play-circle" class="text-success"}>
                                         <{/if}>
-                                        <{if $module->getVar('isactive')}><{translate key='A_DISABLE'}><{else}><{translate key='A_ENABLE'}><{/if}>
                                     </a>
                                 <{/if}>
                             </li>
                             <li>
-                                <a href="#" onclick="module_Detail(<{$module->getVar('mid')}>); return false;">
+                                <a href="#" class="module-info" data-mid="<{$module->getVar('mid')}>" title="<{translate key='DETAILS'}>">
                                     <{xoicon icon="xicon-info-circle"}>
-                                    <{translate key='DETAILS'}>
                                 </a>
                             </li>
                         </ul>

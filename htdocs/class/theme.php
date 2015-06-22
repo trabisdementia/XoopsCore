@@ -374,7 +374,7 @@ class XoopsTheme
         }
 
         // Load global javascript
-        //$this->addScript('include/xoops.js');
+        $this->addScript('include/xoops.min.js');
         //$this->loadLocalization();
         list($cssAssets, $jsAssets) = $this->getLocalizationAssets();
         if (!empty($cssAssets)) {

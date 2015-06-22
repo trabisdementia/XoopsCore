@@ -46,6 +46,7 @@ include_once $xoops->path('/modules/system/constants.php');
 $fct = $system->cleanVars($_REQUEST, 'fct', '', 'string');
 
 XoopsLoad::load('systembreadcrumb', 'system');
+XoopsLoad::load('systemcommands', 'system');
 
 $system_breadcrumb = SystemBreadcrumb::getInstance($fct);
 $system_breadcrumb->addLink(SystemLocale::CONTROL_PANEL, \XoopsBaseConfig::get('url') . '/admin.php', true);

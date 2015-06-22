@@ -5,8 +5,12 @@
 
     <div class="active" id="installed">
 
-        <div id="view-canvas" data-mode="list">
-            <{include file="admin:system/system_modules_table.tpl"}>
+        <div id="view-canvas" data-mode="<{$view_mode}>">
+            <{if $view_mode=='list'}>
+                <{include file="admin:system/system_modules_table.tpl"}>
+            <{else}>
+                <{include file="admin:system/system_modules_card.tpl"}>
+            <{/if}>
         </div>
 
     </div>

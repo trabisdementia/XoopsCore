@@ -1,0 +1,105 @@
+@import 'mixins/xo-modal.less';
+
+.modal-dialog{
+  .modal-content{
+    .modal-body{
+
+      > .nav-tabs,
+      > .bootbox-body  > .nav-tabs{
+        margin: -15px -15px 0 -15px;
+        padding: 0 8px;
+
+        > li{
+
+          > a{
+            border: 0;
+            border-bottom: 3px solid transparent;
+            &:hover,
+            &:focus{
+              background-color: transparent;
+            }
+
+            > .xo-icon-svg{
+              display: block;
+              text-align: center;
+              margin-bottom: 5px;
+              .xo-icon-size(24px);
+            }
+          }
+
+          &.active > a {
+            &,
+            &:hover,
+            &:focus {
+              background-color: transparent;
+              cursor: default;
+              font-weight: normal;
+            }
+          }
+        }
+
+      }
+
+      .tab-content{
+        border: 0;
+        margin-top: 20px;
+      }
+
+    }
+  }
+}
+
+.modal-primary{
+  .modal-variation(@primary, @primary-color, @primary-secondary-color, @primary-indicator-color);
+}
+.modal-info{
+  .modal-variation(@info, @info-color, @info-secondary-color, @info-indicator-color);
+}
+.modal-warning{
+  .modal-variation(@warning, @warning-color, @warning-secondary-color, @warning-indicator-color);
+}
+.modal-danger{
+  .modal-variation(@danger, @danger-color, @danger-secondary-color, @danger-indicator-color);
+}
+.modal-success{
+  .modal-variation(@success, @success-color, @success-secondary-color, @success-indicator-color);
+}
+.modal-azure{
+  .modal-variation(@azure, @azure-color, @azure-secondary-color, @azure-indicator-color);
+}
+.modal-sky{
+  .modal-variation(@sky, @sky-color, @sky-secondary-color, @sky-indicator-color);
+}
+.modal-palegreen{
+  .modal-variation(@palegreen, @palegreen-color, @palegreen-secondary-color, @palegreen-indicator-color);
+}
+.modal-orange{
+  .modal-variation(@orange, @orange-color, @orange-secondary-color, @orange-indicator-color);
+}
+.modal-yellow{
+  .modal-variation(@yellow, @yellow-color, @yellow-secondary-color, @yellow-indicator-color);
+}
+.modal-pink{
+  .modal-variation(@pink, @pink-color, @pink-secondary-color, @pink-indicator-color);
+}
+.modal-midnight{
+  .modal-variation(@midnight, @midnight-color, @midnight-secondary-color, @midnight-indicator-color);
+}
+.modal-indigo{
+  .modal-variation(@indigo, @indigo-color, @indigo-secondary-color, @indigo-indicator-color);
+}
+.modal-brown{
+  .modal-variation(@brown, @brown-color, @brown-secondary-color, @brown-indicator-color);
+}
+.modal-magenta{
+  .modal-variation(@magenta, @magenta-color, @magenta-secondary-color, @magenta-indicator-color);
+}
+.modal-green{
+  .modal-variation(@green, @green-color, @green-secondary-color, @green-indicator-color);
+}
+.modal-purple{
+  .modal-variation(@purple, @purple-color, @purple-secondary-color, @purple-indicator-color);
+}
+.modal-alizarin{
+  .modal-variation(@alizarin, @alizarin-color, @alizarin-secondary-color, @alizarin-indicator-color);
+}

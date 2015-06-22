@@ -482,8 +482,8 @@ ul.xo-list{
 
 table.options-activated{
 
-  border-left: 1px solid darken(@options-bg, 13%)!important;
-  border-right: 1px solid darken(@options-bg, 13%)!important;
+  //border-left: 1px solid darken(@options-bg, 13%)!important;
+  //border-right: 1px solid darken(@options-bg, 13%)!important;
 
   tr{
     background-color: @options-siblings-bg;
@@ -492,12 +492,12 @@ table.options-activated{
   }
 
   tr.active-options{
-    background-color: @options-bg;
-    color: @options-color;
+    background-color: #FFF;
+    color: @text-color;
 
     &+ .xo-options-row{
       > td{
-        border-top: 1px solid darken(@options-bg, 13%)!important;
+        //border-top: 1px solid rgba(0,0,0,0.1)!important;
       }
     }
 
@@ -518,30 +518,41 @@ table.options-activated{
       margin: 0;
       width: auto;
       overflow: hidden;
-      margin-top: -1px;
+      //margin-top: -1px;
       margin-bottom: 5px;
+      border-top: 1px solid rgba(0,0,0,0.05);
 
       > li{
         float: right;
         //border-right: 1px solid rgba(0,0,0,0.1);
         background-color: @options-bg;
-        border-bottom: 1px solid darken(@options-bg, 13%);
+        border-bottom: 1px solid rgba(0,0,0,0.1);
+        //border-top: 1px solid rgba(0,0,0,0.1);
 
+        &:first-child{
+          border-radius: 0 0 3px 0;
+        }
         &:last-child{
-          border-left: 1px solid darken(@options-bg, 13%);
+          //border-left: 1px solid rgba(0,0,0,0.1);
           border-radius: 0 0 0 3px;
         }
 
         > a {
           display: block;
-          padding: 10px 15px;
+          padding: 6px;
           font-size: floor(@font-size-base * 0.8);
           font-weight: 700;
           text-transform: uppercase;
           text-decoration: none;
+          //color: @options-color;
+          border-left: 1px solid rgba(0,0,0,0.1);
 
           .xo-icon-svg {
-            .xo-icon-size(16px);
+            .xo-icon-size(24px);
+          }
+
+          &:hover{
+            background-color: rgba(0,0,0,0.05);
           }
         }
       }

@@ -22,6 +22,7 @@
 require 'include/check-rights.php';
 
 use \Xoops\Core\Helper\HeaderCommands;
+use \Xoops\Core\Request;
 
 // Check users rights
 if (!$xoops->isUser() || !$xoops->isModule() || !$xoops->user->isAdmin($xoops->module->mid())) {
@@ -76,17 +77,19 @@ switch ($op) {
         $admin_page = new \Xoops\Module\Admin();
         //$admin_page->addBreadcrumbLink(SystemLocale::CONTROL_PANEL, \XoopsBaseConfig::get('url') . '/admin.php', true);
         $admin_page->addBreadcrumbLink(
-            SystemLocale::MODULES_ADMINISTRATION,
-            $system->adminVersion('modulesadmin', 'adminpath')
+            SystemLocale::MODULES_ADMINISTRATION
         );
-        $admin_page->addBreadcrumbLink(XoopsLocale::MAIN);
+
         $admin_page->addTips(SystemLocale::MODULES_TIPS);
         $admin_page->renderBreadcrumb();
         $admin_page->renderTips();
 
         // Header Commands
+        $view = $system->cleanVars($_COOKIE, 'xoopsModsView', 'list', 'string');
+        $view_icons = $system->cleanVars($_COOKIE, 'xoopsModsIcons', 'images', 'string');
         $commands = HeaderCommands::getInstance();
-        $commands->addCommand('mods-display', $xoops->tpl()->fetch('admin:system/admin-modules-commands.tpl'));
+        $commands->addCommand('mods-display', SystemHeaderCommands::viewMode($view));
+        $commands->addCommand('icons-display', SystemHeaderCommands::logoMode($view_icons));
         $xoops->events()->triggerEvent('system.header.commands', $commands, $xoops->locationId);
 
         // Module header
@@ -131,17 +134,10 @@ switch ($op) {
         $list = $system_module->getModuleList();
         $install = $system_module->getInstalledModules();
 
-        $view = $system->cleanVars($_COOKIE, 'xoopsModsView', 'large', 'string');
-        if ($view == 'large') {
-            $xoops->tpl()->assign('view_large', '');
-            $xoops->tpl()->assign('view_line', 'hide');
-        } else {
-            $xoops->tpl()->assign('view_large', 'hide');
-            $xoops->tpl()->assign('view_line', '');
-        }
         $xoops->tpl()->assign('xoops', $xoops);
         $xoops->tpl()->assign('modules_list', $list);
         $xoops->tpl()->assign('modules_available', $install);
+        $xoops->tpl()->assign('view_mode', $view);
 
         // Call Footer
         $xoops->footer();
@@ -153,11 +149,16 @@ switch ($op) {
         $xoops->header();
         $system_module = new SystemModule();
         $mode = $system->cleanVars($_POST, 'mode', 'list', 'string');
+        $logo_mode = $system->cleanVars($_POST, 'logo_mode', 'images', 'string');
         $list = $system_module->getModuleList();
         $install = $system_module->getInstalledModules();
 
+        setcookie('xoopsModsView', $mode, time() + (365 * 3600), '/', null, null, true);
+        setcookie('xoopsModsIcons', $logo_mode, time() + (365 * 3600), '/', null, null, true);
+
         $xoops->tpl()->assign('modules_list', $list);
         $xoops->tpl()->assign('modules_available', $install);
+        $xoops->tpl()->assign('logo_mode', $logo_mode);
 
         if ('cards' == $mode){
             $content = $xoops->tpl()->fetch("admin:system/system_modules_card.tpl");
@@ -170,6 +171,43 @@ switch ($op) {
             'error'     => false,
             'content'   => $content,
             'mode'      => $mode
+        ));
+        break;
+
+    case 'details':
+
+        $mid = Request::getInt('mid', 0, 'post');
+        $ax = new \Xoops\Core\Helper\AjaxResponse();
+
+        if (0 >= $mid){
+            $ax->response(array(
+                'error'     => 1,
+                'message'   => __('No module ID has been provided', 'system')
+            ));
+        }
+
+        $xoops = \Xoops::getInstance();
+        $xoops->header();
+
+        $module_handler = $xoops->getHandlerModule();
+        $moduleperm_handler = $xoops->getHandlerGroupperm();
+        $module = $module_handler->get($mid);
+        $xoops->tpl()->assign('module', $module);
+
+        $xoops->tpl()->assign('systemLang', array(
+            'name'          => __('Module name:', 'system'),
+            'dirname'       => __('Directory:', 'system'),
+            'description'   => __('Description:', 'system'),
+            'version'       => __('Version:', 'system'),
+            'license'       => __('License:', 'system'),
+            'website'       => __('Website', 'system'),
+            'help'       => __('Documentation', 'system'),
+        ));
+
+        $ax->response(array(
+            'title'     => sprintf( __('%s Details', 'system'), $module->getVar('name') ),
+            'content'   => $xoops->tpl()->fetch('admin:system/admin-module-details.tpl'),
+            'close'     => __('Close', 'system')
         ));
         break;
 

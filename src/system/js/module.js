@@ -41,14 +41,17 @@
         /**
          * Switch view mode
          */
-        $("input[name='view_mode']").change(function(){
+        $("input[name='view_mode'],input[name='view_logo']").change(function(){
 
             var $canvas = $("#view-canvas");
 
-            if($canvas.data('mode') == $(this).data('mode'))
+            if($(this).attr("name") == 'view_mode' && $canvas.data('mode') == $(this).data('mode'))
                 return false;
 
-            switch_view($(this), $(this).data('mode'));
+            var viewMode = $(this).attr("name") == 'view_mode' ? $(this).data("mode") : $(".header-commands input[name='view_mode']:checked").data("mode");
+            var logoMode = $(this).attr("name") == 'view_logo' ? $(this).data("mode") : $(".header-commands input[name='view_logo']:checked").data("mode");
+
+            switch_view($(this), viewMode, logoMode);
 
         });
 
@@ -60,7 +63,44 @@
             cssclass : 'span2'
         });
 
-        // -----------------------------------------------------------------
+        /*------------------------------------------------
+                          MODULE DETAILS
+        ------------------------------------------------*/
+        $("body").on('click', '.module-info', function(){
+
+            $("body").xoPreload();
+
+            var params = {
+                XOOPS_TOKEN_REQUEST: $("#xoops-token").val(),
+                op: 'details',
+                mid: $(this).data('mid')
+            };
+
+            $.post('modules.php', params, function(response){
+
+                if(response.error){
+                    xoops.modal.alert(response.message);
+                    $("body").xoPreload({action: 'hide'});
+                    return false;
+                }
+
+                xoops.modal.dialog({
+                    title: response.title,
+                    message: response.content,
+                    color: 'primary',
+                    buttons: {
+                        main: {
+                            label: response.close,
+                            className: 'btn-primary'
+                        }
+                    }
+                });
+
+                $("body").xoPreload({action: 'hide'});
+
+            },'json');
+            return false;
+        });
 
     } );
 
@@ -74,14 +114,13 @@
     /*------------------------------------------------
                     REFRESH VIEW MODE
     ------------------------------------------------*/
-    function switch_view(el, type){
-        if (undefined == type || '' == type)
-            type = 'list';
+    function switch_view(el, viewMode, logoMode){
 
         var params = {
             XOOPS_TOKEN_REQUEST: $("#xo-token").val(),
             op: 'change-view',
-            mode: type
+            logo_mode: logoMode,
+            mode: viewMode
         };
         $("#view-canvas").xoPreload({action: 'show'});
         $.post('modules.php', params, function( response ){
@@ -101,19 +140,11 @@
                 return false;
             }
 
-            if ('cards' == response.mode){
-                $("#view-canvas > #table-installed-modules").fadeOut(250, function(){
-                    $(this).remove();
-                    $("#view-canvas").html(response.content);
-                    $("#view-canvas").xoPreload({action: 'hide'});
-                });
-            } else {
-                $("#view-canvas > #cards-installed-modules").fadeOut(250, function(){
-                    $(this).remove();
-                    $("#view-canvas").html(response.content);
-                    $("#view-canvas").xoPreload({action: 'hide'});
-                });
-            }
+            $("#view-canvas > #table-installed-modules,#view-canvas > #cards-installed-modules").fadeOut(250, function(){
+                $(this).remove();
+                $("#view-canvas").html(response.content);
+                $("#view-canvas").xoPreload({action: 'hide'});
+            });
 
             $("#view-canvas").data('mode', response.mode);
 

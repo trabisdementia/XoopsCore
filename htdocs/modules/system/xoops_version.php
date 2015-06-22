@@ -34,6 +34,7 @@ $modversion['help']        = 'system.html';
 $modversion['image']       = 'images/logo.png';
 $modversion['icon']        = 'xicon-system';
 $modversion['dirname']     = 'system';
+$modversion['url']         = 'http://xoops.org';
 
 /**
  * Author credits for module
@@ -62,6 +63,22 @@ $modversion['author']      = array(
         'aka'       => 'bitcero',
         'email'     => 'i.bitcero@gmail.com',
         'url'       => 'http://eduardocortes.mx'
+    )
+);
+
+/**
+ * Links
+ */
+$modversion['links'] = array(
+    'twitter'   => array(
+        'icon'      => 'fa fa-twitter',
+        'url'       => 'http://www.twitter.com/xoops',
+        'caption'   => __('Twitter', 'system')
+    ),
+    'facebook'   => array(
+        'icon'      => 'fa fa-facebook',
+        'url'       => 'http://www.facebook.com/xoops',
+        'caption'   => __('Facebook', 'system')
     )
 );
 
