@@ -26,31 +26,131 @@
  */
 
 //@prepros-prepend bootbox.js
+//@prepros-prepend pnotify.custom.js
 
+/*
+------------------------------------------------
+                 XOOPS INTERFACE
+------------------------------------------------     */
 (function() {
 
-    /*------------------------------------------------
-                     XOOPS INTERFACE
-    ------------------------------------------------*/
     this.xoops = {
 
+        $: function(id){
+            var elements = new Array();
+
+            for (var i = 0; i < arguments.length; i++) {
+                var element = arguments[i];
+                if (typeof element == 'string') {
+                    element = document.getElementById(element);
+                }
+
+                if (arguments.length == 1) {
+                    return element;
+                }
+
+                elements.push(element);
+            }
+
+            return elements;
+        },
+
+        /*------------------------------------------------
+                      1.1 BOOTBOX INCLUSION
+        ------------------------------------------------*/
         /**
-         * Shows a modal usind bootbox
+         * Shows a modal using bootbox
          * See http://bootboxjs.com/ for usage
          */
-        modal: bootbox
+        modal: bootbox,
+
+        /*------------------------------------------------
+                      1.2 PNOTIFY INCLUSION
+        ------------------------------------------------*/
+        /**
+         * This is a wrapper for PNotify plugin
+         * See http://sciactive.com/pnotify/ for docs
+         * @param options To be passed to PNotify plugin
+         */
+        notify: function(options){
+
+            return new PNotify(options);
+
+        },
+
+        openWindow: function(options){
+
+            var defaults = {
+                url:        '',
+                name:       'xowindow',
+                width:      400,
+                height:     500,
+                toolbar:    'no',
+                location:   'no',
+                status:     'no',
+                menubar:    'no',
+                scrollbar:  'yes',
+                resizable:  'yes'
+            };
+
+            options = setOptions(options, defaults);
+
+            if('' == options.url){
+                console.log('No URL has been provided for xoops.openWindow');
+                return false;
+            }
+
+            var stropts = "width=" + options.width + ",height=" + options.height +
+                ",toolbar=" + options.toolbar + ",location=" + options+location +
+                ",directories=no,status=" + options.status + ",menubar=" + options.menubar +
+                ",scrollbars=" + options.scrollbar + ",resizable=" + options.resizable + ",copyhistory=no";
+
+            var new_window = window.open(options.url, options.name, stropts);
+            window.self.name = "main";
+            new_window.focus();
+            return new_window;
+
+        }
     };
 
-    if(window.jQuery){
-        $(document).ready(function(){
+    /*------------------------------------------------
+                   1.8 PRIVATE MEMBERS
+    ------------------------------------------------*/
+    /**
+     * Set options according to given defaults properties
+     * @param options
+     * @param defaults
+     * @returns {*}
+     */
+    function setOptions(options, defaults){
+        if(typeof(options) === "object"){
+            options = extendDefaults(defauls, options);
+        } else {
+            options = defaults;
+        }
+        return options;
+    }
 
-            $("body").on('each')
-
-        });
+    function extendDefaults(source, properties) {
+        var property;
+        for (property in properties) {
+            if (properties.hasOwnProperty(property)) {
+                source[property] = properties[property];
+            }
+        }
+        return source;
     }
 
 }());
 
+/*------------------------------------------------
+            2. BACKWARD COMPATIBILITY
+------------------------------------------------*/
+
+/**
+ * @deprecated Use xoops.$() instead
+ * @returns {*}
+ */
 function xoops$()
 {
     var elements = new Array();
@@ -74,7 +174,7 @@ function xoops$()
 
 function xoopsGetElementById(id)
 {
-    return xoops$(id);
+    return xoops.$(id);
 }
 
 function xoopsSetElementProp(name, prop, val)
@@ -106,12 +206,12 @@ function justReturn()
 
 function openWithSelfMain(url, name, width, height, returnwindow)
 {
-    var options = "width=" + width + ",height=" + height + ",toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no";
-
-    var new_window = window.open(url, name, options);
-    window.self.name = "main";
-    new_window.focus();
-    return (returnwindow != null ? new_window : void(0));
+    return xoops.openWindow({
+        name: name,
+        width: width,
+        height: height,
+        url: url
+    });
 }
 
 function setElementColor(id, color)
@@ -127,16 +227,6 @@ function setElementFont(id, font)
 function setElementSize(id, size)
 {
     xoopsGetElementById(id).style.fontSize = size;
-}
-
-function changeDisplay(id)
-{
-    var elestyle = xoopsGetElementById(id).style;
-    if (elestyle.display == "") {
-        elestyle.display = "none";
-    } else {
-        elestyle.display = "block";
-    }
 }
 
 function setVisible(id)

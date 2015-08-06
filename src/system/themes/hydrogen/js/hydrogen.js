@@ -1,4 +1,3 @@
-//@prepros-prepend pnotify.custom.js
 //@prepros-prepend perfect-scrollbar.jquery.js
 //@prepros-prepend xopreload.jquery.js
 

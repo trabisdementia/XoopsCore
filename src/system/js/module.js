@@ -88,6 +88,7 @@
                     title: response.title,
                     message: response.content,
                     color: 'primary',
+                    id: 'module-details',
                     buttons: {
                         main: {
                             label: response.close,
@@ -127,7 +128,7 @@
 
             if (response.error){
 
-                new PNotify({
+               xoops.notify({
                     title: response.message.title,
                     text: response.message.text,
                     delay: 7000,
@@ -137,6 +138,7 @@
                         nonblock_opactity:.2
                     }
                 });
+                $("#view-canvas").xoPreload({action: 'hide'});
                 return false;
             }
 

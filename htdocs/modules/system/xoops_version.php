@@ -24,7 +24,6 @@
  */
 $modversion['name']        = SystemLocale::MODULE_NAME;
 $modversion['description'] = SystemLocale::MODULE_DESCRIPTION;
-$modversion['version']     = 2.10;
 $modversion['nickname']    = 'MusS,Kraven30,Mage';
 $modversion['credits']     = 'The XOOPS Project';
 $modversion['license']     = 'GNU GPL 2.0';
@@ -34,7 +33,18 @@ $modversion['help']        = 'system.html';
 $modversion['image']       = 'images/logo.png';
 $modversion['icon']        = 'xicon-system';
 $modversion['dirname']     = 'system';
-$modversion['url']         = 'http://xoops.org';
+
+$modversion['version']     = array(
+    'major'     => '2',
+    'minor'     => '1',
+    'minor'     => '1',
+    'stage'     => 'ALPHA'
+);
+
+$modversion['website']     = array(
+    'url'   => 'http://xoops.org',
+    'name'  => 'XOOPS'
+);
 
 /**
  * Author credits for module
@@ -71,12 +81,12 @@ $modversion['author']      = array(
  */
 $modversion['links'] = array(
     'twitter'   => array(
-        'icon'      => 'fa fa-twitter',
+        'icon'      => 'xicon-twitter-circle',
         'url'       => 'http://www.twitter.com/xoops',
         'caption'   => __('Twitter', 'system')
     ),
     'facebook'   => array(
-        'icon'      => 'fa fa-facebook',
+        'icon'      => 'xicon-facebook-circle',
         'url'       => 'http://www.facebook.com/xoops',
         'caption'   => __('Facebook', 'system')
     )
@@ -86,9 +96,6 @@ $modversion['links'] = array(
  Settings for configs
 */
 $modversion['release_date']        = '2011/12/20';
-$modversion['module_website_url']  = 'http://www.xoops.org/';
-$modversion['module_website_name'] = 'XOOPS';
-$modversion['module_status']       = 'ALPHA';
 $modversion['min_php']             = '5.3.7';
 $modversion['min_xoops']           = '2.6.0';
 

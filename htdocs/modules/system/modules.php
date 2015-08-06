@@ -160,6 +160,10 @@ switch ($op) {
         $xoops->tpl()->assign('modules_available', $install);
         $xoops->tpl()->assign('logo_mode', $logo_mode);
 
+        $xoops->tpl()->assign('systemLang', array(
+            'author_aka'    => __('%s (AKA %s)', 'system'),
+        ));
+
         if ('cards' == $mode){
             $content = $xoops->tpl()->fetch("admin:system/system_modules_card.tpl");
         } else {
@@ -201,7 +205,11 @@ switch ($op) {
             'version'       => __('Version:', 'system'),
             'license'       => __('License:', 'system'),
             'website'       => __('Website', 'system'),
-            'help'       => __('Documentation', 'system'),
+            'help'          => __('Documentation', 'system'),
+            'authors'       => __('Author(s):', 'system'),
+            'author_aka'    => __('%s (AKA %s)', 'system'),
+            'help'          => __('Help', 'system'),
+            'web'           => __('Website', 'system'),
         ));
 
         $ax->response(array(
