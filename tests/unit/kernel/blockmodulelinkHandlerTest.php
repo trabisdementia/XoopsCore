@@ -1,29 +1,25 @@
 <?php
-require_once(dirname(__FILE__).'/../init.php');
+require_once(dirname(__FILE__).'/../init_new.php');
+
+require_once(XOOPS_TU_ROOT_PATH . '/kernel/blockmodulelink.php');
 
 /**
 * PHPUnit special settings :
 * @backupGlobals disabled
 * @backupStaticAttributes disabled
 */
-class BlockmodulelinkHandlerTest extends \PHPUnit_Framework_TestCase
+class legacy_blockmodulelinkHandlerTest extends \PHPUnit_Framework_TestCase
 {
-    protected $myclass='XoopsBlockmodulelinkHandler';
-	protected $conn = null;
-    
+    protected $conn = null;
+
     public function setUp()
-	{
-		$this->conn = Xoops::getInstance()->db();
+    {
+        $this->conn = Xoops::getInstance()->db();
     }
-    
+
     public function test___construct()
-	{
-        $instance=new $this->myclass($this->conn);
-        $this->assertInstanceOf($this->myclass,$instance);
-		$this->assertRegExp('/^.*block_module_link$/',$instance->table);
-		$this->assertSame('XoopsBlockmodulelink',$instance->className);
-		$this->assertSame('block_id',$instance->keyName);
-		$this->assertSame('module_id',$instance->identifierName);
+    {
+        $instance=new \XoopsBlockmodulelinkHandler($this->conn);
+        $this->assertInstanceOf('\Xoops\Core\Kernel\Handlers\XoopsBlockmodulelinkHandler', $instance);
     }
-    
 }

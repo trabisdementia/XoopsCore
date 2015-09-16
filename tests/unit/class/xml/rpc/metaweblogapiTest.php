@@ -1,5 +1,7 @@
 <?php
-require_once(dirname(__FILE__).'/../../../init.php');
+require_once(dirname(__FILE__).'/../../../init_new.php');
+
+use Xoops\Core\Kernel\Handlers\XoopsModule;
 
 /**
 * PHPUnit special settings :
@@ -9,7 +11,7 @@ require_once(dirname(__FILE__).'/../../../init.php');
 class MetaWeblogApiTest extends \PHPUnit_Framework_TestCase
 {
     protected $myclass = 'MetaWeblogApi';
-    
+
     public function test___construct()
 	{
 		$params = array('p1'=>'one');
@@ -19,7 +21,7 @@ class MetaWeblogApiTest extends \PHPUnit_Framework_TestCase
 		$this->assertInstanceof($this->myclass, $x);
 		$this->assertInstanceof('XoopsXmlRpcApi', $x);
 	}
-	
+
     function test_MetaWeblogApi()
     {
 		$this->markTestIncomplete();
