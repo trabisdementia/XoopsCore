@@ -1,29 +1,23 @@
 <?php
-require_once(dirname(__FILE__).'/../init.php');
+require_once(dirname(__FILE__).'/../init_new.php');
+
+require_once(XOOPS_TU_ROOT_PATH . '/kernel/ranks.php');
 
 /**
 * PHPUnit special settings :
 * @backupGlobals disabled
 * @backupStaticAttributes disabled
 */
-class RanksTest extends \PHPUnit_Framework_TestCase
+class legacy_ranksTest extends \PHPUnit_Framework_TestCase
 {
-    var $myclass='XoopsRanks';
 
     public function setUp()
-	{
+    {
     }
 
     public function test___construct()
-	{
-        $instance=new $this->myclass();
-        $this->assertInstanceOf($this->myclass,$instance);
-		$value=$instance->getVars();
-        $this->assertTrue(isset($value['rank_id']));
-        $this->assertTrue(isset($value['rank_title']));
-        $this->assertTrue(isset($value['rank_min']));
-        $this->assertTrue(isset($value['rank_max']));
-        $this->assertTrue(isset($value['rank_special']));
-        $this->assertTrue(isset($value['rank_image']));
+    {
+        $instance=new \XoopsRanks();
+        $this->assertInstanceOf('\Xoops\Core\Kernel\Handlers\XoopsRanks', $instance);
     }
 }

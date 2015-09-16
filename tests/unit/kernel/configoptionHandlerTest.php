@@ -1,29 +1,25 @@
 <?php
-require_once(dirname(__FILE__).'/../init.php');
+require_once(dirname(__FILE__).'/../init_new.php');
+
+require_once(XOOPS_TU_ROOT_PATH . '/kernel/configoption.php');
 
 /**
 * PHPUnit special settings :
 * @backupGlobals disabled
 * @backupStaticAttributes disabled
 */
-class ConfigoptionHandlerTest extends \PHPUnit_Framework_TestCase
+class legacy_configoptionHandlerTest extends \PHPUnit_Framework_TestCase
 {
-    protected $myclass='XoopsConfigOptionHandler';
-	protected $conn = null;
-    
+    protected $conn = null;
+
     public function setUp()
-	{
-		$this->conn = Xoops::getInstance()->db();
+    {
+        $this->conn = Xoops::getInstance()->db();
     }
-    
+
     public function test___construct()
-	{
-        $instance=new $this->myclass($this->conn);
-        $this->assertInstanceOf($this->myclass, $instance);
-		$this->assertRegExp('/^.*configoption$/',$instance->table);
-		$this->assertSame('XoopsConfigOption',$instance->className);
-		$this->assertSame('confop_id',$instance->keyName);
-		$this->assertSame('confop_name',$instance->identifierName);
+    {
+        $instance=new \XoopsConfigOptionHandler($this->conn);
+        $this->assertInstanceOf('\Xoops\Core\Kernel\Handlers\XoopsConfigOptionHandler', $instance);
     }
-      
 }

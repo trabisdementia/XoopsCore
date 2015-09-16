@@ -11,6 +11,8 @@
 
 use Xoops\Core\Request;
 use Xoops\Core\FixedGroups;
+use Xoops\Core\Kernel\Handlers\XoopsModule;
+use Xoops\Core\Kernel\Handlers\XoopsUser;
 
 /**
  * XOOPS
@@ -762,7 +764,7 @@ class Xoops
      */
     public function getHandlerBlock($optional = false)
     {
-        return $this->getHandler('block', $optional);
+        return $this->getHandler('Block', $optional);
     }
 
     /**
@@ -774,7 +776,7 @@ class Xoops
      */
     public function getHandlerBlockmodulelink($optional = false)
     {
-        return $this->getHandler('blockmodulelink', $optional);
+        return $this->getHandler('Blockmodulelink', $optional);
     }
 
     /**
@@ -786,7 +788,7 @@ class Xoops
      */
     public function getHandlerConfig($optional = false)
     {
-        return $this->getHandler('config', $optional);
+        return $this->getHandler('Config', $optional);
     }
 
     /**
@@ -798,7 +800,7 @@ class Xoops
      */
     public function getHandlerConfigitem($optional = false)
     {
-        return $this->getHandler('configitem', $optional);
+        return $this->getHandler('ConfigItem', $optional);
     }
 
     /**
@@ -810,7 +812,7 @@ class Xoops
      */
     public function getHandlerConfigoption($optional = false)
     {
-        return $this->getHandler('configoption', $optional);
+        return $this->getHandler('ConfigOption', $optional);
     }
 
     /**
@@ -822,7 +824,7 @@ class Xoops
      */
     public function getHandlerGroup($optional = false)
     {
-        return $this->getHandler('group', $optional);
+        return $this->getHandler('Group', $optional);
     }
 
     /**
@@ -834,7 +836,7 @@ class Xoops
      */
     public function getHandlerGroupperm($optional = false)
     {
-        return $this->getHandler('groupperm', $optional);
+        return $this->getHandler('GroupPerm', $optional);
     }
 
     /**
@@ -846,7 +848,7 @@ class Xoops
      */
     public function getHandlerMember($optional = false)
     {
-        return $this->getHandler('member', $optional);
+        return $this->getHandler('Member', $optional);
     }
 
     /**
@@ -858,7 +860,7 @@ class Xoops
      */
     public function getHandlerMembership($optional = false)
     {
-        return $this->getHandler('membership', $optional);
+        return $this->getHandler('Membership', $optional);
     }
 
     /**
@@ -870,7 +872,7 @@ class Xoops
      */
     public function getHandlerModule($optional = false)
     {
-        return $this->getHandler('module', $optional);
+        return $this->getHandler('Module', $optional);
     }
 
     /**
@@ -882,7 +884,7 @@ class Xoops
      */
     public function getHandlerOnline($optional = false)
     {
-        return $this->getHandler('online', $optional);
+        return $this->getHandler('Online', $optional);
     }
 
     /**
@@ -894,7 +896,7 @@ class Xoops
      */
     public function getHandlerPrivmessage($optional = false)
     {
-        return $this->getHandler('privmessage', $optional);
+        return $this->getHandler('Privmessage', $optional);
     }
 
     /**
@@ -906,7 +908,7 @@ class Xoops
      */
     public function getHandlerRanks($optional = false)
     {
-        return $this->getHandler('ranks', $optional);
+        return $this->getHandler('Ranks', $optional);
     }
 
     /**
@@ -931,7 +933,7 @@ class Xoops
      */
     public function getHandlerTplfile($optional = false)
     {
-        return $this->getHandler('tplfile', $optional);
+        return $this->getHandler('Tplfile', $optional);
     }
 
     /**
@@ -943,7 +945,7 @@ class Xoops
      */
     public function getHandlerTplset($optional = false)
     {
-        return $this->getHandler('tplset', $optional);
+        return $this->getHandler('Tplset', $optional);
     }
 
     /**
@@ -955,7 +957,7 @@ class Xoops
      */
     public function getHandlerUser($optional = false)
     {
-        return $this->getHandler('user', $optional);
+        return $this->getHandler('User', $optional);
     }
 
     /**
@@ -966,19 +968,19 @@ class Xoops
      *
      * @return XoopsObjectHandler|XoopsPersistableObjectHandler|null
      */
-    public function getHandler($name, $optional = false)
+    protected function getHandler($name, $optional = false)
     {
-        $name = strtolower(trim($name));
+        //$name = strtolower(trim($name));
         $class = '';
         if (!isset($this->kernelHandlers[$name])) {
-            $class = 'Xoops' . ucfirst($name) . 'Handler';
+            $class = '\\Xoops\\Core\\Kernel\\Handlers\\Xoops' . ucfirst($name) . 'Handler';
             if (class_exists($class)) {
                 $this->kernelHandlers[$name] = new $class($this->db());
             }
         }
         if (!isset($this->kernelHandlers[$name])) {
             $this->logger()->log(
-                $optional ? \Psr\Log\LogLevel::WARNING : \Psr\Log\Loglevel::ERROR,
+                $optional ? \Psr\Log\LogLevel::WARNING : \Psr\Log\LogLevel::ERROR,
                 'Class <strong>' . $class . '</strong> does not exist<br />Handler Name: ' . $name
             );
         } else {
@@ -1069,7 +1071,7 @@ class Xoops
      *
      * @return bool|Xoops\Module\Helper\HelperAbstract
      */
-    public function getModuleHelper($dirname)
+    public static function getModuleHelper($dirname)
     {
         return \Xoops\Module\Helper::getHelper($dirname);
     }
@@ -1808,11 +1810,11 @@ class Xoops
         if (empty($dirname)) {
             $dirname = $this->isModule() ? $this->module->getVar('dirname') : 'system';
         }
+        if (!isset($this->moduleConfigs[$dirname][$key]) || !is_array($this->moduleConfigs[$dirname][$key])) {
+            $this->moduleConfigs[$dirname][$key] = array();
+        }
         if ($appendWithKey) {
             foreach ($values as $key2 => $value) {
-                if (!isset($this->moduleConfigs[$dirname][$key]) || !is_array($this->moduleConfigs[$dirname][$key])) {
-                    $this->moduleConfigs[$dirname][$key] = array();
-                }
                 $this->moduleConfigs[$dirname][$key][$key2] =& $value;
             }
         } else {

@@ -9,6 +9,8 @@
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 */
 
+use Xoops\Core\Kernel\Handlers\XoopsUser;
+
 /**
  * Extended User Profile
  *
@@ -29,7 +31,7 @@
  * @param null $step
  * @return Xoops\Form\ThemeForm
  */
-function profile_getRegisterForm(XoopsUser &$user, $profile, $step = null)
+function profile_getRegisterForm(XoopsUser $user, $profile, $step = null)
 {
     $xoops = Xoops::getInstance();
     $action = $_SERVER['REQUEST_URI'];
@@ -66,7 +68,7 @@ function profile_getRegisterForm(XoopsUser &$user, $profile, $step = null)
 
     // Dynamic fields
     /* @var $profile_handler ProfileProfileHandler */
-    $profile_handler = $xoops->getModuleHandler('profile');
+    $profile_handler = \Xoops::getModuleHelper('profile')->getHandler('profile');
     $fields = $profile_handler->loadFields();
     $_SESSION['profile_required'] = array();
     $weights = array();
@@ -123,7 +125,7 @@ function profile_getRegisterForm(XoopsUser &$user, $profile, $step = null)
  * @param bool $action
  * @return Xoops\Form\ThemeForm
  */
-function profile_getUserForm(XoopsUser &$user, ProfileProfile $profile = null, $action = false)
+function profile_getUserForm(XoopsUser $user, ProfileProfile $profile = null, $action = false)
 {
     $xoops = Xoops::getInstance();
 
@@ -136,7 +138,7 @@ function profile_getUserForm(XoopsUser &$user, ProfileProfile $profile = null, $
     $form = new Xoops\Form\ThemeForm($title, 'userinfo', $action, 'post', true);
 
     /* @var $profile_handler ProfileProfileHandler */
-    $profile_handler = $xoops->getModuleHandler('profile');
+    $profile_handler = \Xoops::getModuleHelper('profile')->getHandler('profile');
     // Dynamic fields
     if (!$profile) {
         $profile = $profile_handler->getProfile($user->getVar('uid'));
@@ -187,7 +189,7 @@ function profile_getUserForm(XoopsUser &$user, ProfileProfile $profile = null, $
     $elements[0][] = array('element' => new Xoops\Form\Hidden('op', 'save'), 'required' => 0);
     $weights[0][] = 0;
 
-    $cat_handler = $xoops->getModuleHandler('category');
+    $cat_handler = \Xoops::getModuleHelper('profile')->getHandler('category');
     $categories = array();
     $all_categories = $cat_handler->getObjects(null, true, false);
     $count_fields = count($fields);
