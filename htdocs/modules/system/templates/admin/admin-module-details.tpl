@@ -3,27 +3,17 @@
         <li role="presentation" class="active">
             <a href="#general" aria-controls="general" role="tab" data-toggle="tab">
                 <{xoicon icon="xicon-module"}>
-                General
+                <{$systemLang.general}>
             </a>
         </li>
-        <li role="presentation">
-            <a href="#database" aria-controls="database" role="tab" data-toggle="tab">
-                <{xoicon icon="xicon-database"}>
-                DB Tables
-            </a>
-        </li>
+        <{if $module->getInfo('blocks')}>
         <li role="presentation">
             <a href="#blocks" aria-controls="blocks" role="tab" data-toggle="tab">
                 <{xoicon icon="xicon-widgets"}>
                 Blocks
             </a>
         </li>
-        <li role="presentation">
-            <a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">
-                <{xoicon icon="xicon-tools"}>
-                Options
-            </a>
-        </li>
+        <{/if}>
     </ul>
 
     <div class="tab-content module-details">
@@ -106,7 +96,24 @@
             </div>
 
         </div>
-        <div role="tabpanel" class="tab-pane fade" id="database">Database</div>
-        <div role="tabpanel" class="tab-pane fade" id="blocks">Blocks</div>
-        <div role="tabpanel" class="tab-pane fade" id="settings">Settings</div>
+
+        <{if $module->getInfo('blocks')}>
+        <div role="tabpanel" class="tab-pane fade" id="blocks">
+
+            <p class="lead">
+                <{$systemLang.blocksDescription}>
+            </p>
+
+            <ul class="module-blocks">
+            <{foreach item=block from=$module->getInfo('blocks')}>
+                <li>
+                    <strong><{$block.name}></strong>
+                    <p><{$block.description}></p>
+                </li>
+            <{/foreach}>
+            </ul>
+
+        </div>
+        <{/if}>
+
     </div>

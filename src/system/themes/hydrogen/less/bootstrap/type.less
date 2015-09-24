@@ -171,39 +171,76 @@ mark,
   // Given the contrast here, this is the only class to have its color inverted
   // automatically.
   color: #fff;
-  .bg-variant(@brand-primary);
+  .bg-variant(@brand-primary, @btn-primary-color);
 }
 .bg-success {
-  .bg-variant(@state-success-bg);
+  .bg-variant(@brand-success, @btn-success-color);
+  color: @btn-success-color;
 }
 .bg-info {
-  .bg-variant(@state-info-bg);
+  .bg-variant(@brand-info, @btn-info-color);
+  color: @btn-info-color;
 }
 .bg-warning {
-  .bg-variant(@state-warning-bg);
+  .bg-variant(@brand-warning, @btn-warning-color);
+  color: @btn-warning-color;
 }
 .bg-danger {
-  .bg-variant(@state-danger-bg);
+  .bg-variant(@brand-danger, @btn-danger-color);
+  color: @btn-danger-color;
 }
 .bg-azure {
-  .bg-variant(@azure);
+  .bg-variant(@azure, @azure-color);
+  color: @azure-color;
 }
 .bg-sky {
-  .bg-variant(@sky);
+  .bg-variant(@sky, @sky-color);
+  color: @sky-color;
 }
 .bg-yellow {
-  .bg-variant(@yellow);
+  .bg-variant(@yellow, @yellow-color);
+  color: @yellow-color;
 }
 .bg-palegreen {
-  .bg-variant(@palegreen);
+  .bg-variant(@palegreen, @palegreen-color);
+  color: @palegreen-color;
 }
 .bg-pink {
-  .bg-variant(@pink);
+  .bg-variant(@pink, @pink-color);
+  color: @pink-color;
 }
 .bg-orange {
-  .bg-variant(@orange);
+  .bg-variant(@orange, @orange-color);
+  color: @orange-color;
 }
-
+.bg-midnight {
+  .bg-variant(@midnight, @midnight-color);
+  color: @midnight-color;
+}
+.bg-indigo {
+  .bg-variant(@indigo, @indigo-color);
+  color: @indigo-color;
+}
+.bg-brown {
+  .bg-variant(@brown, @brown-color);
+  color: @brown-color;
+}
+.bg-magenta {
+  .bg-variant(@magenta, @magenta-color);
+  color: @magenta-color;
+}
+.bg-green {
+  .bg-variant(@green, @green-color);
+  color: @green-color;
+}
+.bg-purple {
+  .bg-variant(@purple, @purple-color);
+  color: @purple-color;
+}
+.bg-alizarin {
+  .bg-variant(@alizarin, @alizarin-color);
+  color: @alizarin-color;
+}
 
 // Page header
 // -------------------------

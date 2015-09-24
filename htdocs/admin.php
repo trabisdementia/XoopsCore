@@ -154,12 +154,12 @@ if (!empty($xoopsorgnews)) {
     }
 
     // Last registered users
-    $users_handler = $xoops->getHandler('user');
+    $users_handler = $xoops->getHandlerMember();
     $criteria = new \Xoops\Core\Kernel\CriteriaCompo();
     $criteria->setSort('user_regdate');
     $criteria->setOrder('DESC');
     $criteria->setLimit('50');
-    $uobjects = $users_handler->getAll($criteria);
+    $uobjects = $users_handler->getUsers($criteria);
     $users = array();
     foreach( $uobjects as $user ){
         $users[] = array(

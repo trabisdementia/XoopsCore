@@ -66,7 +66,7 @@
         /*------------------------------------------------
                           MODULE DETAILS
         ------------------------------------------------*/
-        $("body").on('click', '.module-info', function(){
+        $("body").on('click', '[data-action="module-info"]', function(){
 
             $("body").xoPreload();
 
@@ -76,7 +76,7 @@
                 mid: $(this).data('mid')
             };
 
-            $.post('modules.php', params, function(response){
+            $.get('modules.php', params, function(response){
 
                 if(response.error){
                     xoops.modal.alert(response.message);

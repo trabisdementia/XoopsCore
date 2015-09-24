@@ -137,6 +137,7 @@
     width: 100%;
     padding: 10px;
     transition: ease all 500ms;
+    border-radius: @border-radius-base;
 
     @media(min-width: @screen-sm-min){
       width: 50%;
@@ -163,9 +164,11 @@
         position: relative;
         padding: 15px;
         background-color: #FFF;
+        text-align: center;
 
         @media(min-width: 451px) {
           padding-left: 122px;
+          text-align: left;
         }
 
         @media(min-width: @screen-sm-min) {
@@ -179,6 +182,11 @@
         > .module-image{
           padding: 15px;
           text-align: center;
+          color: @primary;
+
+          .xo-icon-svg{
+            color: @primary;
+          }
 
           @media(min-width: 451px) {
             position: absolute;
@@ -240,11 +248,30 @@
 
       > section{
         color: darken(@azure, 10%);
+
+        .module-card{
+          background-color: @primary!important;
+          color: @primary-color;
+
+          > .module-image {
+
+            .xo-icon-svg {
+              color: @primary-color;
+            }
+
+          }
+
+        }
+
         > .module-options{
-          background-color: @azure;
-          color: @azure-color;
+          background-color: @midnight;
+          color: @midnight-color;
           a{
-            color: @azure-color;
+            color: @midnight-color!important;
+
+            >.xo-icon-svg{
+              color: @midnight-color;
+            }
           }
         }
       }
@@ -255,9 +282,30 @@
 
 }
 
-/*------------------------------------------------
-                  MODULE DETAILS
-------------------------------------------------*/
+/*
+--------------------------------------
+ AVAILABLE MODULES
+--------------------------------------
+*/
+#available-modules{
+  display: none;
+}
+
+/*
+--------------------------------------
+ DOWNLOAD MODULES
+--------------------------------------
+*/
+#download-modules{
+  display: none;
+}
+
+
+/*
+------------------------------------------------
+ MODULE DETAILS
+------------------------------------------------
+*/
 .module-details{
 
   #general{
@@ -340,4 +388,56 @@
 
   }
 
+  // Blocks
+  #blocks{
+
+    .module-blocks{
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      counter-reset: blocks-list;
+
+      > li{
+        position: relative;
+        padding: 5px 0 5px 40px;
+
+        > p{
+          color: @gray-light;
+          margin: 0;
+          font-size: floor(@font-size-base * 0.85);
+        }
+
+        &:before{
+          counter-increment: blocks-list;
+          content: counter(blocks-list);
+          display: block;
+          position: absolute;
+          line-height: 24px;
+          width: 30px;
+          background-color: @orange;
+          position: absolute;
+          top: 5px; left: 0;
+          text-align: center;
+          color: @orange-color;
+          font-weight: bold;
+          border-radius: 3px;
+        }
+
+        @media(min-width: @screen-sm-min){
+          width: 50%;
+          float: left;
+        }
+      }
+
+      &:after{
+        content: '';
+        display: block;
+        clear:both;
+      }
+
+    }
+
+  }
+
 }
+

@@ -14,10 +14,13 @@
         </div>
 
     </div>
-    <div id="available">
-        Available Modules
+
+    <div id="available-modules">
+        <{foreach item=module from=$modules_available}>
+            <{$module->getInfo('name')}>
+        <{/foreach}>
     </div>
-    <div id="download">
+    <div id="download-modules">
         Download New Modules
     </div>
 

@@ -180,7 +180,7 @@ switch ($op) {
 
     case 'details':
 
-        $mid = Request::getInt('mid', 0, 'post');
+        $mid = Request::getInt('mid', 0, 'get');
         $ax = new \Xoops\Core\Helper\AjaxResponse();
 
         if (0 >= $mid){
@@ -210,7 +210,14 @@ switch ($op) {
             'author_aka'    => __('%s (AKA %s)', 'system'),
             'help'          => __('Help', 'system'),
             'web'           => __('Website', 'system'),
+            'general'       => __('General', 'system'),
+            'dbtables'      => __('DB Tables', 'system'),
+            'blocks'        => __('Blocks', 'system'),
+            'options'       => __('Options', 'system'),
+            'blocksDescription'       => __('Next are the blocks provided for module.', 'system'),
         ));
+
+
 
         $ax->response(array(
             'title'     => sprintf( __('%s Details', 'system'), $module->getVar('name') ),

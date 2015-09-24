@@ -1,7 +1,4 @@
 <div class="panel panel-default" id="table-installed-modules">
-    <div class="panel-body">
-        Este es un panel para mostrar algo
-    </div>
 
     <div class="table-responsive">
         <table class="table table-hover">
@@ -57,40 +54,40 @@
                         <{/if}>
                     </td>
                     <td class="text-center">
-                        <button type="button" class="btn btn-options-toggle"><{xoicon icon="xicon-more-vertical"}></button>
-                    </td>
-                </tr>
-                <tr class="xo-options-row">
-                    <td colspan="6">
                         <ul class="xo-item-options">
                             <li>
-                                <{if $module->getInfo('can_delete')}>
-                                    <a class="xo-tooltip" href="#" onclick="module_Uninstall(<{$module->getVar('mid')}>); return false;" title="<{translate key='A_UNINSTALL'}>">
-                                        <{xoicon icon="xicon-minus-circle-o" class="text-danger"}>
-                                    </a>
-                                <{/if}>
-                            </li>
-                            <li>
-                                <a data-action="update-module" href="#" data-id="<{$module->getVar('mid')}>" title="<{translate key='A_UPDATE'}>">
-                                    <{xoicon icon="xicon-refresh"}>
-                                </a>
-                            </li>
-                            <li>
-                                <{if $module->getInfo('can_disable')}>
-                                    <a id="active-table-<{$module->getVar('mid')}>" href="#" onclick="module_Disable(<{$module->getVar('mid')}>,'',''); return false;" title="<{if $module->getVar('isactive')}><{translate key='A_DISABLE'}><{else}><{translate key='A_ENABLE'}><{/if}>">
-                                        <{if $module->getVar('isactive')}>
-                                            <{xoicon icon="xicon-pause-circle" class="text-orange"}>
-                                        <{else}>
-                                            <{xoicon icon="xicon-play-circle" class="text-success"}>
-                                        <{/if}>
-                                    </a>
-                                <{/if}>
-                            </li>
-                            <li>
-                                <a href="#" class="module-info" data-mid="<{$module->getVar('mid')}>" title="<{translate key='DETAILS'}>">
+                                <a href="#" data-action="module-info" class="bg-info" data-mid="<{$module->getVar('mid')}>" title="<{translate key='DETAILS'}>">
                                     <{xoicon icon="xicon-info-circle"}>
                                 </a>
                             </li>
+                            <li>
+                                <a data-action="update-module" class="bg-palegreen" href="#" data-id="<{$module->getVar('mid')}>" title="<{translate key='A_UPDATE'}>">
+                                    <{xoicon icon="xicon-refresh"}>
+                                </a>
+                            </li>
+                            <{if $module->getInfo('can_disable')}>
+                            <li>
+                                    <a id="active-table-<{$module->getVar('mid')}>" class="<{if $module->getVar('isactive')
+                                    }>bg-warning<{else}>bg-success<{/if}>" href="#"
+                                       onclick="module_Disable(<{$module->getVar('mid')
+                                    }>,'','');
+                                            return false;" title="<{if $module->getVar('isactive')}><{translate key='A_DISABLE'}><{else}><{translate key='A_ENABLE'}><{/if}>">
+                                        <{if $module->getVar('isactive')}>
+                                            <{xoicon icon="xicon-pause-circle"}>
+                                        <{else}>
+                                            <{xoicon icon="xicon-play-circle"}>
+                                        <{/if}>
+                                    </a>
+                            </li>
+                            <{/if}>
+                            <{if $module->getInfo('can_delete')}>
+                            <li>
+                                <a class="xo-tooltip bg-danger" href="#" onclick="module_Uninstall(<{$module->getVar('mid')}>); return false;"
+                                   title="<{translate key='A_UNINSTALL'}>">
+                                    <{xoicon icon="xicon-minus-circle-o"}>
+                                </a>
+                            </li>
+                            <{/if}>
                         </ul>
                     </td>
                 </tr>
