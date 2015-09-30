@@ -30,12 +30,15 @@
 
 /*
 ------------------------------------------------
-                 XOOPS INTERFACE
+               1. XOOPS INTERFACE
 ------------------------------------------------     */
 (function() {
 
     this.xoops = {
 
+        /*------------------------------------------------
+                    1.1 GET DOM ELEMENT
+        ------------------------------------------------*/
         $: function(id){
             var elements = new Array();
 
@@ -56,7 +59,38 @@
         },
 
         /*------------------------------------------------
-                      1.1 BOOTBOX INCLUSION
+                        1.2 GET AN URL
+        ------------------------------------------------*/
+        /**
+         * Get the absolute or relative URL according to a given path
+         * @param url
+         * @param relative
+         * @returns {string}
+         */
+        url: function(url, relative){
+
+            // Get the hostname
+            var host = window.location.protocol + '//' + window.location.host;
+
+            if( window.location.port != ''){
+                host += ':' + window.location.port;
+            }
+
+            var baseUrl = xoURL.replace(host, '');
+
+            if(undefined == url){
+                return xoURL;
+            }
+
+            if(arguments.length == 1 || true != relative){
+                return xoURL + url;
+            }
+
+            return baseUrl + url;
+        },
+
+        /*------------------------------------------------
+                      1.3 BOOTBOX INCLUSION
         ------------------------------------------------*/
         /**
          * Shows a modal using bootbox
@@ -65,7 +99,7 @@
         modal: bootbox,
 
         /*------------------------------------------------
-                      1.2 PNOTIFY INCLUSION
+                      1.4 PNOTIFY INCLUSION
         ------------------------------------------------*/
         /**
          * This is a wrapper for PNotify plugin
@@ -74,10 +108,14 @@
          */
         notify: function(options){
 
+            //PNotify.prototype.options.styling = 'bootstrap3';
             return new PNotify(options);
 
         },
 
+        /*------------------------------------------------
+                    1.5 OPEN WINDOW
+        ------------------------------------------------*/
         openWindow: function(options){
 
             var defaults = {
@@ -110,7 +148,27 @@
             new_window.focus();
             return new_window;
 
-        }
+        },
+
+        /*------------------------------------------------
+                        1.6 AJAX RESPONSE
+        ------------------------------------------------*/
+        ajax: {
+
+            /* -------- 1.6.1 PROCESS AN AJAX RESPONSE -------- */
+
+            /*
+             * Response must be an standard JSON object with next components:
+             * type:     Can be 'error' when an error occurs in server or '' in other case
+             * message:  Must be an string. Generally this string will be shown on a alert dialog
+             * action:   The server can send a valid action to execute locally: reload, goto, function
+             */
+            retrieve: function(response){
+
+            }
+
+        },
+
     };
 
     /*------------------------------------------------

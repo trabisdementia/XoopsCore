@@ -53,7 +53,7 @@
                             <span class="author"><{$module->getInfo('author')|replace:",":'<br>'|replace:';':'<br>'}></span>
                         <{/if}>
                     </td>
-                    <td class="text-center">
+                    <td class="text-center" nowrap="nowrap">
                         <ul class="xo-item-options">
                             <li>
                                 <a href="#" data-action="module-info" class="bg-info" data-mid="<{$module->getVar('mid')}>" title="<{translate key='DETAILS'}>">
@@ -61,7 +61,8 @@
                                 </a>
                             </li>
                             <li>
-                                <a data-action="update-module" class="bg-palegreen" href="#" data-id="<{$module->getVar('mid')}>" title="<{translate key='A_UPDATE'}>">
+                                <a data-action="module-update" class="bg-palegreen" href="#" data-id="<{$module->getVar('mid')}>" title="<{translate
+                                key='A_UPDATE'}>">
                                     <{xoicon icon="xicon-refresh"}>
                                 </a>
                             </li>

@@ -61,6 +61,9 @@ switch ($op) {
         $xoops->theme()->addScript('modules/system/js/admin.js');
         $xoops->theme()->addScript('modules/system/js/module.min.js');
 
+        // Include Javascript language strings
+        include $xoops->path('/modules/system/include/js-lang.php');
+
         // Modules language
         $xoops->tpl()->assign('systemLang', array(
             'installed'     => __('Installed', 'system'),
@@ -71,6 +74,7 @@ switch ($op) {
             'version'       => 'Version: %s',
             'view_list'     => 'View as list',
             'view_cards'    => 'View as cards',
+            'module'    => 'Module',
         ));
 
         // Define Breadcrumb and tips
@@ -216,8 +220,6 @@ switch ($op) {
             'options'       => __('Options', 'system'),
             'blocksDescription'       => __('Next are the blocks provided for module.', 'system'),
         ));
-
-
 
         $ax->response(array(
             'title'     => sprintf( __('%s Details', 'system'), $module->getVar('name') ),
@@ -386,24 +388,15 @@ switch ($op) {
         break;
 
     case 'update':
+
+        $ax = new \Xoops\Core\Helper\AjaxResponse();
+
         $mid = $system->cleanVars($_POST, 'mid', 0, 'int');
         $module_handler = $xoops->getHandlerModule();
         $block_handler = $xoops->getHandlerBlock();
         $module = $module_handler->getById($mid);
-        // Call Header
-        $xoops->header('admin:system/system_modules_logger.tpl');
-        // Define Stylesheet
-        $xoops->theme()->addStylesheet('modules/system/css/admin.css');
-        // Define Breadcrumb and tips
-        $admin_page = new \Xoops\Module\Admin();
-        $admin_page->addBreadcrumbLink(SystemLocale::CONTROL_PANEL, \XoopsBaseConfig::get('url') . '/admin.php', true);
-        $admin_page->addBreadcrumbLink(
-            SystemLocale::MODULES_ADMINISTRATION,
-            $system->adminVersion('modulesadmin', 'adminpath')
-        );
-        $admin_page->addBreadcrumbLink(XoopsLocale::A_UPDATE);
-        $admin_page->renderBreadcrumb();
 
+        $xoops->theme();
         $ret = array();
         $system_module = new SystemModule();
         $ret = $system_module->update($module->getVar('dirname'));
@@ -414,12 +407,22 @@ switch ($op) {
             $xoops->tpl()->assign('from_link', $system->adminVersion('modulesadmin', 'adminpath'));
             $xoops->tpl()->assign('title', XoopsLocale::A_UPDATE);
             $xoops->tpl()->assign('log', $system_module->trace);
+            $xoops->tpl()->assign('systemLang', array(
+                'module'    => __('Module', 'system'),
+                'log'       => __('Log', 'system')
+            ));
         }
         $folder = array(1, 2, 3);
         $system->cleanCache($folder);
         //Set active modules in cache folder
         $xoops->setActiveModules();
         // Call Footer
-        $xoops->footer();
+
+        $ax->response(array(
+            'title'     => sprintf( __('%s Update Report', 'system'), $module->getVar('name') ),
+            'content'   => $xoops->tpl()->fetch('admin:system/admin-module-logger.tpl'),
+            'close'     => __('Close', 'system')
+        ));
+
         break;
 }

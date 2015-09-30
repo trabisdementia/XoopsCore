@@ -1,5 +1,22 @@
-<{include file="admin:system/admin_breadcrumb.tpl"}>
 <{if $module}>
+
+    <{* Log tabs *}>
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active">
+            <a href="#logger-module" aria-controls="general" role="tab" data-toggle="tab">
+                <{xoicon icon="xicon-info-circle"}>
+                <{$systemLang.module}>
+            </a>
+        </li>
+        <li role="presentation">
+            <a href="#logger-log" aria-controls="blocks" role="tab" data-toggle="tab">
+                <{xoicon icon="xicon-check-all"}>
+                <{$systemLang.log}>
+            </a>
+        </li>
+    </ul>
+    <{* //End log tabs *}>
+
 <div class="xo-module-logger outer">
     <div class="xo-window">
         <div class="xo-window-title">

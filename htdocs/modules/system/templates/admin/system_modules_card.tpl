@@ -33,7 +33,8 @@
                             icon="xicon-play-circle" class="text-success"}><{/if}>
                         </a>
                     <{/if}>
-                    <a href="#" onclick="module_Update(<{$module->getVar('mid')}>)" title="<{translate key='A_UPDATE'}> <{$module->getVar('name')}>">
+                    <a href="#" data-action="module-update" data-mid="<{$module->getVar('mid')}>" title="<{translate key='A_UPDATE'}>
+                    <{$module->getVar('name')}>">
                         <{xoicon icon="xicon-update" class="text-green"}>
                     </a>
 

@@ -50,8 +50,8 @@ class XoopsGuiHydrogen
         $xoops->theme()->addStylesheet( $res_url . '/css/xoops-icons.min.css' );
         $xoops->theme()->addStylesheet( $res_url . '/css/perfect-scrollbar.min.css' );
         $xoops->theme()->addStylesheet( $res_url . '/css/hydrogen.min.css' );
+        $xoops->theme()->headContent(null, '<script>var xoURL = "' . $xoops->url() . '";</script>');
 
-        $xoops->theme()->addBaseScriptAssets('@jquery');
         $xoops->theme()->addScript( $res_url . '/js/bootstrap.min.js' );
         //$xoops->theme()->addScript( $res_url . '/js/perfect-scrollbar.jquery.min.js' );
         $xoops->theme()->addScript( $res_url . '/js/js.ck.min.js' );

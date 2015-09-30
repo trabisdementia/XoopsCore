@@ -103,13 +103,60 @@
             return false;
         });
 
+        /*------------------------------------------------
+         UPDATE MODULE
+         ------------------------------------------------*/
+        $("body").on('click', '[data-action="module-update"]', function(){
+
+            if(confirm(xoLang.confirmUpdate)){
+                update_module_now($(this).data('id'));
+            }
+
+            return false;
+
+
+        });
+
     } );
 
-    /*------------------------------------------------
-                      UPDATE MODULE
-    ------------------------------------------------*/
-    function update_module(id){
-        alert(id);
+
+    function update_module_now(mid){
+
+        $("body").xoPreload();
+
+        var params = {
+            XOOPS_TOKEN_REQUEST: $("#xo-token").val(),
+            op: 'update',
+            mid: mid
+        };
+
+        $.post('modules.php', params, function(response){
+
+            if(response.type == 'error'){
+                xoops.modal.alert(response.message);
+                $("body").xoPreload({action: 'hide'});
+                return false;
+            }
+
+            xoops.modal.dialog({
+                title: response.title,
+                message: response.content,
+                color: 'primary',
+                id: 'module-details',
+                buttons: {
+                    main: {
+                        label: response.close,
+                        className: 'btn-primary'
+                    }
+                }
+            });
+
+            $("body").xoPreload({action: 'hide'});
+
+        },'json');
+
+        return false;
+
     }
 
     /*------------------------------------------------
@@ -154,7 +201,7 @@
     }
 
 
-    helperFunctions['update_module'] = update_module;
+    //helperFunctions['update-module'] = update_module_now;
 
 })(jQuery);
 
@@ -198,13 +245,6 @@ function module_Install(module){
     $('#install-dir').val(module)
     $('#install .modal-data').html($('#data-'+module+' .module_card').html());
     $('#install').show('slow');
-}
-
-function module_Update(id){
-    $('.modal-backdrop').show();
-    $('#update-id').val(id)
-    $('#update .modal-data').html($('#data-'+id+' .module_card').html());
-    $('#update').show('slow');
 }
 
 function module_Uninstall(id){

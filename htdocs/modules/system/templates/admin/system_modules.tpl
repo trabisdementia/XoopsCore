@@ -27,32 +27,6 @@
 
 </div>
 
-<div id="update" class="modal hide">
-    <div class="modal-header">
-        <a class="close" href="#" onclick="$('.modal-backdrop').click();">x</a>
-        <h3><span class="ico-arrow-refresh-small"></span>&nbsp;<{translate key='A_UPDATE'}></h3>
-    </div>
-    <div class="modal-body">
-        <p class="modal-data"></p>
-    </div>
-    <div class="modal-footer">
-        <form id="update-form" method="post" action="admin.php">
-            <a class="btn" href="javascript:" onclick="$('.modal-backdrop').click();">
-                <span class="ico-cross"></span>
-                <{translate key='A_CANCEL'}>
-            </a>
-            <a class="btn btn-primary" href="javascript:;" onclick="$('#update-form').submit()">
-                <span class="ico-arrow-refresh-small"></span>
-                <{translate key='A_UPDATE'}>
-            </a>
-            <{securityToken}>
-            <input type="hidden" name="fct" value="modulesadmin" />
-            <input type="hidden" name="op" value="update" />
-            <input id="update-id" type="hidden" name="mid" value="" />
-        </form>
-    </div>
-</div>
-
 <div id="uninstall" class="modal hide">
     <div class="modal-header">
         <a class="close" href="#" onclick="$('.modal-backdrop').click();">x</a>

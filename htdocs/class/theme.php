@@ -373,15 +373,13 @@ class XoopsTheme
             $this->template->assign("xoops_$name", $xoops->getConfig($name));
         }
 
-        // Load global javascript
-        $this->addScript('include/xoops.min.js');
         //$this->loadLocalization();
         list($cssAssets, $jsAssets) = $this->getLocalizationAssets();
         if (!empty($cssAssets)) {
             $this->addBaseStylesheetAssets($cssAssets);
         }
-        $this->addBaseScriptAssets('include/xoops.js');
         $this->addBaseScriptAssets('@jquery');
+        $this->addBaseScriptAssets('include/xoops.min.js');
         //$this->addBaseScriptAssets('media/bootstrap/js/bootstrap.min.js');
         if (!empty($jsAssets)) {
             $this->addBaseScriptAssets($jsAssets);
