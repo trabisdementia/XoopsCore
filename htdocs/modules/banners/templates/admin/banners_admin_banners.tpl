@@ -26,22 +26,21 @@
                     <td class="text-center"><{$banneritem.clicks}></td>
                     <td class="text-center"><{$banneritem.percent}>%</td>
                     <td class="text-center"><{$banneritem.name}></td>
-                    <td class="text-center"><button type="button" class="btn btn-options-toggle"><{xoicon icon="xicon-more-vertical"}></button></td>
-                </tr>
-                <tr class="xo-options-row">
-                    <td colspan="6">
+                    <td class="text-center" nowrap="nowrap">
                         <ul class="xo-item-options">
-                            <li><a href="#" onclick="display_dialog(<{$banneritem.bid}>, true, true, 'slide', 'slide', 200, 520);"><{xoicon icon="xicon-search"}> <{$smarty.const._AM_BANNERS_VIEW}></a></li>
                             <li>
-                                <a href="banners.php?op=edit&amp;bid=<{$banneritem.bid}>">
-                                    <{xoicon icon="xicon-pencil"}>
-                                    <{$smarty.const._AM_BANNERS_EDIT}>
+                                <a href="#" class="bg-info" title="<{$smarty.const._AM_BANNERS_VIEW}>" onclick="display_dialog(<{$banneritem.bid}>, true, true, 'slide', 'slide', 200, 520);">
+                                    <{xoicon icon="xicon-search"}>
                                 </a>
                             </li>
                             <li>
-                                <a href="banners.php?op=delete&amp;bid=<{$banneritem.bid}>" class="text-danger">
-                                    <{xoicon icon="xicon-times" class="text-danger"}>
-                                    <{$smarty.const._AM_BANNERS_DELETE}>
+                                <a href="banners.php?op=edit&amp;bid=<{$banneritem.bid}>" class="bg-warning" title="<{$smarty.const._AM_BANNERS_EDIT}>">
+                                    <{xoicon icon="xicon-pencil"}>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="banners.php?op=delete&amp;bid=<{$banneritem.bid}>" class="bg-danger" title="<{$smarty.const._AM_BANNERS_DELETE}>">
+                                    <{xoicon icon="xicon-times"}>
                                 </a>
                             </li>
                         </ul>
