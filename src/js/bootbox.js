@@ -82,7 +82,9 @@
     // show the dialog immediately by default
     show: true,
     // dialog container
-    container: "body"
+    container: "body",
+    // modal ID
+    id: ''
   };
 
   // our public object; augmented after our private API
@@ -700,6 +702,13 @@
 
         dialog.trigger("escape.close.bb");
       });
+    }
+
+    /**
+     * Set modal ID
+     */
+    if( options.id != '' ){
+      dialog.attr('id', options.id);
     }
 
     dialog.on("escape.close.bb", function(e) {

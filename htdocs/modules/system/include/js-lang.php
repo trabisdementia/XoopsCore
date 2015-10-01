@@ -27,7 +27,8 @@ ob_start();
     Language strings used for XOOPS
     */
     var xoLang = {
-        confirmUpdate: '<?php _e('Do you really want to update selected module?', 'system'); ?>'
+        confirmUpdate: '<?php _e('Do you really want to update selected module?', 'system'); ?>',
+        close: '<?php _e('Close', 'system'); ?>'
     };
 </script>
 

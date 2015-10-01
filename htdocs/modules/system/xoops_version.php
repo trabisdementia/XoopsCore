@@ -37,7 +37,7 @@ $modversion['dirname']     = 'system';
 $modversion['version']     = array(
     'major'     => '2',
     'minor'     => '1',
-    'minor'     => '1',
+    'revision'  => '1',
     'stage'     => 'ALPHA'
 );
 

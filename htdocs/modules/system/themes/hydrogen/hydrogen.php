@@ -61,6 +61,9 @@ class XoopsGuiHydrogen
         $xoops->tpl()->assign('xoops_url', rtrim($xoops->url(), '/'));
         $hydrogen->add_data('url', $res_url);
 
+        // Include Javascript language strings
+        include $xoops->path('/modules/system/include/js-lang.php');
+
         $avatar_provider = $xoops->service('Avatar');
         $admin_data = array(
             'name'      => $xoops->user->getVar('name'),

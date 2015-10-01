@@ -132,8 +132,7 @@
 
         $.post('modules.php', params, function(response){
 
-            if(response.type == 'error'){
-                xoops.modal.alert(response.message);
+            if(!xoops.AJAX.retrieve(response)){
                 $("body").xoPreload({action: 'hide'});
                 return false;
             }
@@ -142,10 +141,10 @@
                 title: response.title,
                 message: response.content,
                 color: 'primary',
-                id: 'module-details',
+                id: 'module-logger',
                 buttons: {
                     main: {
-                        label: response.close,
+                        label: response.close != undefined ? response.close : xoLang.close,
                         className: 'btn-primary'
                     }
                 }

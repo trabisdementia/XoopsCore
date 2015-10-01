@@ -34,6 +34,15 @@ $modversion['image']          = 'images/logo.png';
 $modversion['icon']           = 'xicon-irradescent';
 $modversion['dirname']        = 'banners';
 
+$modversion['author']      = array(
+    array(
+        'name'      => 'Mage Gregory',
+        'email'     => '',
+        'aka'       => 'Mage',
+        'url'       => 'http://xoops.org'
+    )
+);
+
 //about
 $modversion['release_date']        = '2011/01/02';
 $modversion['module_website_url']  = 'http://www.xoops.org/';

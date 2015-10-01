@@ -37,8 +37,38 @@ class AjaxResponse
         \DebugbarLogger::getInstance()->quiet();
     }
 
-    public static function response($data)
+    /**
+     * Sends a JSON response to client. You must provide at least three basic values with data:
+     * 'title', 'content' and 'type'.
+     *
+     * <p>Other supported values are:</p>
+     *
+     * <ul><li><strong>'goto'</strong>: redirects client browser to a specified location</li>
+     * <li><strong>'action'</strong>: run some javascript function in client</li>
+     * <li><strong>'close'</strong>: Stablish the close button when a dialog will be open in client</li>
+     * <li><strong>'reload'</strong>: Refresh the current client page</li>
+     * <li><strong>'closeModal'</strong>: Close a modal box. Must contain the modal box ID</li></ul>
+     *
+     * @param array $data
+     * @param bool $token Send a new security token?
+     */
+    public static function response(array $data, $token = true)
     {
+        global $xoopsSecurity;
+
+        // Default values for data
+        $default = array(
+            'type' => 'success',
+            'message' => '',
+            'title' => ''
+        );
+
+        $data = Utilities::mergeAttributes($data, $default);
+
+        if ($token) {
+            $data['token'] = $xoopsSecurity->createToken();
+        }
+
         echo json_encode($data);
         exit();
     }

@@ -41,7 +41,12 @@ $module = $system->cleanVars($_REQUEST, 'module', '', 'string');
 
 if (in_array($op, array('install', 'update', 'uninstall'))) {
     if (!$xoops->security()->check()) {
-        $op = 'list';
+        $ax = new \Xoops\Core\Helper\AjaxResponse();
+        $ax->response(array(
+            'type'      => 'error',
+            'message'   => __('Session token invalid!', 'system'),
+            'reload'    => 1
+        ));
     }
 }
 $myts = MyTextsanitizer::getInstance();
@@ -60,9 +65,6 @@ switch ($op) {
         $xoops->theme()->addScript('media/jquery/plugins/jquery.jeditable.js');
         $xoops->theme()->addScript('modules/system/js/admin.js');
         $xoops->theme()->addScript('modules/system/js/module.min.js');
-
-        // Include Javascript language strings
-        include $xoops->path('/modules/system/include/js-lang.php');
 
         // Modules language
         $xoops->tpl()->assign('systemLang', array(
@@ -176,7 +178,7 @@ switch ($op) {
 
         $ax = new \Xoops\Core\Helper\AjaxResponse();
         $ax->response(array(
-            'error'     => false,
+            'type'      => 'success',
             'content'   => $content,
             'mode'      => $mode
         ));
@@ -189,7 +191,7 @@ switch ($op) {
 
         if (0 >= $mid){
             $ax->response(array(
-                'error'     => 1,
+                'type'      => 'error',
                 'message'   => __('No module ID has been provided', 'system')
             ));
         }
@@ -403,13 +405,16 @@ switch ($op) {
         $xoops->tpl()->assign('module', $ret);
         if ($ret) {
             $xoops->tpl()->assign('install', 1);
-            $xoops->tpl()->assign('from_title', SystemLocale::MODULES_ADMINISTRATION);
-            $xoops->tpl()->assign('from_link', $system->adminVersion('modulesadmin', 'adminpath'));
+            $xoops->tpl()->assign('from_title', __('Modules', 'system'));
+            $xoops->tpl()->assign('from_link', 'modules.php');
             $xoops->tpl()->assign('title', XoopsLocale::A_UPDATE);
             $xoops->tpl()->assign('log', $system_module->trace);
             $xoops->tpl()->assign('systemLang', array(
                 'module'    => __('Module', 'system'),
-                'log'       => __('Log', 'system')
+                'log'       => __('Log', 'system'),
+                'blocks'    => __('Blocks', 'system'),
+                'settings'  => __('Preferences', 'system'),
+                'dashboard'  => __('Dashboard', 'system')
             ));
         }
         $folder = array(1, 2, 3);
