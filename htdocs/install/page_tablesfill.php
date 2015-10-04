@@ -13,7 +13,7 @@
  * Installer db inserting page
  *
  * @copyright   XOOPS Project (http://xoops.org)
- * @license     http://www.fsf.org/copyleft/gpl.html GNU General Public License (GPL)
+ * @license     GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
  * @package     installer
  * @since       2.3.0
  * @author      Haruki Setoyama  <haruki@planewave.org>
@@ -21,7 +21,6 @@
  * @author      Skalpa Keo <skalpa@xoops.org>
  * @author      Taiwen Jiang <phppp@users.sourceforge.net>
  * @author      DuGris (aka L. JEN) <dugris@frxoops.org>
- * @version     $Id$
  */
 
 require_once __DIR__ . '/include/common.inc.php';
@@ -42,7 +41,7 @@ $xoops->setConfig('locale', $language);
 $xoops->loadLocale();
 
 $dbm = $xoops->db();
-$count = $dbm->fetchColumn('SELECT COUNT(*) FROM ' . $dbm->prefix("users"));
+$count = $dbm->fetchColumn('SELECT COUNT(*) FROM ' . $dbm->prefix('system_user'));
 $process = $count ? false : true;
 $update = false;
 
@@ -57,7 +56,7 @@ $temp = password_hash($adminpass, PASSWORD_DEFAULT);
 $regdate = time();
 if ($process) {
     $dbm->insertPrefix(
-        'users',
+        'system_user',
         array(
             //'uid'             => 1,             // mediumint(8) unsigned NOT NULL auto_increment,
             'name'            => '',            // varchar(60) NOT NULL default '',
@@ -95,7 +94,7 @@ if ($process) {
     $content = '<div class="x2-note successMsg">' . DATA_INSERTED . '</div>';
 } elseif ($update) {
     $dbm->updatePrefix(
-        'user',
+        'system_user',
         array(
             'uname' => $adminname,
             'email' => $adminmail,
