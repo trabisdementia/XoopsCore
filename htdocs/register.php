@@ -16,7 +16,7 @@ use Xoops\Core\Kernel\Handlers\XoopsUser;
  * XOOPS Register
  *
  * @copyright       XOOPS Project (http://xoops.org)
- * @license         http://www.fsf.org/copyleft/gpl.html GNU General Public License (GPL)
+ * @license         GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
  * @package         core
  * @since           2.0.0
  * @author          Kazumi Ono <webmaster@myweb.ne.jp>
@@ -142,26 +142,26 @@ switch ($op) {
         if (empty($stop)) {
             $member_handler = $xoops->getHandlerMember();
             $newuser = $member_handler->createUser();
-            $newuser->setVar('user_viewemail', $user_viewemail, true);
-            $newuser->setVar('uname', $uname, true);
-            $newuser->setVar('email', $email, true);
+            $newuser->setVar('user_viewemail', $user_viewemail);
+            $newuser->setVar('uname', $uname);
+            $newuser->setVar('email', $email);
             if ($url != '') {
-                $newuser->setVar('url', $xoops->formatURL($url), true);
+                $newuser->setVar('url', $xoops->formatURL($url));
             }
-            $newuser->setVar('user_avatar', 'blank.gif', true);
+            $newuser->setVar('user_avatar', 'blank.gif');
             $actkey = substr(md5(uniqid(mt_rand(), 1)), 0, 8);
-            $newuser->setVar('actkey', $actkey, true);
-            $newuser->setVar('pass', password_hash($pass, PASSWORD_DEFAULT), true);
-            $newuser->setVar('timezone_offset', $timezone_offset, true);
-            $newuser->setVar('user_regdate', time(), true);
-            $newuser->setVar('uorder', $xoops->getConfig('com_order'), true);
-            $newuser->setVar('umode', $xoops->getConfig('com_mode'), true);
-            $newuser->setVar('theme', $xoops->getConfig('theme_set'), true);
-            $newuser->setVar('user_mailok', $user_mailok, true);
+            $newuser->setVar('actkey', $actkey);
+            $newuser->setVar('pass', password_hash($pass, PASSWORD_DEFAULT));
+            $newuser->setVar('timezone_offset', $timezone_offset);
+            $newuser->setVar('user_regdate', time());
+            $newuser->setVar('uorder', $xoops->getConfig('com_order'));
+            $newuser->setVar('umode', $xoops->getConfig('com_mode'));
+            $newuser->setVar('theme', $xoops->getConfig('theme_set'));
+            $newuser->setVar('user_mailok', $user_mailok);
             if ($xoopsConfigUser['activation_type'] == 1) {
-                $newuser->setVar('level', 1, true);
+                $newuser->setVar('level', 1);
             } else {
-                $newuser->setVar('level', 0, true);
+                $newuser->setVar('level', 0);
             }
             if (!$member_handler->insertUser($newuser)) {
                 echo XoopsLocale::E_USER_NOT_REGISTERED;

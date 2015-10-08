@@ -1,6 +1,8 @@
 <?php
 require_once(dirname(__FILE__).'/../../../init_new.php');
 
+use Xoops\Core\Events;
+
 /**
 * PHPUnit special settings :
 * @backupGlobals disabled
@@ -8,35 +10,80 @@ require_once(dirname(__FILE__).'/../../../init_new.php');
 */
 class EventsTest extends \PHPUnit_Framework_TestCase
 {
-    protected $myclass = 'Xoops\Core\Events';
+    protected $myclass = '\Xoops\Core\Events';
+    public $dummy_result = null;
 
-	public function test_getInstance()
-	{
-		$class = $this->myclass;
-		$instance = $class::getInstance();
-		$this->assertInstanceOf($class, $instance);
+    /**
+     * @var Class
+     */
+    protected $object;
 
-		$instance1 = $class::getInstance();
-		$this->assertSame($instance1, $instance);
-	}
+    /**
+     * Sets up the fixture, for example, opens a network connection.
+     * This method is called before a test is executed.
+     */
+    protected function setUp()
+    {
+        $class = $this->myclass;
+        $this->object = $class::getInstance();
+    }
 
-	public function test_triggerEvent()
-	{
-        $this->markTestIncomplete('to do');
-	}
+    /**
+     * Tears down the fixture, for example, closes a network connection.
+     * This method is called after a test is executed.
+     */
+    protected function tearDown()
+    {
+    }
 
-	public function test_addListener()
-	{
-        $this->markTestIncomplete('to do');
-	}
+    public function test_getInstance()
+    {
+        $class = $this->myclass;
+        $instance = $class::getInstance();
+        $this->assertInstanceOf($class, $instance);
 
-	public function test_getEvents()
-	{
-        $this->markTestIncomplete('to do');
-	}
+        $instance1 = $class::getInstance();
+        $this->assertSame($instance1, $instance);
+    }
 
-	public function test_hasListeners()
-	{
-        $this->markTestIncomplete('to do');
-	}
+    public function test_initializeListeners()
+    {
+        $instance = $this->object;
+
+        $result = $instance->getEvents();
+        $this->assertTrue(is_array($result));
+    }
+
+    public function dummy_callback($arg)
+    {
+        $this->dummy_result = $arg;
+    }
+
+    public function test_triggerEvent()
+    {
+        $instance = $this->object;
+
+        $callback = array($this,'dummy_callback');
+        $name = 'dummy.listener';
+        $instance->addListener($name, $callback);
+
+        $instance->triggerEvent('dummy.listener', array(1,2));
+        $this->assertSame(array(1,2), $this->dummy_result);
+    }
+
+    public function test_getEvents()
+    {
+        // see test_initializeListeners
+    }
+
+    public function test_hasListeners()
+    {
+        $instance = $this->object;
+
+        $result = $instance->hasListeners('listener_doesnt_exist');
+        $this->assertFalse($result);
+
+        $result = $instance->hasListeners('core.header.checkcache');
+        $this->assertTrue($result);
+    }
 }

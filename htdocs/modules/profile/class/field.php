@@ -62,17 +62,19 @@ class ProfileField extends XoopsObject
      *
      * @param string $key
      * @param mixed $value
-     * @param bool $not_gpc
+     *
      * @return void
+     *
+     * @todo evaluate removing this. New considerations: full UTF-8 system, new Dtype::TYPE_JSON
      */
-    public function setVar($key, $value, $not_gpc = false)
+    public function setVar($key, $value)
     {
         if ($key == 'field_options' && is_array($value)) {
             foreach (array_keys($value) as $idx) {
                 $value[$idx] = base64_encode($value[$idx]);
             }
         }
-        parent::setVar($key, $value, $not_gpc);
+        parent::setVar($key, $value);
     }
 
     /**
@@ -200,11 +202,11 @@ class ProfileField extends XoopsObject
                 break;
 
             case "rank":
-                if ($xoops->isActiveModule('userrank')) {
+                $ranklist = $xoops->service('userrank')->getAssignableUserRankList()->getValue();
+                if ($ranklist !== null) {
                     $element = new Xoops\Form\Select($caption, $name, $value);
-                    $ranks = XoopsLists::getUserRankList();
                     $element->addOption(0, "--------------");
-                    $element->addOptionArray($ranks);
+                    $element->addOptionArray($ranklist);
                 } else {
                     $element = new Xoops\Form\Hidden($name, $value);
                 }
@@ -272,8 +274,9 @@ class ProfileField extends XoopsObject
             case "radio":
                 $options = $this->getVar('field_options');
                 if (isset($options[$value])) {
-                    $value = htmlspecialchars(defined($options[$value]) ? constant($options[$value])
-                                                      : $options[$value]);
+                    $value = htmlspecialchars(
+                        defined($options[$value]) ? constant($options[$value]) : $options[$value]
+                    );
                 } else {
                     $value = "";
                 }
@@ -287,8 +290,9 @@ class ProfileField extends XoopsObject
                 if (count($options) > 0) {
                     foreach (array_keys($options) as $key) {
                         if (in_array($key, $value)) {
-                            $ret[$key] = htmlspecialchars(defined($options[$key]) ? constant($options[$key])
-                                                                  : $options[$key]);
+                            $ret[$key] = htmlspecialchars(
+                                defined($options[$key]) ? constant($options[$key]) : $options[$key]
+                            );
                         }
                     }
                 }
@@ -343,7 +347,7 @@ class ProfileField extends XoopsObject
                 $userrank = $user->rank();
                 $user_rankimage = "";
                 if (isset($userrank['image']) && $userrank['image'] != "") {
-                    $user_rankimage = '<img src="' . \XoopsBaseConfig::get('uploads-url') . '/' . $userrank['image'] . '" alt="' . $userrank['title'] . '" /><br />';
+                    $user_rankimage = '<img src="' . $userrank['image'] . '" alt="' . $userrank['title'] . '" /><br />';
                 }
                 return $user_rankimage . $userrank['title'];
                 break;
@@ -413,7 +417,6 @@ class ProfileField extends XoopsObject
      */
     public function getUserVars()
     {
-        $xoops = Xoops::getInstance();
         /* @var $profile_handler ProfileProfileHandler */
         $profile_handler = \Xoops::getModuleHelper('profile')->getHandler('profile');
         return $profile_handler->getUserVars();
@@ -466,10 +469,9 @@ class ProfileFieldHandler extends XoopsPersistableObjectHandler
      */
     public function insertFields(XoopsObject $obj, $force = false)
     {
-        $xoops = Xoops::getInstance();
         $profile_handler = \Xoops::getModuleHelper('profile')->getHandler('profile');
         $obj->setVar('field_name', str_replace(' ', '_', $obj->getVar('field_name')));
-        $obj->cleanVars(false); //Don't quote
+        $obj->cleanVars(); //Don't quote
         switch ($obj->getVar('field_type')) {
             case "datetime":
             case "date":

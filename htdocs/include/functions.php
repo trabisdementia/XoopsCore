@@ -16,6 +16,8 @@
  * @version         $Id$
  */
 
+use Xoops\Core\Handler\Factory;
+
 /**
  * Translate a text and print it
  * @param string Text to translate
@@ -48,8 +50,8 @@ function xoops_getHandler($name, $optional = false)
 {
     $xoops = Xoops::getInstance();
     $xoops->deprecated('xoops_getHandler(\'' . $name . '\') is deprecated. See how to replace it in file ' . __FILE__ . ' line ' . __LINE__);
-    $method = 'getHandler' . ucfirst(strtolower(trim($name)));
-    return $xoops->$method($optional);
+    $handler = Factory::newSpec()->scheme('kernel')->name($name)->optional((bool) $optional)->build();
+    return $handler;
 }
 
 /**
@@ -69,7 +71,10 @@ function xoops_getModuleHandler($name = null, $module_dir = null, $optional = fa
 /**
  * @deprecated
  * @param string $name Name of class to be loaded
- * @param string $type domain of the class, potential values: core - locaded in /class/; framework - located in /Frameworks/; other - module class, located in /modules/[$type]/class/
+ * @param string $type domain of the class, potential values:
+ *                       core - located in /class/;
+ *                       framework - located in /Frameworks/;
+ *                       other - module class, located in /modules/[$type]/class/
  * @return boolean
  */
 function xoops_load($name, $type = 'core')
@@ -342,7 +347,7 @@ function xoops_getrank($rank_id = 0, $posts = 0)
 {
     $xoops = Xoops::getInstance();
     $xoops->deprecated(__FUNCTION__ . ' is deprecated since XOOPS 2.6.0. See how to replace it in file ' . __FILE__ . ' line ' . __LINE__);
-    return $xoops->getRank($rank_id, $posts);
+    return $xoops->service('userrank')->getUserRank(['rank' => $rank_id, 'posts' => $posts, 'uid' => 0])->getValue();
 }
 
 /**
@@ -613,12 +618,12 @@ if (!defined('ENT_SUBSTITUTE')) {
  * the ENT_SUBSTITUTE flag if it is available. This gives the optimal features
  * for 5.3 and in >5.4
  *
- * @param string $string              string to be encoded
- * @param integer  $dummy_flags         ignored - for call compatibility only
- * @param mixed  $dummy_encoding      ignored - for call compatibility only
- * @param mixed  $dummy_double_encode ignored - for call compatibility only
+ * @param string  $string              string to be encoded
+ * @param integer $dummy_flags         ignored - for call compatibility only
+ * @param mixed   $dummy_encoding      ignored - for call compatibility only
+ * @param mixed   $dummy_double_encode ignored - for call compatibility only
  *
- * @return string with any charachters with special significance in HTML converted to entities
+ * @return string with any characters with special significance in HTML converted to entities
  */
 function xhtmlspecialchars($string, $dummy_flags = 0, $dummy_encoding = '', $dummy_double_encode = true)
 {

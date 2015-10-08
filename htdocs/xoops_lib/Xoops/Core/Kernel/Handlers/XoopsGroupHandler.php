@@ -27,19 +27,22 @@ use Xoops\Core\Kernel\XoopsPersistableObjectHandler;
  * This class is responsible for providing data access mechanisms to the data source
  * of XOOPS group class objects.
  *
- * @author Kazumi Ono <onokazu@xoops.org>
- * @copyright copyright (c) 2000-2003 XOOPS.org
- * @package kernel
+ * @category  Xoops\Core\Kernel\Handlers\XoopsGroupHandler
+ * @package   Xoops\Core\Kernel
+ * @author    Kazumi Ono <onokazu@xoops.org>
+ * @copyright 2000-2015 XOOPS Project (http://xoops.org)
+ * @license   GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
+ * @link      http://xoops.org
  */
 class XoopsGroupHandler extends XoopsPersistableObjectHandler
 {
     /**
      * Constructor
      *
-     * @param Connection|null $db {@link Connection}
+     * @param Connection|null $db database
      */
     public function __construct(Connection $db = null)
     {
-        parent::__construct($db, 'groups', '\\Xoops\\Core\\Kernel\\Handlers\\XoopsGroup', 'groupid', 'name');
+        parent::__construct($db, 'system_group', '\Xoops\Core\Kernel\Handlers\XoopsGroup', 'groupid', 'name');
     }
 }

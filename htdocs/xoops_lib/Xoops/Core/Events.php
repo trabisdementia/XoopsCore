@@ -32,7 +32,7 @@ class Events
     protected $preloadList = array();
 
     /**
-     * @var array $eventListeners - $eventListeners['eventname'][]=Closure
+     * @var array $eventListeners - $eventListeners['eventName'][]=Closure
      * key is event name, value is array of callables
      */
     protected $eventListeners = array();
@@ -59,7 +59,8 @@ class Events
         static $instance = false;
 
         if (!$instance) {
-            $instance = new \Xoops\Core\Events();
+            $instance = new Events();
+            $instance->initializeListeners();
         }
 
         return $instance;
@@ -68,16 +69,19 @@ class Events
     /**
      * initializePreloads - Initialize listeners with preload mapped events.
      *
-     * We supress event processing during establishing listener map. A a cache miss (on
+     * We suppress event processing during establishing listener map. A a cache miss (on
      * system_modules_active, for example) triggers regeneration, which may trigger events
      * that listeners are not prepared to handle. In such circumstances, module level class
      * mapping will not have been done.
      *
      * @return void
      */
-    public function initializeListeners()
+    protected function initializeListeners()
     {
         $this->eventsEnabled = false;
+        // clear state in case this is invoked more than once
+        $this->preloadList = array();
+        $this->eventListeners = array();
         $this->setPreloads();
         $this->setEvents();
         $this->setThemesPreloads();
@@ -194,8 +198,10 @@ class Events
      */
     protected function setEvents()
     {
+        $xoops = \Xoops::getInstance();
         foreach ($this->preloadList as $preload) {
-            include_once \XoopsBaseConfig::get('root-path') . '/modules/' . $preload['module'] . '/preloads/' . $preload['file']. '.php';
+            $path = $xoops->path('modules/' . $preload['module'] . '/preloads/' . $preload['file']. '.php');
+            include_once $path;
             $class_name = ucfirst($preload['module'])
                 . ($preload['file'] == 'preload' ? '' : ucfirst($preload['file']) )
                 . 'Preload';
@@ -308,7 +314,8 @@ class Events
 
     /**
      * hasListeners - for debugging only, return list of event listeners
-     * @param type $eventName event name
+     *
+     * @param string $eventName event name
      *
      * @return boolean true if one or more listeners are registered for the event
      */
