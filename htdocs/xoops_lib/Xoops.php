@@ -1582,7 +1582,7 @@ class Xoops
         $xoopsThemeFactory = null;
         $xoopsThemeFactory = new XoopsThemeFactory();
         $xoopsThemeFactory->allowedThemes = $this->getConfig('theme_set_allowed');
-        $xoopsThemeFactory->defaultTheme = $theme;echo $theme; die();
+        $xoopsThemeFactory->defaultTheme = $theme;
         $this->setTheme($xoopsThemeFactory->createInstance(array(
             "plugins" => array(), "renderBanner" => false
         )));
