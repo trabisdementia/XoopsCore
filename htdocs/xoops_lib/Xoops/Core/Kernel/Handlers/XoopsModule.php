@@ -90,6 +90,7 @@ class XoopsModule extends XoopsObject
         if (!isset($this->modinfo)) {
             $this->loadInfo($dirname, $verbose);
         }
+
         $this->setVar('name', $this->modinfo['name'], true);
         //$this->setVar('version', (int)(100 * ($this->modinfo['version'] + 0.001)), true);
         $this->setVar('version', $this->modinfo['version'], true);
