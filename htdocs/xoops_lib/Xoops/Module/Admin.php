@@ -424,6 +424,7 @@ class Admin
         $xoops = \Xoops::getInstance();
         $this->addBodyClass('xo-admin-index');
         $this->module->loadAdminMenu();
+
         foreach ($this->module->adminmenu as $menu){
             $is_absolute = preg_match('/^[(https?|ftps?|ed2k)\:\/\/|\/]/i', $menu['link']);
             $this->addTool(
@@ -590,10 +591,7 @@ class Admin
                         . $this->module->adminmenu[$i]['icon']
                     );
                 } else {
-                    $this->module->adminmenu[$i]['icon'] = $xoops->url(
-                        "/modules/" . $xoops->module->dirname() . "/icons/32/"
-                        . $this->module->adminmenu[$i]['icon']
-                    );
+                    $this->module->adminmenu[$i]['icon'] = $xoops->url("modules/" . $xoops->module->dirname() . "/icons/32/". $this->module->adminmenu[$i]['icon']);
                 }
                 $xoops->tpl()->assign('xo_sys_navigation', $this->module->adminmenu[$i]);
                 $ret[] = $xoops->tpl()->fetch($this->getTplPath('nav'));*/
