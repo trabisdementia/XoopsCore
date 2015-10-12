@@ -13,21 +13,25 @@ namespace Xoops\Core\Kernel\Dtype;
 
 use Xoops\Core\Kernel\XoopsObject;
 use Xoops\Core\Kernel\Dtype;
+use Money\Money;
+use Money\Currency;
 
 /**
- * DtypeJson
+ * DtypeMoney
  *
- * @category  Xoops\Core\Kernel\Dtype\DtypeJson
+ * @category  Xoops\Core\Kernel\Dtype\DtypeMoney
  * @package   Xoops\Core\Kernel
  * @author    Richard Griffith <richard@geekwright.com>
  * @copyright 2015 XOOPS Project (http://xoops.org)
  * @license   GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
  * @link      http://xoops.org
  */
-class DtypeJson extends DtypeAbstract
+class DtypeMoney extends DtypeAbstract
 {
     /**
      * getVar get variable prepared according to format
+     *
+     * Recommended database column is varchar(32) or larger
      *
      * @param XoopsObject $obj    object containing variable
      * @param string      $key    name of variable
@@ -37,14 +41,14 @@ class DtypeJson extends DtypeAbstract
      */
     public function getVar(XoopsObject $obj, $key, $format)
     {
-        $value = $obj->vars[$key]['value'];
+        $storedValue = $obj->vars[$key]['value'];
         switch (strtolower($format)) {
             case Dtype::FORMAT_NONE:
             case 'n':
-                break;
+            case 's':
+            case Dtype::FORMAT_SHOW:
             default:
-                $decoded = json_decode($value, true);
-                $value = (false === $decoded) ? null : $decoded;
+                $value = $this->unserializeJson($storedValue);
                 break;
         }
         return $value;
@@ -61,16 +65,39 @@ class DtypeJson extends DtypeAbstract
     public function cleanVar(XoopsObject $obj, $key)
     {
         $value = $obj->vars[$key]['value'];
-        $value = ($value===null || $value==='' || $value===false) ? null : $value;
-        if ($value!==null && null === json_decode($value, true)) {
-            $value = json_encode($value, JSON_FORCE_OBJECT);
-            if ($value===false) {
-                \Xoops::getInstance()->logger()->warning(
-                    sprintf('Failed to encode to JSON - %s', json_last_error_msg())
-                );
-                $value = null;
-            }
+        return ($value instanceof Money) ? $this->serializeAsJson($value) : $value;
+    }
+
+    /**
+     * Serialize Money data to JSON string
+     *
+     * @param Money $value Money object to serialize as json
+     *
+     * @return string json encoded data to un
+     */
+    private function serializeAsJson(Money $value)
+    {
+        return json_encode(
+            [
+                'a'   => $value->getAmount(),
+                'c' => $value->getCurrency()->getName()
+            ]
+        );
+    }
+
+    /**
+     * unserializeJson unserialize JSON string to Money
+     *
+     * @param string $value JSON serialized money data
+     *
+     * @return Money|null
+     */
+    private function unserializeJson($value)
+    {
+        $decoded = json_decode($value, true);
+        if (false === $decoded || !(isset($decoded['a']) && isset($decoded['c']))) {
+            return null;
         }
-        return $value;
+        return new Money((int) $decoded['a'], new Currency($decoded['c']));
     }
 }

@@ -235,7 +235,12 @@ class DhtmlTextArea extends TextArea
         $code .= "<img src='" . \XoopsBaseConfig::get('url') . "/images/code.gif' alt='" . \XoopsLocale::SOURCE_CODE . "' title='" . \XoopsLocale::SOURCE_CODE . "' onclick='xoopsCodeCode(\"{$textarea_id}\", \"" . htmlspecialchars(\XoopsLocale::ENTER_CODE, ENT_QUOTES) . "\");'  onmouseover='style.cursor=\"hand\"'/>&nbsp;";
         $code .= "<img src='" . \XoopsBaseConfig::get('url') . "/images/quote.gif' alt='" . \XoopsLocale::QUOTE . "' title='" . \XoopsLocale::QUOTE . "' onclick='xoopsCodeQuote(\"{$textarea_id}\", \"" . htmlspecialchars(\XoopsLocale::ENTER_QUOTE, ENT_QUOTES) . "\");' onmouseover='style.cursor=\"hand\"'/>&nbsp;";
 
-        \Xoops::getInstance()->events()->triggerEvent('core.class.xoopsform.formdhtmltextarea.codeicon', array(&$code, $this));
+        $response = \Xoops::getInstance()->service('emoji')->renderEmojiSelector($this->getName());
+        if ($response->isSuccess()) {
+            $emojiSelector = $response->getValue();
+            $code .= $emojiSelector;
+        }
+
         return $code;
     }
 

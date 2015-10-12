@@ -50,14 +50,6 @@ class ModuleMyTextSanitizerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($array2['y']['yy'], $config['y']['yy']);
     }
 
-    public function test_getSmileys()
-	{
-		$class = $this->myClass;
-        $sanitizer = $class::getInstance();
-        $smileys = $sanitizer->getSmileys();
-        $this->assertTrue(is_array($smileys));
-    }
-
     public function test_smiley()
 	{
 		$class = $this->myClass;
@@ -94,7 +86,7 @@ class ModuleMyTextSanitizerTest extends \PHPUnit_Framework_TestCase
         $message = $class::truncate($text);
         $this->assertEquals(substr($text,0,4), $message);
     }
-    
+
     /**
     * callback for test
     */
@@ -105,7 +97,7 @@ class ModuleMyTextSanitizerTest extends \PHPUnit_Framework_TestCase
         while (ob_get_level() > $level) @ob_end_flush();
         return $message;
     }
-    
+
     public function test_xoopsCodeDecode()
 	{
         $path = \XoopsBaseConfig::get('root-path');
@@ -124,7 +116,7 @@ class ModuleMyTextSanitizerTest extends \PHPUnit_Framework_TestCase
                 'menusbuilder'    => $path . '/modules/menus/class/builder.php',
             ));
         }
-        
+
 		$class = $this->myClass;
         $sanitizer = $class::getInstance();
 		$host = 'monhost.fr';
