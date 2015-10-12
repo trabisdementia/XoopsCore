@@ -44,6 +44,9 @@
  */
 function smarty_function_xowidget($params, &$smarty)
 {
+
+    include_once XOOPS_ROOT_PATH . '/modules/system/class/WidgetsContainer.php';
+
     if (! array_key_exists('id', $params)){
         return __('Widget ID not specified!', 'xoops');
     }
