@@ -73,5 +73,9 @@ function smarty_function_xowidget($params, &$smarty)
         $widget->{$name} = $value;
     }
 
-    return $widget->render();
+    if(method_exists($widget, 'render')){
+        return $widget->render();
+    } else {
+        return null;
+    }
 }

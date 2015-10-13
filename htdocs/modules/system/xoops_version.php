@@ -19,6 +19,18 @@
  * @version     $Id$
  */
 
+/**
+ * @todo: Delete next instruction
+ */
+if(!function_exists('__')){
+    function __($text, $d = ''){
+        return $text;
+    }
+    function _e($text, $d = ''){
+        echo $text;
+    }
+}
+
 /*
  General settings
  */
@@ -338,7 +350,7 @@ $modversion['config'][] = array(
     'category'    => 'general',
     'formtype'    => 'cpanel',
     'valuetype'   => 'other',
-    'default'     => 'default',
+    'default'     => 'hydrogen',
 );
 
 $modversion['config'][] = array(

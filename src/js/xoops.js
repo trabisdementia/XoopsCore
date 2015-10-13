@@ -173,13 +173,13 @@
 
                 }
 
-                if(undefined != response.token){
+                if (undefined != response.token) {
                     $("#xo-token").val(response.token);
                 }
 
                 this.processAction(response);
 
-                if(response.type == 'error'){
+                if (response.type == 'error') {
                     return false;
                 }
 
@@ -197,9 +197,9 @@
                 // ACTION action
                 if (undefined != response.action && '' != response.action) {
 
-                    if(response.action.indexOf('function') < 0 && response.action.indexOf('eval') < 0){
+                    if (response.action.indexOf('function') < 0 && response.action.indexOf('eval') < 0) {
 
-                        if('function' == typeof window[response.action]){
+                        if ('function' == typeof window[response.action]) {
                             window[response.action]();
                             return true;
                         }
@@ -213,7 +213,7 @@
 
                     var id = response.closeModal.replace('#', '');
 
-                    if($("#" + id).length>0){
+                    if ($("#" + id).length > 0) {
                         $("#" + id).modal('hide');
                         return true;
                     }
@@ -231,7 +231,7 @@
                         buttons: response.buttons != undefined ? response.buttons : {main: {label: xoLang.close, className: 'btn-primary'}}
                     });
 
-                    if($("#" + id).length>0){
+                    if ($("#" + id).length > 0) {
                         $("#" + id).modal('hide');
                     }
                     return true;
@@ -257,6 +257,13 @@
             }
 
         },
+
+        /*------------------------------------------------
+           1.7 GET SVG ICON
+         ------------------------------------------------*/
+        getIcon: function(icon, module){
+            
+        }
 
     };
 

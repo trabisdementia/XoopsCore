@@ -58,7 +58,7 @@
         /**
          * Rename modules
          */
-        $(".rename").editable("admin.php?fct=modulesadmin&op=rename", {
+        $(".rename").editable("modules.php?op=rename", {
             indicator : "<img src='../../media/xoops/images/spinner.gif'>",
             cssclass : 'span2'
         });
@@ -104,7 +104,7 @@
         });
 
         /*------------------------------------------------
-         UPDATE MODULE
+           UPDATE MODULE
          ------------------------------------------------*/
         $("body").on('click', '[data-action="module-update"]', function(){
 
@@ -114,6 +114,69 @@
 
             return false;
 
+
+        });
+
+        /*------------------------------------------------
+           DISABLE / ENABLE MODULE
+         ------------------------------------------------*/
+        $("body").on('click', '[data-action="module-enable"], [data-action="module-disable"]', function(){
+
+            if($(this).data('action')=='module-disable'){
+                if(!confirm(xoLang.confirmDisable)){
+                    return false;
+                }
+            }
+
+            var id = $(this).data('id');
+
+            if(undefined==id || id <= 0){
+                xoops.notify({
+                    title: xoLang.error,
+                    text: xoLang.noId,
+                    addclass: 'alert-danger',
+                    icon: 'xicon-alert-triangle',
+                    opacity: 1,
+                    nonblock: {
+                        nonblock: false
+                    }
+                });
+
+                return false;
+            }
+
+            $("body").xoPreload();
+
+            var params = {
+                XOOPS_TOKEN_REQUEST: $('#xo-token').val(),
+                op: 'active',
+                mid: id
+            };
+
+            $.post('modules.php', params, function(response){
+
+                if(!xoops.AJAX.retrieve(response)){
+                    xoops.modal.alert(response.message);
+                    $("body").xoPreload({action: 'hide'});
+                    return false;
+                }
+
+                $("body").xoPreload({action: 'hide'});
+
+                xoops.notify({
+                    title: xoLang.activationResult,
+                    text: response.message,
+                    addclass: 'alert-success',
+                    icon: 'xicon-thumb-up',
+                    opacity: 1,
+                    nonblock: {
+                        nonblock: false
+                    }
+                });
+
+            }, 'json');
+
+            return false;
 
         });
 

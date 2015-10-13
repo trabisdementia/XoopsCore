@@ -25,9 +25,9 @@
                         </a>
                     </td>
                     <td>
-            <span class="name" title="<{translate key='CLICK_TO_EDIT_MODULE_NAME' dirname='system'}>">
-                <strong id="<{$module->getVar('mid')}>" class="rename"><{$module->getVar('name')}></strong>
-            </span>
+                        <span class="name" title="<{translate key='CLICK_TO_EDIT_MODULE_NAME' dirname='system'}>">
+                            <strong id="<{$module->getVar('mid')}>" class="rename"><{$module->getVar('name')}></strong> <span class="fa fa-spinner fa-spin"></span>
+                        </span>
                         <small class="help-block">
                             <{$module->getInfo('description')}>
                         </small>
@@ -68,11 +68,10 @@
                             </li>
                             <{if $module->getInfo('can_disable')}>
                             <li>
-                                    <a id="active-table-<{$module->getVar('mid')}>" class="<{if $module->getVar('isactive')
-                                    }>bg-warning<{else}>bg-success<{/if}>" href="#"
-                                       onclick="module_Disable(<{$module->getVar('mid')
-                                    }>,'','');
-                                            return false;" title="<{if $module->getVar('isactive')}><{translate key='A_DISABLE'}><{else}><{translate key='A_ENABLE'}><{/if}>">
+                                    <a class="<{if $module->getVar('isactive')}>bg-warning<{else}>bg-success<{/if}>" href="#"
+                                       data-action="module-<{if $module->getVar('isactive')}>disable<{else}>enable<{/if}>"
+                                       data-id="<{$module->getVar('mid')}>"
+                                       title="<{if $module->getVar('isactive')}><{translate key='A_DISABLE'}><{else}><{translate key='A_ENABLE'}><{/if}>">
                                         <{if $module->getVar('isactive')}>
                                             <{xoicon icon="xicon-pause-circle"}>
                                         <{else}>

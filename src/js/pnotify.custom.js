@@ -208,13 +208,12 @@ license GPL/LGPL/MPL
             // Add the appropriate icon.
             if (this.options.icon !== false) {
 
-                if(this.options.icon.substring(0, 7) == 'xoicon-'){
+                if(typeof this.options.icon == 'string' && this.options.icon.substring(0, 6) == 'xicon-'){
                     // The icon is a svg icon
-
                     var span = $("<span />", {
                         "class": 'xo-icon-svg'
                     })
-                        .load(xoops.url("/media/xoops/icons/" + this.options.icon.replace("xoicon-", '') + '.svg'));
+                        .load(xoops.url("/media/xoops/icons/" + this.options.icon.replace("xicon-", '') + '.svg'));
 
                     $("<div />", {"class": "ui-pnotify-icon"})
                         .append(span)

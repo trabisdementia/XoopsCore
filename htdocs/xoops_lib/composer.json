@@ -15,12 +15,9 @@
     "require-dev": {
         "raveren/kint": "*",
         "phpunit/phpunit": ">=4.8",
-<<<<<<< HEAD
         "phpunit/phpunit-skeleton-generator": "*",
-        "inetsys/phpgettext": "dev-master"
-=======
+        "inetsys/phpgettext": "dev-master",
         "phpunit/phpunit-skeleton-generator": "*"
->>>>>>> d5fa9f18a0246917ec7fb4c34aa3d83900e4cc57
     },
     "extra": {
         "xoops_modules_path": "/home/bitcero/webserver/xoops26/XoopsCore/htdocs/modules/"

@@ -28,7 +28,11 @@ ob_start();
     */
     var xoLang = {
         confirmUpdate: '<?php _e('Do you really want to update selected module?', 'system'); ?>',
-        close: '<?php _e('Close', 'system'); ?>'
+        confirmDisable: '<?php _e('Do you really want to disable selected module?', 'system'); ?>',
+        close: '<?php _e('Close', 'system'); ?>',
+        error: '<?php _e('Error!', 'system'); ?>',
+        noId: '<?php _e('No ID has been specified', 'system'); ?>',
+        activationResult: '<?php _e('Module Activation', 'system'); ?>'
     };
 </script>
 

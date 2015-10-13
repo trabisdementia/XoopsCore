@@ -53,6 +53,7 @@ $myts = MyTextsanitizer::getInstance();
 
 // Location
 $xoops->locationId = 'system-modules';
+$ax = new \Xoops\Core\Helper\AjaxResponse();
 
 switch ($op) {
 
@@ -187,7 +188,6 @@ switch ($op) {
     case 'details':
 
         $mid = Request::getInt('mid', 0, 'get');
-        $ax = new \Xoops\Core\Helper\AjaxResponse();
 
         if (0 >= $mid){
             $ax->response(array(
@@ -200,7 +200,7 @@ switch ($op) {
         $xoops->header();
 
         $module_handler = $xoops->getHandlerModule();
-        $moduleperm_handler = $xoops->getHandlerGroupperm();
+        $moduleperm_handler = $xoops->getHandlerGroupPermission();
         $module = $module_handler->get($mid);
         $xoops->tpl()->assign('module', $module);
 
@@ -292,7 +292,24 @@ switch ($op) {
             }
             //Set active modules in cache folder
             $xoops->setActiveModules();
-            echo $module->getVar('isactive');
+
+            // Send confirmation
+            $ax->response(array(
+
+                'type'      => 'success',
+                'message'   => $module->getVar('isactive') ? sprintf(__('Module %s activated successfully!', 'system'), $module->getVar('name')) :
+                    sprintf(__('Module %s deactivated successfully!', 'system'), $module->getVar('name'))
+
+            ));
+
+
+        } else {
+
+            $ax->response(array(
+                'type'      => 'error',
+                'message'   => __('No module ID has been provided!', 'system')
+            ));
+
         }
         break;
 
