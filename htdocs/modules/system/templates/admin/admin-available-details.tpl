@@ -14,6 +14,22 @@
             </a>
         </li>
         <{/if}>
+        <{if $module->getInfo('config')}>
+            <li role="presentation">
+                <a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">
+                    <{xoicon icon="xicon-settings"}>
+                    <{$systemLang.options}>
+                </a>
+            </li>
+        <{/if}>
+        <{if $module->getInfo('tables')}>
+            <li role="presentation">
+                <a href="#tables" aria-controls="tables" role="tab" data-toggle="tab">
+                    <{xoicon icon="xicon-database"}>
+                    <{$systemLang.dbtables}>
+                </a>
+            </li>
+        <{/if}>
     </ul>
 
     <div class="tab-content module-details">
@@ -24,7 +40,7 @@
                         <img src="../<{$module->getVar('dirname')}>/<{$module->getInfo('image')}>" alt="<{$module->getInfo('name')}>" class="media-object">
                     </div>
                     <div class="media-body">
-                        <h4 class="media-heading"><{$module->getVar('name')}></h4>
+                        <h4 class="media-heading"><{$module->getInfo('name')}></h4>
                         <span class="help-block"><{$module->getInfo('description')}></span>
                     </div>
                 </div>
@@ -34,12 +50,12 @@
 
                 <div class="col-xs-6 details-item">
                     <strong><{$systemLang.version}></strong>
-                    <span><{$module->getVar('version')}></span>
+                    <span><{$module->getInfo('version')}></span>
                 </div>
 
                 <div class="col-xs-6 details-item">
                     <strong><{$systemLang.dirname}></strong>
-                    <span><{$module->getVar('dirname')}></span>
+                    <span><{$module->getInfo('dirname')}></span>
                 </div>
 
             </div>
@@ -114,6 +130,37 @@
             </ul>
 
         </div>
+        <{/if}>
+
+        <{if $module->getInfo('config')}>
+            <div role="tabpanel" class="tab-pane fade" id="settings">
+                <p class="lead">
+                    <{$systemLang.settingsDescription}>
+                </p>
+                <ul class="module-blocks">
+                    <{foreach item=option from=$module->getInfo('config')}>
+                        <li>
+                            <strong><{if $option.title|defined}><{$option.title|constant}><{else}><{$option.title}><{/if}></strong>
+                            <p><{if $option.description|defined}><{$option.description|constant}><{else}><{$option.description}><{/if}></p>
+                        </li>
+                    <{/foreach}>
+                </ul>
+            </div>
+        <{/if}>
+
+        <{if $module->getInfo('tables')}>
+            <div role="tabpanel" class="tab-pane fade" id="tables">
+                <p class="lead">
+                    <{$systemLang.tablesDescription}>
+                </p>
+                <ul class="module-blocks">
+                    <{foreach item=table from=$module->getInfo('tables')}>
+                        <li>
+                            <{$table}>
+                        </li>
+                    <{/foreach}>
+                </ul>
+            </div>
         <{/if}>
 
     </div>

@@ -43,9 +43,9 @@ if (in_array($op, array('install', 'update', 'uninstall'))) {
     if (!$xoops->security()->check()) {
         $ax = new \Xoops\Core\Helper\AjaxResponse();
         $ax->response(array(
-            'type'      => 'error',
-            'message'   => __('Session token invalid!', 'system'),
-            'reload'    => 1
+            'type' => 'error',
+            'message' => __('Session token invalid!', 'system'),
+            'reload' => 1
         ));
     }
 }
@@ -59,7 +59,7 @@ switch ($op) {
 
     case 'list':
         // Call Header
-        $xoops->header('admin:system/system_modules.tpl');
+        $xoops->header('admin:system/system-modules.tpl');
         // Define Stylesheet
         $xoops->theme()->addStylesheet('modules/system/css/admin.min.css');
         // Define scripts
@@ -69,15 +69,15 @@ switch ($op) {
 
         // Modules language
         $xoops->tpl()->assign('systemLang', array(
-            'installed'     => __('Installed', 'system'),
-            'available'     => __('Available', 'system'),
-            'download'      => __('Download Modules', 'system'),
-            'authors'       => __('Author(s): %s', 'system'),
-            'author_aka'    => __('%s (aka %s)', 'system'),
-            'version'       => 'Version: %s',
-            'view_list'     => 'View as list',
-            'view_cards'    => 'View as cards',
-            'module'    => 'Module',
+            'installed' => __('Installed', 'system'),
+            'available' => __('Available', 'system'),
+            'download' => __('Download Modules', 'system'),
+            'authors' => __('Author(s): %s', 'system'),
+            'author_aka' => __('%s (aka %s)', 'system'),
+            'version' => 'Version: %s',
+            'view_list' => 'View as list',
+            'view_cards' => 'View as cards',
+            'module' => 'Module',
         ));
 
         // Define Breadcrumb and tips
@@ -112,8 +112,9 @@ switch ($op) {
             '#installed',
             'xicon-module',
             array(
-                'data-toggle'    => 'modules'
-            )
+                'data-toggle' => 'modules'
+            ),
+            'btn-default btn-primary'
         );
 
         $admin_page->addItemButton(
@@ -121,7 +122,7 @@ switch ($op) {
             '#available',
             'xicon-check',
             array(
-                'data-toggle'    => 'modules'
+                'data-toggle' => 'modules'
             )
         );
 
@@ -130,9 +131,9 @@ switch ($op) {
             '#download',
             'xicon-download',
             array(
-                'data-toggle'    => 'modules'
+                'data-toggle' => 'modules'
             ),
-            'orange'
+            'btn-default btn-orange'
         );
         $admin_page->renderButton('center');
 
@@ -145,9 +146,45 @@ switch ($op) {
         $xoops->tpl()->assign('modules_list', $list);
         $xoops->tpl()->assign('modules_available', $install);
         $xoops->tpl()->assign('view_mode', $view);
+        $xoops->tpl()->assign('logo_mode', $view_icons);
 
         // Call Footer
         $xoops->footer();
+        break;
+
+    case 'available-modules':
+    case 'installed-modules':
+
+        $xoops->theme();
+        $system_module = new SystemModule();
+        $install = $op == 'installed-modules' ? $system_module->getModuleList() : $system_module->getInstalledModules();
+
+        $xoops->tpl()->assign('modules_list', $install);
+        $xoops->tpl()->assign('xoops', $xoops);
+
+        $view = $system->cleanVars($_COOKIE, 'xoopsModsView', 'list', 'string');
+        $view_icons = $system->cleanVars($_COOKIE, 'xoopsModsIcons', 'images', 'string');
+        $xoops->tpl()->assign('logo_mode', $view_icons);
+
+        if ('installed-modules' == $op) {
+            $tpl_modules = $view == 'list' ? "admin:system/system-modules-table.tpl" : "admin:system/system-modules-card.tpl";
+        } else {
+            $tpl_modules = $view == 'list' ? "admin:system/system-available-table.tpl" : "admin:system/system-available-card.tpl";
+        }
+
+        $xoops->tpl()->assign('systemLang', array(
+            'module' => __('Module', 'system'),
+            'version' => __('Version', 'system'),
+            'updated' => __('Updated', 'system'),
+            'author' => __('Author(s)', 'system'),
+            'availableModules' => __('Available Modules', 'system'),
+            'install' => __('Install Module', 'system')
+        ));
+
+        $ax->response(array(
+            'content' => $xoops->tpl()->fetch($tpl_modules)
+        ));
+
         break;
 
     case 'change-view':
@@ -157,31 +194,60 @@ switch ($op) {
         $system_module = new SystemModule();
         $mode = $system->cleanVars($_POST, 'mode', 'list', 'string');
         $logo_mode = $system->cleanVars($_POST, 'logo_mode', 'images', 'string');
-        $list = $system_module->getModuleList();
-        $install = $system_module->getInstalledModules();
+        $tab = Request::getString('tab', 'installed', 'post');
+
+        if('available' == $tab){
+            $list = $system_module->getInstalledModules();
+        } else {
+            $list = $system_module->getModuleList();
+        }
 
         setcookie('xoopsModsView', $mode, time() + (365 * 3600), '/', null, null, true);
         setcookie('xoopsModsIcons', $logo_mode, time() + (365 * 3600), '/', null, null, true);
 
         $xoops->tpl()->assign('modules_list', $list);
-        $xoops->tpl()->assign('modules_available', $install);
         $xoops->tpl()->assign('logo_mode', $logo_mode);
 
         $xoops->tpl()->assign('systemLang', array(
-            'author_aka'    => __('%s (AKA %s)', 'system'),
+            'author_aka' => __('%s (AKA %s)', 'system'),
         ));
 
-        if ('cards' == $mode){
-            $content = $xoops->tpl()->fetch("admin:system/system_modules_card.tpl");
+
+
+        if ('cards' == $mode) {
+
+            if($tab == 'available'){
+                $tpl_modules = "admin:system/system-available-card.tpl";
+            } else{
+                $tpl_modules = "admin:system/system-modules-card.tpl";
+            }
+
         } else {
-            $content = $xoops->tpl()->fetch("admin:system/system_modules_table.tpl");
+
+            if($tab == 'available'){
+                $tpl_modules = "admin:system/system-available-table.tpl";
+            } else{
+                $tpl_modules = "admin:system/system-modules-table.tpl";
+            }
         }
+
+        $xoops->tpl()->assign('systemLang', array(
+            'module' => __('Module', 'system'),
+            'version' => __('Version', 'system'),
+            'updated' => __('Updated', 'system'),
+            'author' => __('Author(s)', 'system'),
+            'availableModules' => __('Available Modules', 'system'),
+            'install' => __('Install Module', 'system')
+        ));
+
+        $content = $xoops->tpl()->fetch($tpl_modules);
 
         $ax = new \Xoops\Core\Helper\AjaxResponse();
         $ax->response(array(
-            'type'      => 'success',
-            'content'   => $content,
-            'mode'      => $mode
+            'type' => 'success',
+            'content' => $content,
+            'mode' => $mode,
+            'list'  => $tab
         ));
         break;
 
@@ -189,11 +255,17 @@ switch ($op) {
 
         $mid = Request::getInt('mid', 0, 'get');
 
-        if (0 >= $mid){
-            $ax->response(array(
-                'type'      => 'error',
-                'message'   => __('No module ID has been provided', 'system')
-            ));
+        if (0 >= $mid) {
+
+            $mid = Request::getString('mid', '', 'get');
+
+            if ($mid == '') {
+                $ax->response(array(
+                    'type' => 'error',
+                    'message' => __('No module ID has been provided', 'system')
+                ));
+            }
+
         }
 
         $xoops = \Xoops::getInstance();
@@ -201,32 +273,49 @@ switch ($op) {
 
         $module_handler = $xoops->getHandlerModule();
         $moduleperm_handler = $xoops->getHandlerGroupPermission();
-        $module = $module_handler->get($mid);
+
+        if (is_numeric($mid)) {
+            $module = $module_handler->get($mid);
+        } else {
+            $xoops->loadLocale($mid);
+            $module = new Xoops\Core\Kernel\Handlers\XoopsModule();
+            $module->loadInfoAsVar($mid);
+        }
         $xoops->tpl()->assign('module', $module);
 
+        // Not installed
+        if ($module->getVar('mid') <= 0) {
+            $tpl_info = 'admin:system/admin-available-details.tpl';
+        } else {
+            $tpl_info = 'admin:system/admin-module-details.tpl';
+        }
+
         $xoops->tpl()->assign('systemLang', array(
-            'name'          => __('Module name:', 'system'),
-            'dirname'       => __('Directory:', 'system'),
-            'description'   => __('Description:', 'system'),
-            'version'       => __('Version:', 'system'),
-            'license'       => __('License:', 'system'),
-            'website'       => __('Website', 'system'),
-            'help'          => __('Documentation', 'system'),
-            'authors'       => __('Author(s):', 'system'),
-            'author_aka'    => __('%s (AKA %s)', 'system'),
-            'help'          => __('Help', 'system'),
-            'web'           => __('Website', 'system'),
-            'general'       => __('General', 'system'),
-            'dbtables'      => __('DB Tables', 'system'),
-            'blocks'        => __('Blocks', 'system'),
-            'options'       => __('Options', 'system'),
-            'blocksDescription'       => __('Next are the blocks provided for module.', 'system'),
+            'name' => __('Module name:', 'system'),
+            'dirname' => __('Directory:', 'system'),
+            'description' => __('Description:', 'system'),
+            'version' => __('Version:', 'system'),
+            'license' => __('License:', 'system'),
+            'website' => __('Website', 'system'),
+            'help' => __('Documentation', 'system'),
+            'authors' => __('Author(s):', 'system'),
+            'author_aka' => __('%s (AKA %s)', 'system'),
+            'help' => __('Help', 'system'),
+            'web' => __('Website', 'system'),
+            'general' => __('General', 'system'),
+            'dbtables' => __('DB Tables', 'system'),
+            'blocks' => __('Blocks', 'system'),
+            'options' => __('Options', 'system'),
+            'blocksDescription' => __('Next are the blocks provided for module.', 'system'),
+            'settingsDescription' => __('Next are the configuration options that this module will create if installed.', 'system'),
+            'tablesDescription' => __('Next tables will be created if module is installed.', 'system'),
         ));
 
         $ax->response(array(
-            'title'     => sprintf( __('%s Details', 'system'), $module->getVar('name') ),
-            'content'   => $xoops->tpl()->fetch('admin:system/admin-module-details.tpl'),
-            'close'     => __('Close', 'system')
+            'title' => sprintf(__('%s Details', 'system'), $module->getVar('name')),
+            'content' => $xoops->tpl()->fetch($tpl_info),
+            'close' => __('Close', 'system'),
+            'installed' => $module->getVar('mid') > 0 ? 1 : 0
         ));
         break;
 
@@ -296,9 +385,11 @@ switch ($op) {
             // Send confirmation
             $ax->response(array(
 
-                'type'      => 'success',
-                'message'   => $module->getVar('isactive') ? sprintf(__('Module %s activated successfully!', 'system'), $module->getVar('name')) :
-                    sprintf(__('Module %s deactivated successfully!', 'system'), $module->getVar('name'))
+                'type' => 'success',
+                'message' => $module->getVar('isactive') ? sprintf(__('Module %s activated successfully!', 'system'), $module->getVar('name')) :
+                    sprintf(__('Module %s deactivated successfully!', 'system'), $module->getVar('name')),
+                'active' => $module->getVar('isactive'),
+                'mid' => $module->getVar('mid')
 
             ));
 
@@ -306,8 +397,8 @@ switch ($op) {
         } else {
 
             $ax->response(array(
-                'type'      => 'error',
-                'message'   => __('No module ID has been provided!', 'system')
+                'type' => 'error',
+                'message' => __('No module ID has been provided!', 'system')
             ));
 
         }
@@ -333,20 +424,10 @@ switch ($op) {
         break;
 
     case 'install':
+
+        $xoops->theme();
+
         $module = $system->cleanVars($_POST, 'dirname', '', 'string');
-        // Call Header
-        $xoops->header('admin:system/system_modules_logger.tpl');
-        // Define Stylesheet
-        $xoops->theme()->addStylesheet('modules/system/css/admin.css');
-        // Define Breadcrumb and tips
-        $admin_page = new \Xoops\Module\Admin();
-        $admin_page->addBreadcrumbLink(SystemLocale::CONTROL_PANEL, \XoopsBaseConfig::get('url') . '/admin.php', true);
-        $admin_page->addBreadcrumbLink(
-            SystemLocale::MODULES_ADMINISTRATION,
-            $system->adminVersion('modulesadmin', 'adminpath')
-        );
-        $admin_page->addBreadcrumbLink(XoopsLocale::A_INSTALL);
-        $admin_page->renderBreadcrumb();
 
         $ret = array();
         $system_module = new SystemModule();
@@ -359,34 +440,42 @@ switch ($op) {
             $xoops->tpl()->assign('title', XoopsLocale::A_INSTALL);
             $xoops->tpl()->assign('log', $system_module->trace);
         } else {
-            print_r($system_module->error);
-            //print_r($system_module->trace);
+            $ax->response(array(
+                'type'      => 'error',
+                'title'     => __('Error on installation', 'system'),
+                'message'   => implode('<br>', $system_module->error)
+            ));
         }
         $folder = array(1, 2, 3);
         $system->cleanCache($folder);
         //Set active modules in cache folder
         $xoops->setActiveModules();
         // Call Footer
-        $xoops->footer();
+
+        $xoops->tpl()->assign('systemLang', array(
+            'module' => __('Module', 'system'),
+            'log' => __('Log', 'system'),
+            'blocks' => __('Blocks', 'system'),
+            'settings' => __('Preferences', 'system'),
+            'dashboard' => __('Dashboard', 'system')
+        ));
+
+        $ax->response(array(
+            'title' => __('Installation Log', 'system'),
+            'content' => $xoops->tpl()->fetch('admin:system/admin-module-logger.tpl'),
+            'close' => __('Close', 'system'),
+            'dirname' => $module
+        ));
+
         break;
 
     case 'uninstall':
         $mid = $system->cleanVars($_POST, 'mid', 0, 'int');
         $module_handler = $xoops->getHandlerModule();
         $module = $module_handler->getById($mid);
-        // Call Header
-        $xoops->header('admin:system/system_modules_logger.tpl');
+
         // Define Stylesheet
-        $xoops->theme()->addStylesheet('modules/system/css/admin.css');
-        // Define Breadcrumb and tips
-        $admin_page = new \Xoops\Module\Admin();
-        $admin_page->addBreadcrumbLink(SystemLocale::CONTROL_PANEL, \XoopsBaseConfig::get('url') . '/admin.php', true);
-        $admin_page->addBreadcrumbLink(
-            SystemLocale::MODULES_ADMINISTRATION,
-            $system->adminVersion('modulesadmin', 'adminpath')
-        );
-        $admin_page->addBreadcrumbLink(XoopsLocale::A_UNINSTALL);
-        $admin_page->renderBreadcrumb();
+        $xoops->theme();
 
         $ret = array();
         $system_module = new SystemModule();
@@ -397,13 +486,26 @@ switch ($op) {
             $xoops->tpl()->assign('from_link', $system->adminVersion('modulesadmin', 'adminpath'));
             $xoops->tpl()->assign('title', XoopsLocale::A_UNINSTALL);
             $xoops->tpl()->assign('log', $system_module->trace);
+            $xoops->tpl()->assign('systemLang', array(
+                'module' => __('Module', 'system'),
+                'log' => __('Log', 'system'),
+                'blocks' => __('Blocks', 'system'),
+                'settings' => __('Preferences', 'system'),
+                'dashboard' => __('Dashboard', 'system')
+            ));
         }
         $folder = array(1, 2, 3);
         $system->cleanCache($folder);
         //Set active modules in cache folder
         $xoops->setActiveModules();
-        // Call Footer
-        $xoops->footer();
+
+        $ax->response(array(
+            'title' => sprintf(__('%s Uninstall Log', 'system'), $module->getVar('name')),
+            'content' => $xoops->tpl()->fetch('admin:system/admin-module-logger.tpl'),
+            'close' => __('Close', 'system'),
+            'mid' => $module->getVar('mid')
+        ));
+
         break;
 
     case 'update':
@@ -427,11 +529,11 @@ switch ($op) {
             $xoops->tpl()->assign('title', XoopsLocale::A_UPDATE);
             $xoops->tpl()->assign('log', $system_module->trace);
             $xoops->tpl()->assign('systemLang', array(
-                'module'    => __('Module', 'system'),
-                'log'       => __('Log', 'system'),
-                'blocks'    => __('Blocks', 'system'),
-                'settings'  => __('Preferences', 'system'),
-                'dashboard'  => __('Dashboard', 'system')
+                'module' => __('Module', 'system'),
+                'log' => __('Log', 'system'),
+                'blocks' => __('Blocks', 'system'),
+                'settings' => __('Preferences', 'system'),
+                'dashboard' => __('Dashboard', 'system')
             ));
         }
         $folder = array(1, 2, 3);
@@ -441,9 +543,12 @@ switch ($op) {
         // Call Footer
 
         $ax->response(array(
-            'title'     => sprintf( __('%s Update Report', 'system'), $module->getVar('name') ),
-            'content'   => $xoops->tpl()->fetch('admin:system/admin-module-logger.tpl'),
-            'close'     => __('Close', 'system')
+            'title' => sprintf(__('%s Update Report', 'system'), $module->getVar('name')),
+            'content' => $xoops->tpl()->fetch('admin:system/admin-module-logger.tpl'),
+            'close' => __('Close', 'system'),
+            'updated' => XoopsLocale::formatTimestamp($module->getVar('last_update'), 's'),
+            'version' => round($module->getInfo('version'), 2),
+            'mid' => $module->getVar('mid')
         ));
 
         break;

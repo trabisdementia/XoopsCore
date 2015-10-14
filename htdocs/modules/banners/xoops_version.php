@@ -43,6 +43,11 @@ $modversion['author']      = array(
     )
 );
 
+$modversion['website']     = array(
+    'url'   => 'http://xoops.org',
+    'name'  => 'XOOPS'
+);
+
 //about
 $modversion['release_date']        = '2011/01/02';
 $modversion['module_website_url']  = 'http://www.xoops.org/';

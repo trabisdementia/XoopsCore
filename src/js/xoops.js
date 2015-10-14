@@ -261,14 +261,55 @@
         /*------------------------------------------------
            1.7 GET SVG ICON
          ------------------------------------------------*/
-        getIcon: function(icon, module){
-            
+        getIcon: function(icon){
+
+            if('xicon-' == icon.slice(0, 6)){
+                var file = this.url("media/xoops/icons/" + icon.replace("xicon-", '') + '.svg');
+                return file;
+            }
+
+            return this.url(icon);
+
+        },
+
+        /*------------------------------------------------
+           1.8 LOAD ICON INSIDE CONTAINER
+         ------------------------------------------------*/
+        loadIcon: function(icon, container){
+
+            // We need two arguments
+            if(arguments.length < 2 ){
+                return false;
+            }
+
+            var file = this.getIcon(icon);
+
+            var is_svg = icon.slice(-3) == 'svg' || icon.slice(0, 6) == 'xicon-' ? true : false;
+
+            container.html('');
+
+            // Load a SVG icon
+            if ( is_svg ){
+                var iconLoaded = $("<span />", {
+                    "class": 'xo-icon-svg'
+                })
+                    .load(file, function(){
+                        container.append(iconLoaded);
+                    });
+            } else {
+
+                /* If it is not a SVG icon then it's an image (?) */
+                var iconLoaded = $("<img>").attr("src", file);
+                container.append(iconLoaded);
+
+            }
+
         }
 
     };
 
     /*------------------------------------------------
-     1.8 PRIVATE MEMBERS
+     1.9 PRIVATE MEMBERS
      ------------------------------------------------*/
     /**
      * Set options according to given defaults properties

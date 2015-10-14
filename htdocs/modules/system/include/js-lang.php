@@ -28,11 +28,15 @@ ob_start();
     */
     var xoLang = {
         confirmUpdate: '<?php _e('Do you really want to update selected module?', 'system'); ?>',
+        confirmUninstall: '<?php _e('Do you really want to uninstall selected module?', 'system'); ?>',
         confirmDisable: '<?php _e('Do you really want to disable selected module?', 'system'); ?>',
+        confirmInstall: '<?php _e('Do you really want to install selected module?\n\nPlease review the module details in order to know about data that will be installed.', 'system'); ?>',
         close: '<?php _e('Close', 'system'); ?>',
         error: '<?php _e('Error!', 'system'); ?>',
         noId: '<?php _e('No ID has been specified', 'system'); ?>',
-        activationResult: '<?php _e('Module Activation', 'system'); ?>'
+        activationResult: '<?php _e('Module Activation', 'system'); ?>',
+        disable: '<?php _e('Disable', 'system'); ?>',
+        enable: '<?php _e('Enable', 'system'); ?>',
     };
 </script>
 

@@ -284,12 +284,12 @@ class Admin
      *
      * @return bool
      */
-    public function addItemButton($title, $link, $icon = 'add', $extra = '', $color = 'default')
+    public function addItemButton($title, $link, $icon = 'add', $extra = '', $class = 'btn-default')
     {
         $ret['title']   = $title;
         $ret['link']    = $link;
         $ret['icon']    = $icon;
-        $ret['color']   = $color;
+        $ret['class']   = $class;
         $ret['extra']   = $extra;
         $this->itemButton[] = $ret;
         return true;

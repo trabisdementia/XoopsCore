@@ -78,7 +78,7 @@
 
             $.get('modules.php', params, function(response){
 
-                if(response.error){
+                if(response.type == 'error'){
                     xoops.modal.alert(response.message);
                     $("body").xoPreload({action: 'hide'});
                     return false;
@@ -87,7 +87,7 @@
                 xoops.modal.dialog({
                     title: response.title,
                     message: response.content,
-                    color: 'primary',
+                    color: response.installed == 1 ? 'primary' : 'danger',
                     id: 'module-details',
                     buttons: {
                         main: {
@@ -118,9 +118,73 @@
         });
 
         /*------------------------------------------------
+           UNINSTALL MODULE
+         ------------------------------------------------*/
+        $("body").on('click', '[data-action="module-uninstall"]', function(){
+
+            if(!confirm(xoLang.confirmUninstall)){
+                return false;
+            }
+
+            $("body").xoPreload();
+
+            var params = {
+                XOOPS_TOKEN_REQUEST: $("#xo-token").val(),
+                op: 'uninstall',
+                mid: $(this).data('id')
+            };
+
+            $.post('modules.php', params, function(response){
+
+                if(!xoops.AJAX.retrieve(response)){
+                    $("body").xoPreload({action: 'hide'});
+                    return false;
+                }
+
+                $("body").xoPreload({action: 'hide'});
+
+                xoops.modal.dialog({
+                    title: response.title,
+                    message: response.content,
+                    color: 'danger',
+                    id: 'module-logger',
+                    buttons: {
+                        main: {
+                            label: response.close != undefined ? response.close : xoLang.close,
+                            className: 'btn-primary'
+                        }
+                    }
+                });
+
+                // Remove module from list
+                if($("#table-installed-modules")){
+
+                    var $link = $(".xo-item-options a[data-action='module-update'][data-id='"+ response.mid +"']");
+                    if($link.length <= 0){
+                        return false;
+                    }
+
+                    $link.parents("tr").remove();
+
+                } else {
+
+                    $("#mid-" + response.mid).remove();
+
+                }
+
+
+
+            },'json');
+
+            return false;
+
+
+        });
+
+        /*------------------------------------------------
            DISABLE / ENABLE MODULE
          ------------------------------------------------*/
-        $("body").on('click', '[data-action="module-enable"], [data-action="module-disable"]', function(){
+        $("body").on('click', '#installed-modules [data-action="module-active"]', function(){
 
             if($(this).data('action')=='module-disable'){
                 if(!confirm(xoLang.confirmDisable)){
@@ -166,7 +230,7 @@
                 xoops.notify({
                     title: xoLang.activationResult,
                     text: response.message,
-                    addclass: 'alert-success',
+                    addclass: response.active == 1 ? 'alert-success' : 'alert-warning',
                     icon: 'xicon-thumb-up',
                     opacity: 1,
                     nonblock: {
@@ -174,7 +238,124 @@
                     }
                 });
 
+                // Change button
+                var $link = $("li.active-btn > [data-id='"+ response.mid +"']");
+                if($link.length <= 0){
+                    return false;
+                }
+
+                if(response.active == 1){
+                    $link.attr('title', xoLang.disable);
+                    $link.attr('class', 'bg-warning');
+                    xoops.loadIcon('xicon-pause-circle', $link);
+                    $link.parents('tr').removeClass('disabled');
+                } else {
+                    $link.attr('title', xoLang.enable);
+                    $link.attr('class', 'bg-success');
+                    xoops.loadIcon('xicon-play-circle', $link);
+                    $link.parents('tr').addClass('disabled');
+                }
+
+
             }, 'json');
+
+            return false;
+
+        });
+
+        /*------------------------------------------------
+           TOGGLE MODULES LISTS
+         ------------------------------------------------*/
+        $("body").on('click', 'a[data-toggle="modules"]', function(){
+
+            var target = $(this).attr("href");
+            var element = $(this);
+
+            $(element).siblings().removeClass('btn-primary');
+
+            if($(target + '-modules').is(":visible")){
+                return false;
+            }
+
+            // Get modules list
+            var params = {
+                XOOPS_TOKEN_REQUEST: $("#xo-token").val(),
+                op: target.replace("#", '') + '-modules'
+            };
+
+            $("body").xoPreload();
+
+            $.get('modules.php', params, function(response){
+
+                if (!xoops.AJAX.retrieve(response)){
+                    return false;
+                }
+
+                $(target + '-modules').html(response.content);
+
+                $("body").xoPreload({action: 'hide'});
+
+                element.addClass('btn-primary');
+                $(".modules-container > div").removeClass("active");
+                $(target + '-modules').addClass('active');
+
+                if("#installed" == target){
+                    $(".rename").editable("modules.php?op=rename", {
+                        indicator : "<img src='../../media/xoops/images/spinner.gif'>",
+                        cssclass : 'span2'
+                    });
+                }
+
+
+            }, 'json');
+
+            return false;
+        });
+
+        /*------------------------------------------------
+                      MODULE INSTALLATION
+         ------------------------------------------------*/
+        $("body").on('click', '#available-modules [data-action="module-install"]', function(){
+
+            if(!confirm(xoLang.confirmInstall)){
+                return false;
+            }
+
+            $("body").xoPreload();
+
+            var params = {
+                XOOPS_TOKEN_REQUEST: $("#xo-token").val(),
+                op: 'install',
+                dirname: $(this).data('dirname')
+            };
+
+            $.post('modules.php', params, function(response){
+
+                if(!xoops.AJAX.retrieve(response)){
+                    $("body").xoPreload({action: 'hide'});
+                    return false;
+                }
+
+                $("body").xoPreload({action: 'hide'});
+
+                xoops.modal.dialog({
+                    title: response.title,
+                    message: response.content,
+                    color: 'success',
+                    id: 'module-logger',
+                    buttons: {
+                        main: {
+                            label: response.close != undefined ? response.close : xoLang.close,
+                            className: 'btn-success'
+                        }
+                    }
+                });
+
+                // Update row with new values
+                $("#mid-" + response.dirname).remove();
+
+
+            },'json');
 
             return false;
 
@@ -200,6 +381,8 @@
                 return false;
             }
 
+            $("body").xoPreload({action: 'hide'});
+
             xoops.modal.dialog({
                 title: response.title,
                 message: response.content,
@@ -213,7 +396,16 @@
                 }
             });
 
-            $("body").xoPreload({action: 'hide'});
+            // Update row with new values
+            if($("#table-installed-modules")){
+                var $link = $(".xo-item-options a[data-action='module-update'][data-id='"+ response.mid +"']");
+                if($link.length <= 0){
+                    return false;
+                }
+
+                $link.parents("tr").find('.version').html(response.version);
+                $link.parents("tr").find('.updated').html(response.updated);
+            }
 
         },'json');
 
@@ -230,12 +422,13 @@
             XOOPS_TOKEN_REQUEST: $("#xo-token").val(),
             op: 'change-view',
             logo_mode: logoMode,
-            mode: viewMode
+            mode: viewMode,
+            tab: $(".xo-moduleadmin-buttons .btn-primary").attr('href').replace('#','')
         };
         $("#view-canvas").xoPreload({action: 'show'});
         $.post('modules.php', params, function( response ){
 
-            if (response.error){
+            if (!xoops.AJAX.retrieve(response)){
 
                xoops.notify({
                     title: response.message.title,
@@ -251,11 +444,13 @@
                 return false;
             }
 
-            $("#view-canvas > #table-installed-modules,#view-canvas > #cards-installed-modules").fadeOut(250, function(){
-                $(this).remove();
-                $("#view-canvas").html(response.content);
-                $("#view-canvas").xoPreload({action: 'hide'});
-            });
+            if(response.list == 'available'){
+                $("#available-modules").html(response.content);
+            } else {
+                $("#installed-modules").html(response.content);
+            }
+
+            $("#view-canvas").xoPreload({action: 'hide'});
 
             $("#view-canvas").data('mode', response.mode);
 

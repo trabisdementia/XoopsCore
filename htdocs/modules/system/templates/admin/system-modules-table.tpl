@@ -67,9 +67,9 @@
                                 </a>
                             </li>
                             <{if $module->getInfo('can_disable')}>
-                            <li>
+                            <li class="active-btn">
                                     <a class="<{if $module->getVar('isactive')}>bg-warning<{else}>bg-success<{/if}>" href="#"
-                                       data-action="module-<{if $module->getVar('isactive')}>disable<{else}>enable<{/if}>"
+                                       data-action="module-active"
                                        data-id="<{$module->getVar('mid')}>"
                                        title="<{if $module->getVar('isactive')}><{translate key='A_DISABLE'}><{else}><{translate key='A_ENABLE'}><{/if}>">
                                         <{if $module->getVar('isactive')}>
@@ -82,7 +82,7 @@
                             <{/if}>
                             <{if $module->getInfo('can_delete')}>
                             <li>
-                                <a class="xo-tooltip bg-danger" href="#" onclick="module_Uninstall(<{$module->getVar('mid')}>); return false;"
+                                <a class="bg-danger" href="#" data-action="module-uninstall" data-id="<{$module->getVar('mid')}>"
                                    title="<{translate key='A_UNINSTALL'}>">
                                     <{xoicon icon="xicon-minus-circle-o"}>
                                 </a>
