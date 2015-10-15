@@ -290,7 +290,7 @@
                 return false;
             }
 
-            replace = arguments.length < 3 ? false : replace;
+            replace = arguments.length < 3 ? true : replace;
 
             var file = this.getIcon(icon);
 
