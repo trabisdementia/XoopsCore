@@ -178,7 +178,8 @@ switch ($op) {
             'updated' => __('Updated', 'system'),
             'author' => __('Author(s)', 'system'),
             'availableModules' => __('Available Modules', 'system'),
-            'install' => __('Install Module', 'system')
+            'install' => __('Install Module', 'system'),
+            'noAvailable' => __('There are not available modules to install', 'system'),
         ));
 
         $ax->response(array(

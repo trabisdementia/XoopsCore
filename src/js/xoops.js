@@ -27,6 +27,7 @@
 
 //@prepros-prepend bootbox.js
 //@prepros-prepend pnotify.custom.js
+//@prepros-append xo-spinner.js
 
 /*
  ------------------------------------------------
@@ -259,11 +260,11 @@
         },
 
         /*------------------------------------------------
-           1.7 GET SVG ICON
+         1.7 GET SVG ICON
          ------------------------------------------------*/
-        getIcon: function(icon){
+        getIcon: function (icon) {
 
-            if('xicon-' == icon.slice(0, 6)){
+            if ('xicon-' == icon.slice(0, 6)) {
                 var file = this.url("media/xoops/icons/" + icon.replace("xicon-", '') + '.svg');
                 return file;
             }
@@ -273,35 +274,45 @@
         },
 
         /*------------------------------------------------
-           1.8 LOAD ICON INSIDE CONTAINER
+         1.8 LOAD ICON INSIDE CONTAINER
          ------------------------------------------------*/
-        loadIcon: function(icon, container){
+        /**
+         * Load an icon inside a container.
+         * @param icon Icon path or name to use
+         * @param container Container DOM element
+         * @param replace Indicate if replace current xo-icon-svg or use existent
+         * @returns {boolean}
+         */
+        loadIcon: function (icon, container, replace) {
 
             // We need two arguments
-            if(arguments.length < 2 ){
+            if (arguments.length < 2) {
                 return false;
             }
+
+            replace = arguments.length < 3 ? false : replace;
 
             var file = this.getIcon(icon);
 
             var is_svg = icon.slice(-3) == 'svg' || icon.slice(0, 6) == 'xicon-' ? true : false;
 
-            container.html('');
+            if (replace) {
+                var iconLoaded = container.find('.xo-icon-svg');
+            } else {
+                var iconLoaded = $("<span />", {"class": 'xo-icon-svg'});
+            }
 
             // Load a SVG icon
-            if ( is_svg ){
-                var iconLoaded = $("<span />", {
-                    "class": 'xo-icon-svg'
-                })
-                    .load(file, function(){
-                        container.append(iconLoaded);
-                    });
+            if (is_svg) {
+                iconLoaded.html('').load(file);
             } else {
-
                 /* If it is not a SVG icon then it's an image (?) */
-                var iconLoaded = $("<img>").attr("src", file);
-                container.append(iconLoaded);
+                var img = $("<img>").attr("src", file);
+                iconLoaded.html('').append(img);
+            }
 
+            if(!replace){
+                container.append(iconLoaded);
             }
 
         }

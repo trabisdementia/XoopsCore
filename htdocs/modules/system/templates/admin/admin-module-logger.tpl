@@ -1,5 +1,4 @@
 <{if $module}>
-
     <{* Log tabs *}>
     <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active">
@@ -122,5 +121,4 @@
         </div>
     </div>
     <{* //End tabs content *}>
-
 <{/if}>

@@ -283,17 +283,24 @@
                 op: target.replace("#", '') + '-modules'
             };
 
-            $("body").xoPreload();
+            //$("body").xoPreload();
+            $(this).xoSpinner({
+                type: 'pulse',
+                icon: 'xicon-spinner-07',
+                steps: 9
+            });
 
             $.get('modules.php', params, function(response){
 
                 if (!xoops.AJAX.retrieve(response)){
+                    $(element).xoSpinner();
                     return false;
                 }
 
                 $(target + '-modules').html(response.content);
 
-                $("body").xoPreload({action: 'hide'});
+                //$("body").xoPreload({action: 'hide'});
+                $(element).xoSpinner();
 
                 element.addClass('btn-primary');
                 $(".modules-container > div").removeClass("active");
@@ -425,7 +432,14 @@
             mode: viewMode,
             tab: $(".xo-moduleadmin-buttons .btn-primary").attr('href').replace('#','')
         };
-        $("#view-canvas").xoPreload({action: 'show'});
+
+        //$("#view-canvas").xoPreload({action: 'show'});
+        $(el).parent().xoSpinner({
+            icon: 'xicon-spinner-01',
+            type: 'spin',
+            speed: 4
+        });
+
         $.post('modules.php', params, function( response ){
 
             if (!xoops.AJAX.retrieve(response)){
@@ -440,7 +454,7 @@
                         nonblock_opactity:.2
                     }
                 });
-                $("#view-canvas").xoPreload({action: 'hide'});
+                $(el).parent().xoSpinner();
                 return false;
             }
 
@@ -450,7 +464,7 @@
                 $("#installed-modules").html(response.content);
             }
 
-            $("#view-canvas").xoPreload({action: 'hide'});
+            $(el).parent().xoSpinner();
 
             $("#view-canvas").data('mode', response.mode);
 

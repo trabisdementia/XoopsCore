@@ -19,6 +19,13 @@
             </tr>
             </thead>
             <tbody>
+            <{if !$modules_list}>
+                <tr>
+                    <td class="text-center text-info" colspan="5">
+                        <{$systemLang.noAvailable}>
+                    </td>
+                </tr>
+            <{/if}>
             <{foreach item=module from=$modules_list}>
                 <tr id="mid-<{$module->getInfo('dirname')}>">
                     <td class="text-center">
