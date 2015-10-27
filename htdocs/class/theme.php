@@ -588,7 +588,7 @@ class XoopsTheme
 
         $xoops = Xoops::getInstance();
 
-        Xoops_Locale::loadThemeLocale($this);
+        \Xoops\Locale::loadThemeLocale($this);
 
         $language = XoopsLocale::getLocale();
         // Load global localization stylesheet if available

@@ -18,7 +18,7 @@ use Xoops\Core\Helper\HeaderCommands;
  * @category  Xoops\Module\Admin
  * @package   Admin
  * @author    Mage Grégory (AKA Mage)
- * @copyright 2013-2014 XOOPS Project (http://xoops.org)
+ * @copyright 2013-2015 XOOPS Project (http://xoops.org)
  * @license   GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
  * @link      xoops.org
  * @since     2.6.0
@@ -85,7 +85,7 @@ class Admin
     /**
      * Current module object
      *
-     * @var XoopsModule $module
+     * @var \Xoops\Core\Kernel\Handlers\XoopsModule $module
      */
     private $module = null;
 
