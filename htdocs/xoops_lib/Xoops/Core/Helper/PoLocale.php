@@ -103,7 +103,7 @@ class PoLocale
             return false;
         }
 
-        $locales = \Xoops_Locale::getUserLocales();
+        $locales = \Xoops\Locale::getUserLocales();
 
         foreach ($locales as $locale){
             $file = $path."/{$locale}.mo";

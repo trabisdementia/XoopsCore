@@ -1,5 +1,5 @@
-<{include file="admin:system/admin_breadcrumb.tpl"}>
 <{include file="admin:system/admin_tips.tpl"}>
+<{include file="admin:system/admin_buttons.tpl"}>
 
 <!--Preferences-->
 <{if $menu|default:false}>
@@ -17,4 +17,17 @@
 </div>
 <{/if}>
 <div class="clear">&nbsp;</div>
-<{$form}>
+
+<!-- Form -->
+<{foreach item="field" from=$formFields}>
+    <{if 'Xoops\Form\TabTray' == $field|get_class}>
+
+        <{foreach item=element from=$field->getElements()}>
+            <{$element|get_class}><br>
+        <{/foreach}>
+
+    <{else}>
+        <{$field->render()}>
+    <{/if}>
+<{/foreach}>
+<!--// Form -->
