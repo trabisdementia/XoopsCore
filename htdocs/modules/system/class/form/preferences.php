@@ -59,6 +59,10 @@ class SystemPreferencesForm extends Xoops\Form\SimpleForm
         foreach (array_keys($configs) as $i) {
             $configNames[$configs[$i]['name']] =& $configs[$i];
         }
+
+        /**
+         * Get config categories
+         */
         $configCats = $mod->getInfo('configcat');
         if (!$configCats) {
             $configCats = array(
