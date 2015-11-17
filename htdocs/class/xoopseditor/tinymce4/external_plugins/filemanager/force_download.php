@@ -1,6 +1,6 @@
 <?php
 include('config/config.php');
-if($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager") die('forbiden');
+if($_SESSION['RF']["verify"] !== "RESPONSIVEfilemanager") die('forbiden');
 include('include/utils.php');
 
 if(strpos($_POST['path'],'/')===0
@@ -27,4 +27,3 @@ header('Content-Disposition: attachment; filename="'.($name).'"');
 readfile($path.$name);
 
 exit;
-?>

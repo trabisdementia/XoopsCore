@@ -102,7 +102,7 @@ class ProfileFieldForm extends Xoops\Form\ThemeForm
 
             //$this->addElement(new Xoops\Form\RadioYesNo(_PROFILE_AM_NOTNULL, 'field_notnull', $obj->getVar('field_notnull', 'e') ));
 
-            if ($obj->getVar('field_type') == "select" || $obj->getVar('field_type') == "select_multi" || $obj->getVar('field_type') == "radio" || $obj->getVar('field_type') == "checkbox") {
+            if ($obj->getVar('field_type') === "select" || $obj->getVar('field_type') === "select_multi" || $obj->getVar('field_type') === "radio" || $obj->getVar('field_type') === "checkbox") {
                 $options = $obj->getVar('field_options');
                 if (count($options) > 0) {
                     $remove_options = new Xoops\Form\Checkbox(_PROFILE_AM_REMOVEOPTIONS, 'removeOptions');
@@ -164,15 +164,15 @@ class ProfileFieldForm extends Xoops\Form\ThemeForm
                     break;
 
                 case "date":
-                    $this->addElement(new Xoops\Form\DateSelect(_PROFILE_AM_DEFAULT, 'field_default', 2, $obj->getVar('field_default', 'e')));
+                    $this->addElement(new Xoops\Form\DateSelect(_PROFILE_AM_DEFAULT, 'field_default', $obj->getVar('field_default', 'e')));
                     break;
 
                 case "longdate":
-                    $this->addElement(new Xoops\Form\DateSelect(_PROFILE_AM_DEFAULT, 'field_default', 2, strtotime($obj->getVar('field_default', 'e'))));
+                    $this->addElement(new Xoops\Form\DateSelect(_PROFILE_AM_DEFAULT, 'field_default', strtotime($obj->getVar('field_default', 'e'))));
                     break;
 
                 case "datetime":
-                    $this->addElement(new Xoops\Form\DateTime(_PROFILE_AM_DEFAULT, 'field_default', 2, $obj->getVar('field_default', 'e')));
+                    $this->addElement(new Xoops\Form\DateTime(_PROFILE_AM_DEFAULT, 'field_default', $obj->getVar('field_default', 'e')));
                     break;
 
                 case "yesno":

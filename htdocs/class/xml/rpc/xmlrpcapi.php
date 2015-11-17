@@ -49,14 +49,14 @@ class XoopsXmlRpcApi
     protected $isadmin = false;
 
 
-    function XoopsXmlRpcApi(array &$params, XoopsXmlRpcResponse &$response, XoopsModule &$module)
+    function XoopsXmlRpcApi(array &$params, XoopsXmlRpcResponse $response, XoopsModule $module)
     {
         $this->params = $params;
         $this->response = $response;
         $this->module = $module;
     }
 
-    function _setUser(XoopsUser &$user, $isadmin = false)
+    function _setUser(XoopsUser $user, $isadmin = false)
     {
         if (is_object($user)) {
             $this->user = $user;
@@ -156,7 +156,7 @@ class XoopsXmlRpcApi
     // returns itself if the calling object is XOOPS API
     function _getXoopsApi(&$params)
     {
-        if (strtolower(get_class($this)) != 'xoopsapi') {
+        if (strtolower(get_class($this)) !== 'xoopsapi') {
 			$xoops_root_path = \XoopsBaseConfig::get('root-path');
             require_once($xoops_root_path . '/class/xml/rpc/xoopsapi.php');
             return new XoopsApi($params, $this->response, $this->module);

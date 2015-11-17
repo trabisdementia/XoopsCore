@@ -34,7 +34,7 @@ $xoops_upload_url = \XoopsBaseConfig::get('uploads-url');
 $action = Request::getCmd('action', '');
 $type = Request::getCmd('type', '');
 
-if ($action == "showpopups") {
+if ($action === "showpopups") {
     $xoops->simpleHeader(false);
 
     // show javascript close button?
@@ -43,7 +43,7 @@ if ($action == "showpopups") {
         case "friend":
             $op = Request::getCmd('op', 'sendform');
             $tpl = new XoopsTpl();
-            if (!$xoops->security()->check() || $op == "sendform") {
+            if (!$xoops->security()->check() || $op === "sendform") {
                 if ($xoops->isUser()) {
                     $yname = $xoops->user->getVar("uname", 'e');
                     $ymail = $xoops->user->getVar("email", 'e');
@@ -72,14 +72,14 @@ if ($action == "showpopups") {
 
                 $button_2 = new Xoops\Form\Button('', 'close', XoopsLocale::A_CLOSE, 'close');
                 $button_2->setClass('btn btn-warning');
-                $button_2->setExtra("onclick='javascript:window.close();'");
+                $button_2->set('onclick', 'javascript:window.close();');
                 $button_tray->addElement($button_2);
 
                 $form->addElement($button_tray);
 
                 $tpl->assign('closebutton', 0);
                 $tpl->assign('form', $form->render());
-            } elseif ($op == "sendsite") {
+            } elseif ($op === "sendsite") {
                 $myts = \Xoops\Core\Text\Sanitizer::getInstance();
                 if ($xoops->isUser()) {
                     $ymail = $xoops->user->getVar("email");

@@ -50,7 +50,7 @@ class SystemPreferencesForm extends Xoops\Form\SimpleForm
         $config_handler = $xoops->getHandlerConfig();
 
         parent::__construct('', 'pref_form', 'admin.php?fct=preferences', 'post', true);
-        if ($mod->getVar('dirname') != 'system') {
+        if ($mod->getVar('dirname') !== 'system') {
             $xoops->loadLanguage('modinfo', $mod->getVar('dirname'));
         }
         $xoops->loadLocale($mod->getVar('dirname'));
@@ -86,7 +86,7 @@ class SystemPreferencesForm extends Xoops\Form\SimpleForm
             }
         }
 
-        $tabTray = new Xoops\Form\TabTray('', 'pref_tabtay', $xoops->getModuleConfig('jquery_theme', 'system'));
+        $tabTray = new Xoops\Form\TabTray('', 'pref_tabtay');
         $tabs = array();
         foreach ($configCats as $name => $info) {
             $tabs[$name] = new Xoops\Form\Tab($info['name'], 'pref_tab_' . $name);
@@ -115,7 +115,7 @@ class SystemPreferencesForm extends Xoops\Form\SimpleForm
 
                 case 'textarea':
                     $myts = \Xoops\Core\Text\Sanitizer::getInstance();
-                    if ($obj[$i]->getVar('conf_valuetype') == 'array') {
+                    if ($obj[$i]->getVar('conf_valuetype') === 'array') {
                         // this is exceptional.. only when value type is arrayneed a smarter way for this
                         $ele = ($obj[$i]->getVar('conf_value') != '')
                             ? new Xoops\Form\TextArea(
@@ -178,7 +178,7 @@ class SystemPreferencesForm extends Xoops\Form\SimpleForm
 
                 case 'theme':
                 case 'theme_multi':
-                    $ele = ($obj[$i]->getVar('conf_formtype') != 'theme_multi') ? new Xoops\Form\Select($title, $obj[$i]->getVar('conf_name'), $obj[$i]->getConfValueForOutput()) : new Xoops\Form\Select($title, $obj[$i]->getVar('conf_name'), $obj[$i]->getConfValueForOutput(), 5, true);
+                    $ele = ($obj[$i]->getVar('conf_formtype') !== 'theme_multi') ? new Xoops\Form\Select($title, $obj[$i]->getVar('conf_name'), $obj[$i]->getConfValueForOutput()) : new Xoops\Form\Select($title, $obj[$i]->getVar('conf_name'), $obj[$i]->getConfValueForOutput(), 5, true);
                     $dirlist = XoopsLists::getThemesList();
                     if (!empty($dirlist)) {
                         asort($dirlist);
@@ -293,7 +293,7 @@ class SystemPreferencesForm extends Xoops\Form\SimpleForm
 
                 case 'password':
                     $myts = \Xoops\Core\Text\Sanitizer::getInstance();
-                    $ele = new Xoops\Form\Password($title, $obj[$i]->getVar('conf_name'), 5, 255, $myts->htmlSpecialChars($obj[$i]->getConfValueForOutput()));
+                    $ele = new Xoops\Form\Password($title, $obj[$i]->getVar('conf_name'), 32, 255, $myts->htmlSpecialChars($obj[$i]->getConfValueForOutput()));
                     break;
 
                 case 'color':
@@ -315,7 +315,7 @@ class SystemPreferencesForm extends Xoops\Form\SimpleForm
             $hidden = new Xoops\Form\Hidden('conf_ids[]', $obj[$i]->getVar('conf_id'));
             if (isset($ele)) {
                 $ele->setDescription($desc);
-                if ($obj[$i]->getVar('conf_formtype') != 'hidden') {
+                if ($obj[$i]->getVar('conf_formtype') !== 'hidden') {
                     $name = 'default';
                     if (isset($configNames[$obj[$i]->getVar('conf_name')]['category'])) {
                         $name = $configNames[$obj[$i]->getVar('conf_name')]['category'];

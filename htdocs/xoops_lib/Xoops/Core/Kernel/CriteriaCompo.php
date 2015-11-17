@@ -93,7 +93,7 @@ class CriteriaCompo extends CriteriaElement
             }
             $ret = "({$ret})";
         }
-        $ret = ($ret=='()') ? '(1)' : $ret;
+        $ret = ($ret==='()') ? '(1)' : $ret;
         return $ret;
     }
 
@@ -124,7 +124,7 @@ class CriteriaCompo extends CriteriaElement
                 $ret = $element->renderLdap();
             } else {
                 $cond = strtoupper($this->conditions[$i]);
-                $op = ($cond == "OR") ? "|" : "&";
+                $op = ($cond === "OR") ? "|" : "&";
                 $ret = "({$op}{$ret}" . $element->renderLdap() . ")";
             }
         }
@@ -180,8 +180,8 @@ class CriteriaCompo extends CriteriaElement
                 ->setMaxResults($this->limit);
         }
 
-        if (!empty($this->groupby)) {
-            $qb->groupBy($this->groupby);
+        if (!empty($this->groupBy)) {
+            $qb->groupBy($this->groupBy);
         }
 
         if (!empty($this->sort)) {

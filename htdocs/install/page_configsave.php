@@ -57,7 +57,7 @@ if (!@copy($settings['ROOT_PATH'] . '/mainfile.dist.php', $settings['ROOT_PATH']
         fclose($file);
 
         foreach ($rewrite as $key => $val) {
-            if ($key == 'authorized') {
+            if ($key === 'authorized') {
                 continue;
             }
             if (is_int($val) && preg_match("/(define\()([\"'])(XOOPS_{$key})\\2,\s*([0-9]+)\s*\)/", $content)) {
@@ -95,7 +95,7 @@ if (!@copy($rewrite['VAR_PATH'] . '/data/secure.dist.php', $rewrite['VAR_PATH'] 
         fclose($file);
 
         foreach ($rewrite as $key => $val) {
-            if ($key == 'authorized') {
+            if ($key === 'authorized') {
                 continue;
             }
             if (is_int($val) && preg_match("/(define\()([\"'])(XOOPS_{$key})\\2,\s*([0-9]+)\s*\)/", $content)) {
@@ -127,13 +127,9 @@ if (isset($composer->extra) && is_object($composer->extra)) {
 } else {
     $composer->extra['xoops_modules_path'] = $xoops_modules_path;
 }
-$composerOut = \Xoops\Core\JsonFormatter::format(json_encode($composer), true, true);
-file_put_contents($composer_path, $composerOut);
-//$jsonEncodeOpts = 0;
-//if (defined('JSON_PRETTY_PRINT') && defined('JSON_UNESCAPED_SLASHES')) {
-//    $jsonEncodeOpts = $jsonEncodeOpts | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES;
-//}
-//file_put_contents($composer_path, json_encode($composer, $jsonEncodeOpts));
+
+$jsonEncodeOpts = JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE;
+file_put_contents($composer_path, json_encode($composer, $jsonEncodeOpts));
 
 $settings['authorized'] = false;
 if (empty($error)) {
@@ -149,7 +145,7 @@ if (empty($error)) {
 
     <?php
     foreach ($settings as $k => $v) {
-    if ($k == 'authorized') {
+    if ($k === 'authorized') {
         continue;
     }
     echo "<li><strong>XOOPS_{$k}</strong> " . IS_VALOR . " {$v}</li>";

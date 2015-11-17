@@ -310,7 +310,7 @@ class imageLib
 
     // *** We can pass in an array of options to change the crop position
     $cropPos = 'm';
-    if (is_array($option) && fix_strtolower($option[0]) == 'crop') {
+    if (is_array($option) && fix_strtolower($option[0]) === 'crop') {
       $cropPos = $option[1];         # get the crop option
     } else if (strpos($option, '-') !== false) {
       // *** Or pass in a hyphen seperated option
@@ -337,7 +337,7 @@ class imageLib
 
 
     // *** If '4', then crop too
-    if ($option == 4 || $option == 'crop') {
+    if ($option == 4 || $option === 'crop') {
 
       if (($optimalWidth >= $newWidth && $optimalHeight >= $newHeight)) {
         $this->crop($optimalWidth, $optimalHeight, $newWidth, $newHeight, $cropPos);
@@ -866,7 +866,7 @@ class imageLib
     #
   {
     if (is_array($option)) {
-      if (fix_strtolower($option[0]) == 'crop' && count($option) == 2) {
+      if (fix_strtolower($option[0]) === 'crop' && count($option) == 2) {
         return 'crop';
       } else {
         throw new Exception('Crop resize option array is badly formatted.');
@@ -936,14 +936,14 @@ class imageLib
 
       $x1 = 0;
       $y1 = 0;
-      $x2 = ImageSX($this->imageResized) - 1;
-      $y2 = ImageSY($this->imageResized) - 1;
+      $x2 = imagesx($this->imageResized) - 1;
+      $y2 = imagesy($this->imageResized) - 1;
 
-      $rgbArray = ImageColorAllocate($this->imageResized, $r, $g, $b);
+      $rgbArray = imagecolorallocate($this->imageResized, $r, $g, $b);
 
 
       for($i = 0; $i < $thickness; $i++) {
-        ImageRectangle($this->imageResized, $x1++, $y1++, $x2--, $y2--, $rgbArray);
+          imagerectangle($this->imageResized, $x1++, $y1++, $x2--, $y2--, $rgbArray);
       }
     }
   }
@@ -1170,16 +1170,16 @@ class imageLib
 *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*/
 
   public function image_colorize($rgb) {
-    imageTrueColorToPalette($this->imageResized,true,256);
-    $numColors = imageColorsTotal($this->imageResized);
+      imagetruecolortopalette($this->imageResized,true,256);
+    $numColors = imagecolorstotal($this->imageResized);
 
     for ($x = 0; $x < $numColors; $x++) {
-    list($r,$g,$b) = array_values(imageColorsForIndex($this->imageResized,$x));
+    list($r,$g,$b) = array_values(imagecolorsforindex($this->imageResized,$x));
 
     // calculate grayscale in percent
     $grayscale = ($r + $g + $b) / 3 / 0xff;
 
-    imageColorSet($this->imageResized,$x,
+      imagecolorset($this->imageResized,$x,
       $grayscale * $rgb[0],
       $grayscale * $rgb[1],
       $grayscale * $rgb[2]
@@ -1331,16 +1331,16 @@ class imageLib
       $degrees = 360 - $degrees;
 
       // *** Create background color
-      $bg = ImageColorAllocateAlpha($this->imageResized, $r, $g, $b, $a);
+      $bg = imagecolorallocatealpha($this->imageResized, $r, $g, $b, $a);
 
       // *** Fill with background
-      ImageFill($this->imageResized, 0, 0 , $bg);
+        imagefill($this->imageResized, 0, 0 , $bg);
 
       // *** Rotate
       $this->imageResized = imagerotate($this->imageResized, $degrees, $bg); // Rotate 45 degrees and allocated the transparent colour as the one to make transparent (obviously)
 
       // Ensure alpha transparency
-      ImageSaveAlpha($this->imageResized,true);
+        imagesavealpha($this->imageResized,true);
 
     }
   }
@@ -1365,7 +1365,7 @@ class imageLib
     // *** Check if the user wants transparency
     $isTransparent = false;
     if (!is_array($bgColor)) {
-      if (fix_strtolower($bgColor) == 'transparent') {
+      if (fix_strtolower($bgColor) === 'transparent') {
         $isTransparent = true;
       }
     }
@@ -1477,7 +1477,7 @@ class imageLib
 
 
     // *** Convert color
-    if (fix_strtolower($bgColor) != 'transparent') {
+    if (fix_strtolower($bgColor) !== 'transparent') {
       $rgbArray = $this->formatColor($bgColor);
       $r0 = $rgbArray['r'];
       $g0 = $rgbArray['g'];
@@ -1568,7 +1568,7 @@ class imageLib
         $t = $a/128.0;
 
         // *** Create color
-        if(fix_strtolower($bgColor) == 'transparent') {
+        if(fix_strtolower($bgColor) === 'transparent') {
           $myColour = imagecolorallocatealpha($rgb,$r,$g,$b,$a);
         } else {
           $myColour = imagecolorallocate($rgb,$r*(1.0-$t)+$r0*$t,$g*(1.0-$t)+$g0*$t,$b*(1.0-$t)+$b0*$t);
@@ -1735,7 +1735,7 @@ class imageLib
     // *** Check all is good - check the EXIF library exists and the file exists, too.
     if (!$this->testEXIFInstalled()) { if ($debug) { throw new Exception('The EXIF Library is not installed.'); }else{ return array(); }};
     if (!file_exists($this->fileName)) { if ($debug) { throw new Exception('Image not found.'); }else{ return array(); }};
-    if ($this->fileExtension != '.jpg') { if ($debug) { throw new Exception('Metadata not supported for this image type.'); }else{ return array(); }};
+    if ($this->fileExtension !== '.jpg') { if ($debug) { throw new Exception('Metadata not supported for this image type.'); }else{ return array(); }};
     $exifData = exif_read_data($this->fileName, 'IFD0');
 
     // *** Format the apperture value
@@ -2148,7 +2148,7 @@ class imageLib
   {
 
     // *** Define box (so we can get the width)
-    $box = @imageTTFBbox($fontSize, $angle, $font, $text);
+    $box = @imagettfbbox($fontSize, $angle, $font, $text);
 
     // ***  Get width of text from dimensions
     $textWidth = abs($box[4] - $box[0]);
@@ -2205,7 +2205,7 @@ class imageLib
     $y = $posArray['height'];
 
     // *** Set watermark opacity
-    if (fix_strtolower(strrchr($watermarkImage, '.')) == '.png') {
+    if (fix_strtolower(strrchr($watermarkImage, '.')) === '.png') {
 
       $opacity = $this->invertTransparency($opacity, 100);
       $this->filterOpacity($stamp, $opacity);
@@ -2462,7 +2462,7 @@ class imageLib
 
     // *** Perform a check or two.
     if (!is_resource($this->imageResized)) { if ($this->debug) { throw new Exception('saveImage: This is not a resource.'); }else{ throw new Exception(); }}
-    $fileInfoArray = pathInfo($savePath);
+    $fileInfoArray = pathinfo($savePath);
     clearstatcache();
     if (!is_writable($fileInfoArray['dirname'])) {  if ($this->debug) { throw new Exception('The path is not writable. Please check your permissions.'); }else{ throw new Exception(); }}
 
@@ -2821,7 +2821,7 @@ class imageLib
       } else {
         $rgbArray = $value;
       }
-    } else if (fix_strtolower($value) == 'transparent') {
+    } else if (fix_strtolower($value) === 'transparent') {
 
       $rgbArray = array(
         'r' => 255,
@@ -3012,8 +3012,8 @@ class imageLib
   #       avoid dependancies.
     #
   {
-    $imageX = ImageSX($gd_image);
-    $imageY = ImageSY($gd_image);
+    $imageX = imagesx($gd_image);
+    $imageY = imagesy($gd_image);
 
     $BMP = '';
     for ($y = ($imageY - 1); $y >= 0; $y--) {
@@ -3066,7 +3066,7 @@ class imageLib
     if (!is_resource($img)) {
       return false;
     }
-    return @ImageColorsForIndex($img, @ImageColorAt($img, $x, $y));
+    return @imagecolorsforindex($img, @imagecolorat($img, $x, $y));
   }
 
 ## --------------------------------------------------------
@@ -3317,4 +3317,3 @@ class imageLib
  *      // *** Free used memory
  *      $magicianObj -> __destruct();
  */
-?>

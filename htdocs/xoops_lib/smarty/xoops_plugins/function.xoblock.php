@@ -45,8 +45,8 @@ function smarty_function_xoblock($params, &$smarty)
 
     $xoops = Xoops::getInstance();
 
-    $display_title = (isset($params['display']) && $params['display'] == 'title') ? true : false;
-    $display_none = (isset($params['display']) && $params['display'] == 'none') ? true : false;
+    $display_title = (isset($params['display']) && $params['display'] === 'title') ? true : false;
+    $display_none = (isset($params['display']) && $params['display'] === 'none') ? true : false;
     $options = (isset($params['options'])) ? $params['options'] : false;
     $groups = (isset($params['groups'])) ? explode('|', $params['groups']) : false;
     $cache = (isset($params['cache'])) ? (int)($params['cache']) : false;
@@ -94,7 +94,7 @@ function smarty_function_xoblock($params, &$smarty)
     }
 
     $tpl = new XoopsTpl();
-    $block_renderer = new XoopsThemeBlocksPlugin();
+    $block_renderer = new \Xoops\Core\Theme\Plugins\Blocks();
     $block_renderer->theme = $xoops->theme();
     $block = $block_renderer->buildBlock($blockObj, $tpl);
     if (!$display_none) {

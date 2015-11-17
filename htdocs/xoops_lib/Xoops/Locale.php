@@ -15,6 +15,7 @@ use Punic\Data;
 use Punic\Exception\InvalidLocale;
 use Xoops\Core\HttpRequest;
 use Xoops\Core\Request;
+use Xoops\Core\Theme\XoopsTheme;
 
 /**
  * Locale
@@ -165,7 +166,7 @@ class Locale
         }
         $language = empty($language) ? \XoopsLocale::getLegacyLanguage() : $language;
         // expanded domain to multiple categories, e.g. module:system, framework:filter, etc.
-        if ((empty($domain) || 'global' == $domain)) {
+        if ((empty($domain) || 'global' === $domain)) {
             $path = '';
         } else {
             $path = (is_array($domain)) ? array_shift($domain) : "modules/{$domain}";
@@ -230,11 +231,13 @@ class Locale
     }
 
     /**
-     * @param \XoopsTheme $theme
+     * load locale for theme
+     * 
+     * @param XoopsTheme $theme
      *
      * @return bool
      */
-    public static function loadThemeLocale(\XoopsTheme $theme)
+    public static function loadThemeLocale(XoopsTheme $theme)
     {
         $xoops = \Xoops::getInstance();
         $locales = self::getUserLocales();

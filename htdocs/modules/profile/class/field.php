@@ -69,7 +69,7 @@ class ProfileField extends XoopsObject
      */
     public function setVar($key, $value)
     {
-        if ($key == 'field_options' && is_array($value)) {
+        if ($key === 'field_options' && is_array($value)) {
             foreach (array_keys($value) as $idx) {
                 $value[$idx] = base64_encode($value[$idx]);
             }
@@ -85,7 +85,7 @@ class ProfileField extends XoopsObject
     public function getVar($key, $format = 's')
     {
         $value = parent::getVar($key, $format);
-        if ($key == 'field_options' && !empty($value)) {
+        if ($key === 'field_options' && !empty($value)) {
             foreach (array_keys($value) as $idx) {
                 $value[$idx] = base64_decode($value[$idx]);
             }
@@ -148,7 +148,7 @@ class ProfileField extends XoopsObject
 
                     $eltmsg = empty($caption) ? sprintf(XoopsLocale::F_ENTER, $name) : sprintf(XoopsLocale::F_ENTER, $caption);
                     $eltmsg = str_replace('"', '\"', stripslashes($eltmsg));
-                    $element->customValidationCode[] = "\nvar hasSelected = false; var selectBox = myform.{$name};" . "for (i = 0; i < selectBox.options.length; i++  ) { if ( selectBox.options[i].selected == true && selectBox.options[i].value != '' ) { hasSelected = true; break; } }" . "if ( !hasSelected ) { window.alert(\"{$eltmsg}\"); selectBox.focus(); return false; }";
+                    $element->addCustomValidationCode("\nvar hasSelected = false; var selectBox = myform.{$name};" . "for (i = 0; i < selectBox.options.length; i++  ) { if ( selectBox.options[i].selected == true && selectBox.options[i].value != '' ) { hasSelected = true; break; } }" . "if ( !hasSelected ) { window.alert(\"{$eltmsg}\"); selectBox.focus(); return false; }");
                 }
                 $element->addOptionArray($options);
                 break;
@@ -185,20 +185,19 @@ class ProfileField extends XoopsObject
                 break;
 
             case "date":
-                $element = new Xoops\Form\DateSelect($caption, $name, 15, $value);
+                $element = new Xoops\Form\DateSelect($caption, $name, $value);
                 break;
 
             case "longdate":
-                $element = new Xoops\Form\DateSelect($caption, $name, 15, str_replace("-", "/", $value));
+                $element = new Xoops\Form\DateSelect($caption, $name, str_replace("-", "/", $value));
                 break;
 
             case "datetime":
-                $element = new Xoops\Form\DateTime($caption, $name, 15, $value);
+                $element = new Xoops\Form\DateTime($caption, $name, $value);
                 break;
 
             case "timezone":
                 $element = new Xoops\Form\SelectTimeZone($caption, $name, $value);
-                $element->setExtra("style='width: 280px;'");
                 break;
 
             case "rank":
@@ -218,7 +217,7 @@ class ProfileField extends XoopsObject
                 $handle = opendir(\XoopsBaseConfig::get('themes-path') . '/');
                 $dirlist = array();
                 while (false !== ($file = readdir($handle))) {
-                    if (is_dir(\XoopsBaseConfig::get('themes-path') . '/' . $file) && !preg_match("/^[.]{1,2}$/", $file) && strtolower($file) != 'cvs') {
+                    if (is_dir(\XoopsBaseConfig::get('themes-path') . '/' . $file) && !preg_match("/^[.]{1,2}$/", $file) && strtolower($file) !== 'cvs') {
                         if (XoopsLoad::fileExists(\XoopsBaseConfig::get('themes-path') . "/" . $file . "/theme.html") && in_array($file, $xoops->getConfig('theme_set_allowed'))) {
                             $dirlist[$file] = $file;
                         }
@@ -256,7 +255,7 @@ class ProfileField extends XoopsObject
         switch ($this->getVar('field_type')) {
             default:
             case "textbox":
-                if ($this->getVar('field_name') == 'url' && $value != '') {
+                if ($this->getVar('field_name') === 'url' && $value != '') {
                     return '<a href="' . $xoops->formatURL($value) . '" rel="external">' . $value . '</a>';
                 } else {
                     return $value;

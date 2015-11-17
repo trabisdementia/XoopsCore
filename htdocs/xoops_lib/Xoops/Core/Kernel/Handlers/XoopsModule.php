@@ -449,7 +449,7 @@ class XoopsModule extends XoopsObject
      *
      * @return XoopsModule
      */
-    public function getByDirName($dirname)
+    public function getByDirname($dirname)
     {
         return \Xoops::getInstance()->getModuleByDirname($dirname);
     }

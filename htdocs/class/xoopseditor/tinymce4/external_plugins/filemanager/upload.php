@@ -1,6 +1,6 @@
 <?php
 include('config/config.php');
-if($_SESSION['RF']["verify"] != "RESPONSIVEfilemanager") die('forbiden');
+if($_SESSION['RF']["verify"] !== "RESPONSIVEfilemanager") die('forbiden');
 include('include/utils.php');
 
 
@@ -128,5 +128,3 @@ if(isset($_POST['submit'])){
     ));
     header("location: dialog.php?" . $query);
 }
-
-?>      
