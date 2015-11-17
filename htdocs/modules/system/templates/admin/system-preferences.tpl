@@ -19,15 +19,33 @@
 <div class="clear">&nbsp;</div>
 
 <!-- Form -->
+<div id="settings-form">
 <{foreach item="field" from=$formFields}>
     <{if 'Xoops\Form\TabTray' == $field|get_class}>
 
-        <{foreach item=element from=$field->getElements()}>
-            <{$element|get_class}><br>
+        <ul class="nav nav-tabs" role="tablist">
+        <{foreach item=element from=$field->getElements() key=i}>
+            <{if 'Xoops\Form\Tab' == $element|get_class}>
+                <li role="presentation"<{if $i==0}> class="active"<{/if}>>
+                    <a href="#<{$element->getName()}>" aria-controls="profile" role="tab" data-toggle="tab"><{$element->getCaption()}></a>
+                </li>
+            <{/if}>
         <{/foreach}>
+        </ul>
+
+        <div class="tab-content">
+            <{foreach item=element from=$field->getElements() key=i}>
+                <{if 'Xoops\Form\Tab' == $element|get_class}>
+                    <div role="tabpanel" class="tab-pane<{if $i==0}> active<{/if}>" id="<{$element->getName()}>">
+                        <{$element->render()}>
+                    </div>
+                <{/if}>
+            <{/foreach}>
+        </div>
 
     <{else}>
         <{$field->render()}>
     <{/if}>
 <{/foreach}>
+</div>
 <!--// Form -->

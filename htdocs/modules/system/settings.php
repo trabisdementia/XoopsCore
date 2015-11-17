@@ -74,7 +74,7 @@ switch ($op) {
         $admin_page = new \Xoops\Module\Admin();
         //$admin_page->addBreadcrumbLink(SystemLocale::CONTROL_PANEL, \XoopsBaseConfig::get('url') . '/admin.php', true);
         $admin_page->addBreadcrumbLink(
-            __('Moudle Settings', 'system'), 'settings.php'
+            __('Settings', 'system'), 'settings.php'
         );
         $admin_page->addBreadcrumbLink(
             $module->getVar('name')
