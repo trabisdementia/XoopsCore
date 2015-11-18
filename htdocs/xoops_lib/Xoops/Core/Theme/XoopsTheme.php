@@ -65,7 +65,7 @@ class XoopsTheme
      *
      * @var string
      */
-    public $canvasTemplate = 'theme.html';
+    public $canvasTemplate = 'theme.tpl';
 
     /**
      * Theme folder path
