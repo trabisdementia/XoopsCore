@@ -209,22 +209,22 @@ class XoopsTheme
         //$this->template->currentTheme = $this;
         $this->template->assignByRef('xoTheme', $this);
         $this->template->assign(array(
-            'xoops_theme'      => $xoops->getConfig('theme_set'),
-            'xoops_imageurl'   => \XoopsBaseConfig::get('themes-url') . '/' . $xoops->getConfig('theme_set') . '/',
-            'xoops_themecss'   => $xoops->getCss($xoops->getConfig('theme_set')),
+            'xoops_theme' => $xoops->getConfig('theme_set'),
+            'xoops_imageurl' => \XoopsBaseConfig::get('themes-url') . '/' . $xoops->getConfig('theme_set') . '/',
+            'xoops_themecss' => $xoops->getCss($xoops->getConfig('theme_set')),
             'xoops_requesturi' => htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES),
-            'xoops_sitename'   => htmlspecialchars($xoops->getConfig('sitename'), ENT_QUOTES),
-            'xoops_slogan'     => htmlspecialchars($xoops->getConfig('slogan'), ENT_QUOTES),
-            'xoops_dirname'    => $xoops->moduleDirname,
-            'xoops_banner'     => $this->renderBanner ? $xoops->getBanner() : '&nbsp;',
-            'xoops_pagetitle'  => $xoops->isModule()
+            'xoops_sitename' => htmlspecialchars($xoops->getConfig('sitename'), ENT_QUOTES),
+            'xoops_slogan' => htmlspecialchars($xoops->getConfig('slogan'), ENT_QUOTES),
+            'xoops_dirname' => $xoops->moduleDirname,
+            'xoops_banner' => $this->renderBanner ? $xoops->getBanner() : '&nbsp;',
+            'xoops_pagetitle' => $xoops->isModule()
                 ? $xoops->module->getVar('name')
                 : htmlspecialchars($xoops->getConfig('slogan'), ENT_QUOTES)
         ));
         $this->template->assign(array(
             'theme_path' => $this->path, 'theme_tpl' => $this->path . '/xotpl', 'theme_url' => $this->url,
-            'theme_img'  => $this->url . '/img', 'theme_icons' => $this->url . '/icons',
-            'theme_css'  => $this->url . '/css', 'theme_js' => $this->url . '/js',
+            'theme_img' => $this->url . '/img', 'theme_icons' => $this->url . '/icons',
+            'theme_css' => $this->url . '/css', 'theme_js' => $this->url . '/js',
             'theme_lang' => $this->url . '/language',
         ));
 
@@ -234,10 +234,10 @@ class XoopsTheme
             $avatar = empty($avatar) ? '' : $avatar;
 
             $this->template->assign(array(
-                'xoops_isuser'     => true,
-                'xoops_avatar'     => $avatar,
-                'xoops_userid'     => $xoops->user->getVar('uid'), 'xoops_uname' => $xoops->user->getVar('uname'),
-                'xoops_name'       => $xoops->user->getVar('name'), 'xoops_isadmin' => $xoops->isAdmin(),
+                'xoops_isuser' => true,
+                'xoops_avatar' => $avatar,
+                'xoops_userid' => $xoops->user->getVar('uid'), 'xoops_uname' => $xoops->user->getVar('uname'),
+                'xoops_name' => $xoops->user->getVar('name'), 'xoops_isadmin' => $xoops->isAdmin(),
                 'xoops_usergroups' => $xoops->user->getGroups()
             ));
         } else {
@@ -316,7 +316,7 @@ class XoopsTheme
      * Generate cache id based on extra information of language and user groups
      * User groups other than anonymous should be detected to avoid disclosing group sensitive contents
      *
-     * @param string $cache_id    raw cache id
+     * @param string $cache_id raw cache id
      * @param string $extraString extra string
      *
      * @return string complete cache id
@@ -343,9 +343,9 @@ class XoopsTheme
                     // db-pass and db-name (before we find better variables) are used
                     // to protect group sensitive contents
                     $extra_string .= '-' . substr(md5(implode('-', $groups)), 0, 8) . '-' . substr(md5(
-                        \XoopsBaseConfig::get('db-pass') . \XoopsBaseConfig::get('db-name')
-                        . \XoopsBaseConfig::get('db-user')
-                    ), 0, 8);
+                            \XoopsBaseConfig::get('db-pass') . \XoopsBaseConfig::get('db-name')
+                            . \XoopsBaseConfig::get('db-user')
+                        ), 0, 8);
                 }
             }
             $extraString = $extra_string;
@@ -387,10 +387,10 @@ class XoopsTheme
      * If render() hasn't been called before, the theme defaults will be used for the canvas and
      * page template (and xoopsOption['template_main'] for the content).
      *
-     * @param string $canvasTpl  The canvas template, if different from the theme default
-     * @param string $pageTpl    The page template, if different from the theme default (unsupported, 2.3+ only)
+     * @param string $canvasTpl The canvas template, if different from the theme default
+     * @param string $pageTpl The page template, if different from the theme default (unsupported, 2.3+ only)
      * @param string $contentTpl The content template
-     * @param array  $vars       Template variables to send to the template engine
+     * @param array $vars Template variables to send to the template engine
      *
      * @return bool
      */
@@ -510,7 +510,7 @@ class XoopsTheme
     /**
      * Load theme specific language constants
      *
-     * @param string $type     language type, like 'main', 'admin'; Needs to be declared in theme xo-info.php
+     * @param string $type language type, like 'main', 'admin'; Needs to be declared in theme xo-info.php
      * @param string $language specific language
      *
      * @return bool|mixed
@@ -551,9 +551,9 @@ class XoopsTheme
      * $theme->addScript( null, array( 'type' => 'application/x-javascript' ), 'window.open("Hello world");' );
      * </code>
      *
-     * @param string $src        path to an external script file
-     * @param array  $attributes hash of attributes to add to the <script> tag
-     * @param string $content    Code snippet to output within the <script> tag
+     * @param string $src path to an external script file
+     * @param array $attributes hash of attributes to add to the <script> tag
+     * @param string $content Code snippet to output within the <script> tag
      *
      * @return void
      */
@@ -579,9 +579,9 @@ class XoopsTheme
     /**
      * Add StyleSheet or CSS code to the document head
      *
-     * @param string|null $src        path to .css file
-     * @param array|null  $attributes name => value paired array of attributes such as title
-     * @param string      $content    CSS code to output between the <style> tags (in case $src is empty)
+     * @param string|null $src path to .css file
+     * @param array|null $attributes name => value paired array of attributes such as title
+     * @param string $content CSS code to output between the <style> tags (in case $src is empty)
      *
      * @return void
      */
@@ -607,9 +607,9 @@ class XoopsTheme
     /**
      * addScriptAssets - add a list of scripts to the page
      *
-     * @param array  $assets  list of source files to process
+     * @param array $assets list of source files to process
      * @param string $filters comma separated list of filters
-     * @param string $target  target path, will default to assets directory
+     * @param string $target target path, will default to assets directory
      *
      * @return void
      */
@@ -622,9 +622,9 @@ class XoopsTheme
     /**
      * addStylesheetAssets - add a list of stylesheets to the page
      *
-     * @param string[] $assets  list of source files to process
-     * @param string   $filters comma separated list of filters
-     * @param string   $target  target path, will default to assets directory
+     * @param string[] $assets list of source files to process
+     * @param string $filters comma separated list of filters
+     * @param string $target target path, will default to assets directory
      *
      * @return void
      */
@@ -638,15 +638,15 @@ class XoopsTheme
      * addBaseAssets - add a list of assets to the page, these will all
      * be combined into a single asset file at render time
      *
-     * @param string $type   type of asset, i.e. 'css' or 'js'
-     * @param array  $assets list of source files to process
+     * @param string $type type of asset, i.e. 'css' or 'js'
+     * @param array $assets list of source files to process
      *
      * @return void
      */
     public function addBaseAssets($type, $assets)
     {
         if (is_scalar($assets)) {
-            $this->baseAssets[$type][]=$assets;
+            $this->baseAssets[$type][] = $assets;
         } elseif (is_array($assets)) {
             $this->baseAssets[$type] = array_merge($this->baseAssets[$type], $assets);
         }
@@ -690,8 +690,8 @@ class XoopsTheme
      *
      * Additional custom filters can be specified for the named asset if needed.
      *
-     * @param string $name    the name of the reference to be added
-     * @param mixed  $assets  a string asset path, or an array of asset paths, may include wildcard
+     * @param string $name the name of the reference to be added
+     * @param mixed $assets a string asset path, or an array of asset paths, may include wildcard
      * @param string $filters comma separated list of filters
      *
      * @return boolean true if asset registers, false on error
@@ -704,9 +704,9 @@ class XoopsTheme
     /**
      * Add a <link> to the header
      *
-     * @param string $rel        Relationship from the current doc to the anchored one
-     * @param string $href       URI of the anchored document
-     * @param array  $attributes Additional attributes to add to the <link> element
+     * @param string $rel Relationship from the current doc to the anchored one
+     * @param string $href URI of the anchored document
+     * @param array $attributes Additional attributes to add to the <link> element
      *
      * @return void
      */
@@ -725,8 +725,8 @@ class XoopsTheme
     /**
      * Set a meta http-equiv value
      *
-     * @param string $name  meta tag name
-     * @param null   $value meta tag value
+     * @param string $name meta tag name
+     * @param null $value meta tag value
      *
      * @return string|false
      */
@@ -742,8 +742,8 @@ class XoopsTheme
     /**
      * Change output page meta-information
      *
-     * @param string $type  type
-     * @param string $name  name
+     * @param string $type type
+     * @param string $name name
      * @param string $value value
      *
      * @return string
@@ -764,10 +764,10 @@ class XoopsTheme
     /**
      * XoopsTheme::headContent()
      *
-     * @param mixed  $params  unused
+     * @param mixed $params unused
      * @param string $content content
-     * @param mixed  $smarty  unused
-     * @param bool   $repeat  repeat
+     * @param mixed $smarty unused
+     * @param bool $repeat repeat
      *
      * @return void
      */
@@ -792,14 +792,14 @@ class XoopsTheme
         if (!empty($this->baseAssets['js'])) {
             $url = $this->assets->getUrlToAssets('js', $this->baseAssets['js']);
             if (!empty($url)) {
-                $str .= '<script src="' . $url . '" type="text/javascript"></script>'."\n";
+                $str .= '<script src="' . $url . '" type="text/javascript"></script>' . "\n";
             }
         }
 
         if (!empty($this->baseAssets['css'])) {
             $url = $this->assets->getUrlToAssets('css', $this->baseAssets['css']);
             if (!empty($url)) {
-                $str .= '<link rel="stylesheet" href="' . $url . '" type="text/css" />'."\n";
+                $str .= '<link rel="stylesheet" href="' . $url . '" type="text/css" />' . "\n";
             }
         }
 
@@ -933,4 +933,47 @@ class XoopsTheme
 //\Xoops::getInstance()->events()->triggerEvent('debug.log', "drop thru {$path}");
         return $path;
     }
+
+
+    /**
+     * Add a new CSS class to be assigned to BODY element.
+     *
+     * @param $class
+     */
+    public function addBodyClass($class)
+    {
+        if (is_array($class) && !empty($class)) {
+            $this->bodyClasses = array_merge($this->bodyClasses, $class);
+        } else {
+            $this->bodyClasses[] = $class;
+        }
+    }
+
+    public function renderBodyClasses()
+    {
+        return implode(" ", $this->bodyClasses);
+    }
+
+    /**
+     * Add a tool item to main toolbar
+
+     * @param $tool
+     *
+     * @return bool
+     */
+    public function addMainTool( $tool )
+    {
+        if ( empty($tool) || !is_array($tool) ){
+            return false;
+        }
+
+        $this->mainTools[] = $tool;
+        return true;
+    }
+
+    public function renderMainTools(){
+        $xoops = \Xoops::getInstance();
+        $xoops->tpl()->assign('main_toolbar_items', $this->mainTools);
+    }
+
 }
