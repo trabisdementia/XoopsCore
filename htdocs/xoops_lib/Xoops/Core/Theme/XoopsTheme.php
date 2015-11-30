@@ -120,7 +120,6 @@ class XoopsTheme
     public $template = false;
 
     /**
-<<<<<<< HEAD
      * CSS classes to be assigned to BODY element
      *
      * @var array
@@ -128,8 +127,6 @@ class XoopsTheme
     public $bodyClasses = array();
 
     /**
-=======
->>>>>>> 0c4041b6dbc1d7b9b301ac13dfff840477c0dd87
      * Array containing the document meta-information
      *
      * @var array
