@@ -120,6 +120,7 @@ class XoopsTheme
     public $template = false;
 
     /**
+<<<<<<< HEAD
      * CSS classes to be assigned to BODY element
      *
      * @var array
@@ -127,6 +128,8 @@ class XoopsTheme
     public $bodyClasses = array();
 
     /**
+=======
+>>>>>>> 0c4041b6dbc1d7b9b301ac13dfff840477c0dd87
      * Array containing the document meta-information
      *
      * @var array
@@ -210,22 +213,22 @@ class XoopsTheme
         //$this->template->currentTheme = $this;
         $this->template->assignByRef('xoTheme', $this);
         $this->template->assign(array(
-            'xoops_theme' => $xoops->getConfig('theme_set'),
-            'xoops_imageurl' => \XoopsBaseConfig::get('themes-url') . '/' . $xoops->getConfig('theme_set') . '/',
-            'xoops_themecss' => $xoops->getCss($xoops->getConfig('theme_set')),
+            'xoops_theme'      => $xoops->getConfig('theme_set'),
+            'xoops_imageurl'   => \XoopsBaseConfig::get('themes-url') . '/' . $xoops->getConfig('theme_set') . '/',
+            'xoops_themecss'   => $xoops->getCss($xoops->getConfig('theme_set')),
             'xoops_requesturi' => htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES),
-            'xoops_sitename' => htmlspecialchars($xoops->getConfig('sitename'), ENT_QUOTES),
-            'xoops_slogan' => htmlspecialchars($xoops->getConfig('slogan'), ENT_QUOTES),
-            'xoops_dirname' => $xoops->moduleDirname,
-            'xoops_banner' => $this->renderBanner ? $xoops->getBanner() : '&nbsp;',
-            'xoops_pagetitle' => $xoops->isModule()
+            'xoops_sitename'   => htmlspecialchars($xoops->getConfig('sitename'), ENT_QUOTES),
+            'xoops_slogan'     => htmlspecialchars($xoops->getConfig('slogan'), ENT_QUOTES),
+            'xoops_dirname'    => $xoops->moduleDirname,
+            'xoops_banner'     => $this->renderBanner ? $xoops->getBanner() : '&nbsp;',
+            'xoops_pagetitle'  => $xoops->isModule()
                 ? $xoops->module->getVar('name')
                 : htmlspecialchars($xoops->getConfig('slogan'), ENT_QUOTES)
         ));
         $this->template->assign(array(
             'theme_path' => $this->path, 'theme_tpl' => $this->path . '/xotpl', 'theme_url' => $this->url,
-            'theme_img' => $this->url . '/img', 'theme_icons' => $this->url . '/icons',
-            'theme_css' => $this->url . '/css', 'theme_js' => $this->url . '/js',
+            'theme_img'  => $this->url . '/img', 'theme_icons' => $this->url . '/icons',
+            'theme_css'  => $this->url . '/css', 'theme_js' => $this->url . '/js',
             'theme_lang' => $this->url . '/language',
         ));
 
@@ -235,10 +238,10 @@ class XoopsTheme
             $avatar = empty($avatar) ? '' : $avatar;
 
             $this->template->assign(array(
-                'xoops_isuser' => true,
-                'xoops_avatar' => $avatar,
-                'xoops_userid' => $xoops->user->getVar('uid'), 'xoops_uname' => $xoops->user->getVar('uname'),
-                'xoops_name' => $xoops->user->getVar('name'), 'xoops_isadmin' => $xoops->isAdmin(),
+                'xoops_isuser'     => true,
+                'xoops_avatar'     => $avatar,
+                'xoops_userid'     => $xoops->user->getVar('uid'), 'xoops_uname' => $xoops->user->getVar('uname'),
+                'xoops_name'       => $xoops->user->getVar('name'), 'xoops_isadmin' => $xoops->isAdmin(),
                 'xoops_usergroups' => $xoops->user->getGroups()
             ));
         } else {
@@ -344,9 +347,9 @@ class XoopsTheme
                     // db-pass and db-name (before we find better variables) are used
                     // to protect group sensitive contents
                     $extra_string .= '-' . substr(md5(implode('-', $groups)), 0, 8) . '-' . substr(md5(
-                            \XoopsBaseConfig::get('db-pass') . \XoopsBaseConfig::get('db-name')
-                            . \XoopsBaseConfig::get('db-user')
-                        ), 0, 8);
+                        \XoopsBaseConfig::get('db-pass') . \XoopsBaseConfig::get('db-name')
+                        . \XoopsBaseConfig::get('db-user')
+                    ), 0, 8);
                 }
             }
             $extraString = $extra_string;
