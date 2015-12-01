@@ -61,7 +61,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
 
 $xoops->theme()->addBaseStylesheetAssets('@jqueryuicss');
 $xoops->theme()->addStylesheet('modules/system/css/admin.css');
-$xoops->theme()->addBaseScriptAssets('@jqueryui', '@jgrowl', 'modules/system/js/admin.js');
+//$xoops->theme()->addBaseScriptAssets('@jqueryui', '@jgrowl', 'modules/system/js/admin.js');
 
 $xoops->header('admin:system/system_services.tpl');
 

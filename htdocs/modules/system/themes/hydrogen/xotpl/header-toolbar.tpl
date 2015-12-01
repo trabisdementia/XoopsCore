@@ -9,7 +9,7 @@
             </li>
             <li class="xo-logo">
                 <a href="<{$xoops_admin_url}>" title="<{$xoops_sitename}>">
-                    <img src="<{$hydrogen.url}>/images/logo-light.png" alt="<{$xoops_sitename}>">
+                    <{xoicon icon="xicon-xoops-logo"}>
                 </a>
             </li>
         </ul>

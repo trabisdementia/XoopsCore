@@ -70,11 +70,6 @@ class Assets
             'assets' => array('media/jquery/ui/jquery-ui.js'),
             'filters' => null,
         ),
-        array(
-            'name' => 'jgrowl',
-            'assets' => array('media/jquery/plugins/jquery.jgrowl.js'),
-            'filters' => null,
-        ),
     );
 
     /**

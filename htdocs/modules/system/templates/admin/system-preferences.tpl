@@ -65,6 +65,7 @@
         <{/foreach}>
     </div>
         <input type="hidden" name="op" id="op" value="save">
+        <input type="hidden" name="dirname" id="dirname" value="<{$dirname}>">
         <{$token}>
 
         <div class="settings-controls">

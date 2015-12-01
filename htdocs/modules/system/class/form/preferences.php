@@ -109,6 +109,7 @@ class SystemPreferencesForm extends Xoops\Form\SimpleForm
         foreach($fileConfigs as $option){
 
             $field = (object) [
+                'name' => $option->name,
                 'caption' => $title = \Xoops\Locale::translate($option->title, $mod->getVar('dirname')),
                 'description' => ($option->description != '') ? \Xoops\Locale::translate($option->description, $mod->getVar('dirname')) : '',
                 'formtype' => $option->formtype,

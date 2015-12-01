@@ -26,5 +26,8 @@
 </div>
 <!--// Contents wrapper -->
 <input type="hidden" id="xo-token" value="<{$token_value}>">
+
+<!-- Show redirection messages if any -->
+<{include file="$theme_tpl/gui-redirection.tpl"}>
 </body>
 </html>

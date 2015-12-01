@@ -360,16 +360,6 @@ $modversion['config'][] = array(
 );
 
 $modversion['config'][] = array(
-    'name' => 'redirect_message_ajax',
-    'title' => 'CONF_REDIRECT',
-    'description' => 'CONF_REDIRECT_DESC',
-    'category' => 'general',
-    'formtype' => 'yesno',
-    'valuetype' => 'int',
-    'default' => 1,
-);
-
-$modversion['config'][] = array(
     'name' => 'theme_set_allowed',
     'title' => 'CONF_THEME_SET_ALLOWED',
     'description' => 'CONF_THEME_SET_ALLOWED_DESC',

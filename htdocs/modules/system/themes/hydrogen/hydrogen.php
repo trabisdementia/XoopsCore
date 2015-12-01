@@ -165,6 +165,11 @@ class XoopsGuiHydrogen
         //Alerts
         $hydrogen->add_data('alerts', \Xoops\Core\Helper\GuiAlerts::getInstance()->get());
 
+        // Redirection messages
+        if($_SESSION['redirect_messages']){
+            $hydrogen->add_data('redirection', $_SESSION['redirect_messages']);
+        }
+
         $hydrogen->render_data();
     }
 }

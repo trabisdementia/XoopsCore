@@ -2,16 +2,35 @@
 * Xoops Icons
 * Next styles support SVG, images and icon font
 */
-.xo-icon-size(@size: 24px){
-  font-size: @size;
-  height: @size;
-  > svg{
-    width: @size;
-    height: @size;
+.xo-icon-size(@width: 24px, @height: @width){
+
+  & when (@width > 0) {
+    font-size: @width;
   }
+
+  & when (@height > 0){
+    height: @height;
+  }
+
+  > svg{
+
+    & when (@width > 0) {
+      width: @width;
+    }
+
+    & when (@height > 0){
+      height: @height;
+    }
+  }
+
   > img{
-    width: @size;
-    height: @size;
+    & when (@width > 0) {
+      width: @width;
+    }
+
+    & when (@height > 0){
+      height: @height;
+    }
   }
 }
 

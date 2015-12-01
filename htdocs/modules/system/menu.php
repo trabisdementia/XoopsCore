@@ -102,7 +102,7 @@ $adminmenu = array(
 
 );
 
-$adminmenu = \Xoops::getInstance()->events()->triggerEventWithReturn('system.admin.menu', array($adminmenu));
+$adminmenu = \Xoops::getInstance()->events()->triggerEventWithReturn('system.admin.menu', $adminmenu);
 
 /*
 $xoops = Xoops::getInstance();

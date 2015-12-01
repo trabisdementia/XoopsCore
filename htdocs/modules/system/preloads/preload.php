@@ -23,16 +23,16 @@ class SystemPreload extends PreloadItem
     public static function eventCoreIncludeFunctionsRedirectheader($args)
     {
         $xoops = Xoops::getInstance();
-        $url = $args[0];
+        $url = array_key_exists('url', $args) ? $args['url'] : $xoops->url();
+
         if (preg_match("/[\\0-\\31]|about:|script:/i", $url)) {
             if (!preg_match('/^\b(java)?script:([\s]*)history\.go\(-[0-9]*\)([\s]*[;]*[\s]*)$/si', $url)) {
                 $url = \XoopsBaseConfig::get('url');
             }
         }
-        if (!headers_sent() && $xoops->getConfig('redirect_message_ajax')
-            && $xoops->getConfig('redirect_message_ajax')
-        ) {
-            $_SESSION['redirect_message'] = $args[2];
+
+        if (!headers_sent()) {
+            $_SESSION['redirect_messages'] = $args;
             header("Location: " . preg_replace("/[&]amp;/i", '&', $url));
             exit();
         }
@@ -40,47 +40,45 @@ class SystemPreload extends PreloadItem
 
     public static function eventCoreHeaderCheckcache($args)
     {
-        if (!empty($_SESSION['redirect_message'])) {
+        if (!empty($_SESSION['redirect_messages'])) {
             $xoops = Xoops::getInstance();
             $xoops->theme()->contentCacheLifetime = 0;
-            unset($_SESSION['redirect_message']);
+            unset($_SESSION['redirect_messages']);
         }
     }
 
-    public static function eventCoreHeaderAddmeta($args)
+    /*public static function eventCoreHeaderAddmeta($args)
     {
-        if (!empty($_SESSION['redirect_message'])) {
+        if (!empty($_SESSION['redirect_messages'])) {
             $xoops = Xoops::getInstance();
             $xoops->theme()->addBaseStylesheetAssets('xoops.css');
             $xoops->theme()->addBaseScriptAssets('@jquery');
-            $xoops->theme()->addBaseScriptAssets('@jgrowl');
             $xoops->theme()->addScript('', array('type' => 'text/javascript'), '
             (function($){
                 $(document).ready(function(){
-                $.jGrowl("' . $_SESSION['redirect_message'] . '", {  life:3000 , position: "center", speed: "slow" });
+                $.jGrowl("' . $_SESSION['redirect_messages'] . '", {  life:3000 , position: "center", speed: "slow" });
             });
             })(jQuery);
             ');
         }
-    }
+    }*/
 
-    public static function eventSystemClassGuiHeader($args)
+    /*public static function eventSystemClassGuiHeader($args)
     {
-        if (!empty($_SESSION['redirect_message'])) {
+        if (!empty($_SESSION['redirect_messages'])) {
             $xoops = Xoops::getInstance();
             $xoops->theme()->addBaseStylesheetAssets('xoops.css');
             $xoops->theme()->addBaseScriptAssets('@jquery');
-            $xoops->theme()->addBaseScriptAssets('@jgrowl');
             $xoops->theme()->addScript('', array('type' => 'text/javascript'), '
             (function($){
             $(document).ready(function(){
-                $.jGrowl("' . $_SESSION['redirect_message'] . '", {  life:3000 , position: "center", speed: "slow" });
+                $.jGrowl("' . $_SESSION['redirect_messages'] . '", {  life:3000 , position: "center", speed: "slow" });
             });
             })(jQuery);
             ');
-            unset($_SESSION['redirect_message']);
+            unset($_SESSION['redirect_messages']);
         }
-    }
+    }*/
 
     /**
      * listen for core.service.locate.countryflag event

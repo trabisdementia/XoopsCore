@@ -78,7 +78,7 @@ class Toolbar
                 'icon'          => $tool['icon'],
                 'attributes'    => $this->renderAttributes($tool['attributes'])
             );
-        }
+    }
         $xoops = \Xoops::getInstance();
         $xoops->tpl()->assign('xo_toolbar_tools', $rendered_tools);
         return $xoops->tpl()->fetch("admin:system/admin_toolbar.tpl");

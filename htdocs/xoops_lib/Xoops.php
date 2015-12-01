@@ -1505,10 +1505,10 @@ class Xoops
     /**
      * Function to redirect a user to certain pages
      *
-     * @param string $url               URL to redirect to
-     * @param int    $time              time to wait (to allow reading message display)
-     * @param string $message           message to display
-     * @param bool   $addredirect       add xoops_redirect parameter with current URL to the redirect
+     * @param string|array  $url               URL to redirect to
+     * @param int           $time              time to wait (to allow reading message display)
+     * @param string        $message           message to display
+     * @param bool          $addredirect       add xoops_redirect parameter with current URL to the redirect
      *                                   URL -  used for return from login redirect
      * @param bool   $allowExternalLink allow redirect to external URL
      *
@@ -1516,14 +1516,38 @@ class Xoops
      */
     public function redirect($url, $time = 3, $message = '', $addredirect = true, $allowExternalLink = false)
     {
-        $this->events()->triggerEvent('core.redirect.start', array(
-            $url, $time, $message, $addredirect, $allowExternalLink
-        ));
-        // if conditions are right, system preloads will exit on this call
-        // so don't use it if you want to be called, use start version above.
-        $this->events()->triggerEvent('core.include.functions.redirectheader', array(
-            $url, $time, $message, $addredirect, $allowExternalLink
-        ));
+        /**
+         * All parameters can be provided trough var $url
+         */
+        if(is_array($url)){
+
+            $this->events()->triggerEvent('core.redirect.start', $url);
+            // if conditions are right, system preloads will exit on this call
+            // so don't use it if you want to be called, use start version above.
+            $this->events()->triggerEvent('core.include.functions.redirectheader', $url);
+
+        } else {
+
+            $this->events()->triggerEvent('core.redirect.start', array(
+                'url' => $url,
+                'time' => $time,
+                'message' => $message,
+                'redirect' => $addredirect,
+                'external' => $allowExternalLink,
+                'type' => 'warning'
+            ));
+            // if conditions are right, system preloads will exit on this call
+            // so don't use it if you want to be called, use start version above.
+            $this->events()->triggerEvent('core.include.functions.redirectheader', array(
+                'url' => $url,
+                'time' => $time,
+                'message' => $message,
+                'redirect' => $addredirect,
+                'external' => $allowExternalLink,
+                'type' => 'warning'
+            ));
+
+        }
 
         $xoops_url = \XoopsBaseConfig::get('url');
 
