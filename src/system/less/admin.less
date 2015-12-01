@@ -666,3 +666,64 @@
   }
 
 }
+
+/*------------------------------------------------
+                SETTINGS
+------------------------------------------------*/
+#settings-form{
+
+  .nav-tabs{
+
+    > li{
+
+      > a{
+
+        color: @gray-light;
+
+        .xo-icon-svg{
+          .xo-icon-size(ceil(@font-size-base * 1.2));
+          .xo-icon-color(@gray-light);
+        }
+
+        &:hover{
+          color: @gray;
+          .xo-icon-svg{
+            .xo-icon-color(@gray-light);
+          }
+        }
+
+        @media(max-width: @screen-sm-max){
+          > .caption{
+            display: none;
+          }
+
+          .xo-icon-svg{
+            .xo-icon-size(ceil(24px));
+          }
+        }
+
+      }
+
+      &.active{
+        a{
+          color: @text-color;
+          .xo-icon-svg{
+            .xo-icon-color(@text-color);
+          }
+        }
+      }
+
+    }
+
+  }
+
+  .tab-content{
+    padding: ceil(@panel-body-padding * 1.5);
+  }
+
+  .settings-controls{
+    padding: 25px 0;
+    text-align: right;
+  }
+
+}

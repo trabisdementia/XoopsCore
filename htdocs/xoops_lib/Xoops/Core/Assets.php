@@ -310,7 +310,6 @@ class Assets
                 umask($oldumask);
                 $xoops->events()->triggerEvent('debug.timer.stop', $assetKey);
             }
-
             return $xoops->url('assets/' . $asset_path);
 
         } catch (\Exception $e) {

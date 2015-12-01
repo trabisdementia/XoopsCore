@@ -71,10 +71,21 @@ class Radio extends OptionElement
             $this->set('value', $value);
             ++$id_ele;
             $this->set('id', $ele_name . $id_ele);
-            $ret .= '<label class="radio' . ($this->has(':inline') ? ' inline' : '') . '">' . "\n";
+
+            if(!$this->has(':inline')){
+                $ret .= '<div class="radio">';
+            }
+
+            $ret .= '<label class="' . ($this->has(':inline') ? ' radio-inline' : '') . '">' . "\n";
             $ret .= '<input ' . $this->renderAttributeString() . $extra . ">" . "\n";
             $ret .= $buttonCaption . "\n";
-            $ret .= "</label>" . "\n";
+            $ret .= "</label>";
+
+            if(!$this->has(':inline')){
+                $ret .= '</div>';
+            }
+
+            $ret .= "\n";
         }
         return $ret;
     }

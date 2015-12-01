@@ -249,13 +249,9 @@ class Events
      *
      * @return mixed
      */
-    public function triggerReturnEvent($eventName, $args = array())
+    public function triggerEventWithReturn($eventName, $value = null)
     {
-        if (is_array($args)){
-            $value = $args[0]; // First key is always the default value
-        }elseif (! is_array($args)){
-            return null;
-        }
+        $args = func_get_args();
 
         if (! $this->eventsEnabled){
             return $value; // Default value
@@ -267,9 +263,11 @@ class Events
             return $value; // Default value
         }
 
+
+
         foreach ($this->eventListeners[$eventName] as $event){
-            $args[0] =& $value;
-            $value = call_user_func_array($event,$args);
+            $args[1] =& $value;
+            $value = call_user_func_array($event,array_slide($args, 1));
         }
 
         return $value;

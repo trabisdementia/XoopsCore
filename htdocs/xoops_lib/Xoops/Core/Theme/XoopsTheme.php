@@ -273,8 +273,8 @@ class XoopsTheme
         if (!empty($cssAssets)) {
             $this->addBaseStylesheetAssets($cssAssets);
         }
-        $this->addBaseScriptAssets('include/xoops.js');
         $this->addBaseScriptAssets('@jquery');
+        $this->addBaseScriptAssets('include/xoops.min.js');
         //$this->addBaseScriptAssets('media/bootstrap/js/bootstrap.min.js');
         if (!empty($jsAssets)) {
             $this->addBaseScriptAssets($jsAssets);

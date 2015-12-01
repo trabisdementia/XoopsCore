@@ -16,36 +16,61 @@
     </a>
 </div>
 <{/if}>
+
 <div class="clear">&nbsp;</div>
 
 <!-- Form -->
 <div id="settings-form">
-<{foreach item="field" from=$formFields}>
-    <{if 'Xoops\Form\TabTray' == $field|get_class}>
-
-        <ul class="nav nav-tabs" role="tablist">
-        <{foreach item=element from=$field->getElements() key=i}>
-            <{if 'Xoops\Form\Tab' == $element|get_class}>
-                <li role="presentation"<{if $i==0}> class="active"<{/if}>>
-                    <a href="#<{$element->getName()}>" aria-controls="profile" role="tab" data-toggle="tab"><{$element->getCaption()}></a>
-                </li>
-            <{/if}>
+    <ul class="nav nav-tabs" role="tablist">
+        <{assign var=i value=0}>
+        <{foreach item="category" from=$settingsCategories key=id}>
+            <li role="presentation"<{if $i==0}> class="active"<{/if}>>
+                <a href="#<{$id}>" aria-controls="profile" role="tab" data-toggle="tab" title="<{$category.name}>">
+                    <{if $category.icon}>
+                        <{xoicon icon=$category.icon}>
+                    <{/if}>
+                    <span class="caption"><{$category.name}></span>
+                </a>
+            </li>
+            <{assign var=i value=$i+1}>
         <{/foreach}>
-        </ul>
+    </ul>
 
-        <div class="tab-content">
-            <{foreach item=element from=$field->getElements() key=i}>
-                <{if 'Xoops\Form\Tab' == $element|get_class}>
-                    <div role="tabpanel" class="tab-pane<{if $i==0}> active<{/if}>" id="<{$element->getName()}>">
-                        <{$element->render()}>
+    <form name="frmSettings" id="frm-settings" method="post" action="settings.php">
+    <div class="tab-content">
+        <{assign var=i value=0}>
+        <{foreach item="category" from=$settingsCategories key=id}>
+            <div role="tabpanel" class="tab-pane<{if $i==0}> active<{/if}>" id="<{$id}>">
+                <{foreach item=field from=$category.fields key=idF}>
+                    <{if $field->formtype == 'hidden'}>
+                        <{$form->getFieldByType($field, $xoops->module->dirname())->render()}>
+                    <{else}>
+                    <div class="row form-group">
+                        <div class="col-sm-4">
+                            <label for="<{$idF}>"><{$field->caption}></label>
+                            <{if $field->description}>
+                                <small class="help-block">
+                                    <{$field->description}>
+                                </small>
+                            <{/if}>
+                        </div>
+                        <div class="col-sm-8">
+                            <{$form->getFieldByType($field, $xoops->module->dirname())->render()}>
+                        </div>
                     </div>
-                <{/if}>
-            <{/foreach}>
-        </div>
+                    <{/if}>
+                <{/foreach}>
+            </div>
+            <{assign var=i value=$i+1}>
+        <{/foreach}>
+    </div>
+        <input type="hidden" name="op" id="op" value="save">
+        <{$token}>
 
-    <{else}>
-        <{$field->render()}>
-    <{/if}>
-<{/foreach}>
+        <div class="settings-controls">
+            <button type="button" class="btn btn-lg btn-default" onclick="window.history.back(-1);"><{$systemLang.cancel}></button>
+            <button type="submit" class="btn btn-lg btn-primary"><{$systemLang.submit}></button>
+        </div>
+    </form>
 </div>
 <!--// Form -->

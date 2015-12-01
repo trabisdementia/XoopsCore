@@ -237,26 +237,32 @@ $modversion['hasMain'] = 0;
 $modversion['configcat'] = array(
     'general' => array(
         'name' => SystemLocale::GENERAL_SETTINGS,
+        'icon' => 'xicon-gear',
         'description' => ''
     ),
     'user' => array(
         'name' => XoopsLocale::USER,
+        'icon' => 'xicon-avatar',
         'description' => '',
     ),
     'meta' => array(
         'name' => SystemLocale::META_TAGS_AND_FOOTER,
+        'icon' => 'xicon-code',
         'description' => ''
     ),
     'mail' => array(
         'name' => XoopsLocale::EMAIL,
+        'icon' => 'xicon-envelope',
         'description' => '',
     ),
     'censor' => array(
         'name' => SystemLocale::WORD_CENSORING,
+        'icon' => 'xicon-notification',
         'description' => ''
     ),
     'authentication' => array(
         'name' => SystemLocale::AUTHENTICATION,
+        'icon' => 'xicon-key',
         'description' => ''
     )
 );

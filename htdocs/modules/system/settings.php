@@ -56,20 +56,6 @@ switch ($op) {
             $xoops->redirect('settings.php', 0, __('Module not found!', 'system'));
         }
 
-        // Load config options for module
-        $config_handler = $xoops->getHandlerConfig();
-
-        if(is_numeric( $mod )){
-            $config = $config_handler->getConfigs(new Criteria('conf_modid', $module->getVar('mid')));
-        } else {
-            $config = $config_handler->getConfigs(new Criteria('conf_modid', $module->getVar('mid')));
-        }
-        $count = count($config);
-
-        if ($count < 1) {
-            $xoops->redirect('settings.php', 1);
-        }
-
         // Define Breadcrumb and tips
         $admin_page = new \Xoops\Module\Admin();
         //$admin_page->addBreadcrumbLink(SystemLocale::CONTROL_PANEL, \XoopsBaseConfig::get('url') . '/admin.php', true);
@@ -83,8 +69,17 @@ switch ($op) {
         $xoops->header('admin:system/system-preferences.tpl');
 
         $form = $xoops->getModuleForm(null, 'preferences');
-        $form->getForm($config, $module);
-        $xoops->tpl()->assign('formFields', $form->getElements());
+        $xoops->tpl()->assign('settingsCategories', $form->getForm($module));
+        $xoops->tpl()->assign('form', $form);
+        $xoops->tpl()->assign('token', $xoops->security()->getTokenHTML());
+
+        $xoops->theme()->addStylesheet('modules/system/css/admin.min.css');
+
+        // Language
+        $xoops->tpl()->assign('systemLang', [
+            'submit' => __('Save Settings', 'system'),
+            'cancel' => __('Cancel', 'system')
+        ]);
 
         // Module header
         $admin_page->renderModuleHeader(
