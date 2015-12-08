@@ -130,6 +130,9 @@ class XoopsGuiHydrogen
             $hydrogen->add_data('collapsed', true);
         }
 
+        // Admin URL
+        $hydrogen->add_data('xoops_admin_url', $xoops->url('admin.php'));
+
         if ($xoops->isModule()){
             $xoops->theme()->addBodyClass($xoops->module->dirname());
         } else {

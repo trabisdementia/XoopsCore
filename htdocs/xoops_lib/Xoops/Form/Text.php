@@ -47,6 +47,7 @@ class Text extends Element
             $this->setIfNotEmpty('placeholder', $placeholder);
         }
         $this->setIfNotSet('type', 'text');
+        $this->setIfNotSet('class', 'form-control');
         $this->setIfNotSet('value', '');
     }
 

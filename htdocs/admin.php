@@ -76,7 +76,7 @@ if (!empty($xoopsorgnews)) {
     }
 } else {
 
-    $xoops->header('admin:system/system_index.tpl');
+    $xoops->header('admin:system/system-index.tpl');
 
     $admin = new \Xoops\Module\Admin();
     $admin->addBodyClass('dashboard');

@@ -83,7 +83,7 @@ class SystemUserForm extends Xoops\Form\ThemeForm
         }
 
         //Affichage du formulaire
-        parent::__construct($form_title, "form_user", "admin.php", "post", true);
+        parent::__construct($form_title, "form_user", "users.php", "post", true);
 
         $this->addElement(new Xoops\Form\Text(XoopsLocale::USER_NAME, "username", 4, 25, $uname_value), true);
         $this->addElement(new Xoops\Form\Text(XoopsLocale::NAME, "name", 5, 60, $name_value));
@@ -153,7 +153,6 @@ class SystemUserForm extends Xoops\Form\ThemeForm
             unset($group);
         }
 
-        $this->addElement(new Xoops\Form\Hidden("fct", "users"));
         $this->addElement(new Xoops\Form\Hidden("op", "users_save"));
         $this->addElement(new Xoops\Form\Button("", "submit", XoopsLocale::A_SUBMIT, "submit"));
 

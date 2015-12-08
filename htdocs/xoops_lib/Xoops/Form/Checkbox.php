@@ -94,7 +94,7 @@ class Checkbox extends OptionElement
             $this->set('value', $value);
             ++$idCount;
             $this->set('id', $elementId . $idCount);
-            $ret .= '<label class="checkbox' . ((bool) $this->get(':inline', false) ? ' inline' : '') . '">' . "\n";
+            $ret .= '<label class="checkbox' . ((bool) $this->get(':inline', false) ? '-inline' : '') . '">' . "\n";
             $ret .= '<input ' . $this->renderAttributeString() . $extra . '>' . "\n";
             $ret .= $name . "\n";
             $ret .= "</label>" . "\n";

@@ -8,7 +8,7 @@
                 </a>
             </li>
             <li class="xo-logo">
-                <a href="<{$xoops_admin_url}>" title="<{$xoops_sitename}>">
+                <a href="<{$hydrogen.xoops_admin_url}>" title="<{$xoops_sitename}>">
                     <{xoicon icon="xicon-xoops-logo"}>
                 </a>
             </li>

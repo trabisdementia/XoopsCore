@@ -53,6 +53,7 @@ class Toolbar
      * to be passed to toolbar button.
      *
      * @param       $caption
+     * @param       $icon
      * @param array $attr
      */
     public function addTool($caption, $icon, $attr = array())
@@ -81,7 +82,7 @@ class Toolbar
     }
         $xoops = \Xoops::getInstance();
         $xoops->tpl()->assign('xo_toolbar_tools', $rendered_tools);
-        return $xoops->tpl()->fetch("admin:system/admin_toolbar.tpl");
+        return $xoops->tpl()->fetch("admin:system/admin-toolbar.tpl");
     }
 
     private function renderAttributes($attr)
