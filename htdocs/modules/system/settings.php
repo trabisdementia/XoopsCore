@@ -25,6 +25,18 @@ use \Xoops\Core\Request;
  * @version     $Id$
  */
 
+function setNamesAsKeys($options){
+
+    $return = [];
+
+    foreach($options as $option){
+        $return[$option['name']] = $option;
+    }
+
+    return $return;
+
+}
+
 $op = $system->cleanVars($_REQUEST, 'op', 'showmod', 'string');
 
 switch ($op) {
@@ -56,14 +68,24 @@ switch ($op) {
             $xoops->redirect('settings.php', 0, __('Module not found!', 'system'));
         }
 
+        // If module does not have config options then redirect to home
+        if(empty($module->getInfo('config'))){
+            $xoops->redirect([
+                'url' => $xoops->url('admin.php'),
+                'message' => __('This module does not have any configuration option'),
+                'type' => 'warning'
+            ]);
+        }
+
         // Define Breadcrumb and tips
         $admin_page = new \Xoops\Module\Admin();
         //$admin_page->addBreadcrumbLink(SystemLocale::CONTROL_PANEL, \XoopsBaseConfig::get('url') . '/admin.php', true);
         $admin_page->addBreadcrumbLink(
-            __('Settings', 'system'), 'settings.php'
+            $module->getVar('name'),
+            $xoops->url('modules/' . $module->getVar('dirname') . '/' . $module->getInfo('adminmenu'))
         );
         $admin_page->addBreadcrumbLink(
-            $module->getVar('name')
+            __('Settings', 'system')
         );
 
         $xoops->header('admin:system/system-preferences.tpl');
@@ -86,7 +108,7 @@ switch ($op) {
         $admin_page->renderModuleHeader(
             sprintf(__('%s Settings', 'system'), $module->getVar('name')),
             __('Configure settings options for this module', 'system'),
-            'xicon-settings'
+            $module->getInfo('icon')
         );
 
         $xoops->footer();
@@ -106,80 +128,92 @@ switch ($op) {
         $dirname = Request::getString('dirname', null, 'POST');
 
         if('' == $dirname){
-            $xoops->redirect('settings.php', 3, __('No module has been specified!', 'system'));
+            $xoops->redirect([
+                'url' => 'settings.php',
+                'type' => 'warning',
+                'message' => __('No module has been specified!', 'system')
+            ]);
         }
 
-        if ('' == $mod) {
-            $mod = $system->cleanVars($_GET, 'mod', 1, 'int');
-            if (!$mod) {
-                $xoops->redirect('settings.php', 1);
-            }
+        // Load module
+        $module = $xoops->getModuleByDirname($dirname);
+
+        if(!$module){
+            $xoops->redirect([
+                'url' => 'settings.php',
+                'type' => 'danger',
+                'message' => __('No module specified!', 'system')
+            ]);
         }
 
-        // Load the module
-        if (is_numeric($mod)) {
-
-            $module = $xoops->getModuleById($mod);
-            $xoops->loadLanguage('modinfo', $module->getVar('dirname'));
-
-        } else {
-
-            $module = $xoops->getModuleByDirname($mod);
-
-        }
-
-        $xoopsTpl = new XoopsTpl();
-        $count = count($conf_ids);
-        $tpl_updated = false;
-        $theme_updated = false;
-        $startmod_updated = false;
-        $lang_updated = false;
+        $fileConfigs = setNamesAsKeys($module->getInfo('config'));
+        $dbConfigs = $xoops->getModuleConfigs($dirname);
         $config_handler = $xoops->getHandlerConfig();
-        if ($count > 0) {
-            for ($i = 0; $i < $count; ++$i) {
-                $config = $config_handler->getConfig($conf_ids[$i]);
-                $new_value = isset(${$config->getVar('conf_name')}) ? ${$config->getVar('conf_name')} : null;
-                if (!is_null($new_value) && (is_array($new_value) || $new_value != $config->getVar('conf_value'))) {
-                    // if language has been changed
-                    if (!$lang_updated && $config->getVar('conf_catid') == XOOPS_CONF
-                        && $config->getVar('conf_name') === 'locale'
-                    ) {
-                        $xoops->setConfig('locale', ${$config->getVar('conf_name')});
-                        $lang_updated = true;
-                    }
+        $allConfigs =  $config_handler->getConfigs(new Criteria('conf_modid', $module->getVar('mid')));
 
-                    // if default theme has been changed
-                    if (!$theme_updated && $config->getVar('conf_catid') == XOOPS_CONF
-                        && $config->getVar('conf_name') === 'theme_set'
-                    ) {
-                        $member_handler = $xoops->getHandlerMember();
-                        $member_handler->updateUsersByField('theme', ${$config->getVar('conf_name')});
-                        $theme_updated = true;
-                    }
+        // New configs to be inserted
+        $newConfigs = [];
 
-                    // add read permission for the start module to all groups
-                    if (!$startmod_updated && $new_value != '--'
-                        && $config->getVar('conf_catid') == XOOPS_CONF
-                        && $config->getVar('conf_name') === 'startpage'
-                    ) {
-                        $member_handler = $xoops->getHandlerMember();
-                        $groups = $member_handler->getGroupList();
-                        $moduleperm_handler = $xoops->getHandlerGroupPermission();
-                        $module_handler = $xoops->getHandlerModule();
-                        $module = $xoops->getModuleByDirname($new_value);
-                        foreach ($groups as $groupid => $groupname) {
-                            if (!$moduleperm_handler->checkRight('module_read', $module->getVar('mid'), $groupid)) {
-                                $moduleperm_handler->addRight('module_read', $module->getVar('mid'), $groupid);
-                            }
-                        }
-                        $startmod_updated = true;
-                    }
+        foreach( $allConfigs as $option ){
 
-                    $config->setConfValueForInput($new_value);
-                    $config_handler->insertConfig($config);
-                }
-                unset($new_value);
+            // Get the name of config item
+            $name = $option->getVar('conf_name');
+            $key = array_search($name, array_keys($fileConfigs), true);
+
+            // retrieve the value to save
+            $value = isset($_POST[$name]) ? $_POST[$name] : null;
+
+            if(!array_key_exists($name, $fileConfigs)){
+                $config_handler->deleteConfig($option);
+                continue;
             }
+
+            if(
+                $value == $option->getVar('conf_value') &&
+                $fileConfigs[$name]['formtype'] == $option->getVar('conf_formtype') &&
+                $fileConfigs[$name]['valuetype'] == $option->getVar('conf_valuetype')
+            ){
+                if(false !== $key){
+                    array_splice($fileConfigs, $key, 1);
+                }
+
+                continue;
+            }
+
+            $fConfig = $fileConfigs[$name];
+            $option->setVar('conf_valuetype', $fConfig['valuetype']);
+            $option->setVar('conf_formtype', $fConfig['formtype']);
+
+            // if default theme has been changed
+            if ($name === 'theme_set' && $module->getVar('dirname') === 'system' && $value !== $option->getVar('conf_value')
+            ) {
+                $member_handler = $xoops->getHandlerMember();
+                $member_handler->updateUsersByField('theme', $value);
+            }
+
+            // add read permission for the start module to all groups
+            if ($name === 'startpage' && $module->getVar('dirname') === 'system' && $value != '--'
+            ) {
+                $member_handler = $xoops->getHandlerMember();
+                $groups = $member_handler->getGroupList();
+                $moduleperm_handler = $xoops->getHandlerGroupPermission();
+                $module_handler = $xoops->getHandlerModule();
+                $module = $xoops->getModuleByDirname($value);
+                foreach ($groups as $groupid => $groupname) {
+                    if (!$moduleperm_handler->checkRight('module_read', $module->getVar('mid'), $groupid)) {
+                        $moduleperm_handler->addRight('module_read', $module->getVar('mid'), $groupid);
+                    }
+                }
+            }
+
+            $option->setConfValueForInput($value);
+            $config_handler->insertConfig($option);
+
+            // reduce file configs
+            if(false !== $key){
+                array_splice($fileConfigs, $key, 1);
+            }
+
         }
 
         // Clean cached files, may take long time
@@ -189,11 +223,16 @@ switch ($op) {
         $options = array(1, 2, 3); //1 goes for smarty cache, 3 goes for xoops_cache
         register_shutdown_function(array(&$system, 'cleanCache'), $options);
         $xoops->preload()->triggerEvent('system.preferences.save');
-        if (isset($redirect) && $redirect != '') {
-            $xoops->redirect($redirect, 2, XoopsLocale::S_DATABASE_UPDATED);
-        } else {
-            $xoops->redirect("admin.php?fct=preferences", 2, XoopsLocale::S_DATABASE_UPDATED);
+        if (!isset($redirect) && $redirect == '') {
+            $redirect = $xoops->url('admin.php');
         }
+
+        $xoops->redirect([
+            'url' => $redirect,
+            'type' => 'success',
+            'icon' => 'xicon-check-bold',
+            'message' => XoopsLocale::S_DATABASE_UPDATED
+        ]);
 
         break;
 }

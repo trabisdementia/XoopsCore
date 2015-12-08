@@ -49,7 +49,8 @@ class SystemPreferencesForm extends Xoops\Form\SimpleForm
         $xoops = Xoops::getInstance();
         parent::__construct('', 'settingsForm', 'settings.php', 'post', true);
 
-        $dbConfigs = $xoops->getModuleConfigs($mod->getVar('dirname'));
+        $config_handler = $xoops->getHandlerConfig();
+        $dbConfigs =  $config_handler->getConfigs(new Criteria('conf_modid', $mod->getVar('mid')));
 
         if ($mod->getVar('dirname') !== 'system') {
             $xoops->loadLanguage('modinfo', $mod->getVar('dirname'));
@@ -66,6 +67,11 @@ class SystemPreferencesForm extends Xoops\Form\SimpleForm
          * array with IDs as keys
          */
         $tmpConfigs = $mod->getInfo('config');
+
+        // Get additional configs from third part components
+        // @todo Improve next event handle
+        $tmpConfigs = $xoops->events()->triggerEventWithReturn('system.settings.items', $tmpConfigs, $mod);
+
         $fileConfigs = [];
 
         foreach (array_keys($tmpConfigs) as $i) {
@@ -82,7 +88,7 @@ class SystemPreferencesForm extends Xoops\Form\SimpleForm
         if(empty($categories)){
             $categories = [
                 'default' => [
-                    'caption'    => __('Other settings', 'system'),
+                    'name'    => __('Other settings', 'system'),
                     'icon' => 'xicon-gear',
                     'description' => ''
                 ]
@@ -106,25 +112,57 @@ class SystemPreferencesForm extends Xoops\Form\SimpleForm
          * Iterate over config options stored in database
          */
 
-        foreach($fileConfigs as $option){
+        foreach($dbConfigs as $option){
 
-            $field = (object) [
-                'name' => $option->name,
-                'caption' => $title = \Xoops\Locale::translate($option->title, $mod->getVar('dirname')),
-                'description' => ($option->description != '') ? \Xoops\Locale::translate($option->description, $mod->getVar('dirname')) : '',
-                'formtype' => $option->formtype,
-                'value' => isset($dbConfigs[$option->name]) ? $dbConfigs[$option->name] : $option->default,
-                'type' => $option->valuetype,
-                'options' => isset($option->options) ? $option->options : null,
-                'category' => isset($option->category) ? $option->category : 'default'
-            ];
+            $name = $option->getVar('conf_name');
+            $key = array_search($name, array_keys($fileConfigs), true);
 
-            if(!isset($categories[$option->category])){
-                $option->category = 'default';
+            if(!array_key_exists($name, $fileConfigs)){
+
+                continue;
+
             }
 
-            $categories[$option->category]['fields'][$option->name] = $field;
+            $fConfig = $fileConfigs[$name];
 
+            $field = (object) [
+                'name' => $fConfig->name,
+                'caption' => $title = \Xoops\Locale::translate($fConfig->title, $mod->getVar('dirname')),
+                'description' => ($fConfig->description != '') ? \Xoops\Locale::translate($fConfig->description, $mod->getVar('dirname')) : '',
+                'formtype' => $fConfig->formtype,
+                'value' =>  $option->getConfValueForOutput(),
+                'type' => $fConfig->valuetype,
+                'options' => isset($fConfig->options) ? $fConfig->options : null,
+                'category' => isset($fConfig->category) ? $fConfig->category : 'default'
+            ];
+
+            if(!isset($categories[$fConfig->category])){
+                $fConfig->category = 'default';
+            }
+
+            $categories[$fConfig->category]['fields'][$fConfig->name] = $field;
+
+            // reduce file configs
+            if(false !== $key){
+                array_splice($fileConfigs, $key, 1);
+            }
+
+        }
+
+        /**
+         * Process configs not in db table
+         */
+        foreach($fileConfigs as $fConfig){
+            $field = (object) [
+                'name' => $fConfig->name,
+                'caption' => $title = \Xoops\Locale::translate($fConfig->title, $mod->getVar('dirname')),
+                'description' => ($fConfig->description != '') ? \Xoops\Locale::translate($fConfig->description, $mod->getVar('dirname')) : '',
+                'formtype' => $fConfig->formtype,
+                'value' =>  $fConfig->default,
+                'type' => $fConfig->valuetype,
+                'options' => isset($fConfig->options) ? $fConfig->options : null,
+                'category' => isset($fConfig->category) ? $fConfig->category : 'default'
+            ];
         }
 
         if (!empty($_REQUEST["redirect"])) {
@@ -155,11 +193,11 @@ class SystemPreferencesForm extends Xoops\Form\SimpleForm
             case 'textarea':
                 $myts = \Xoops\Core\Text\Sanitizer::getInstance();
                 if ($option->type === 'array') {
-                    // this is exceptional.. only when value type is arrayneed a smarter way for this
-                    $ele = ($option->value != '')
+                    // this is exceptional.. only when value type is array need a smarter way for this
+                    $ele = (!empty($option->value))
                         ? new Xoops\Form\TextArea([
                                 'name' => $option->name,
-                                'value' => $option->value,
+                                'value' => implode("|", $option->value),
                                 'rows' => 5
                             ]
                         )
@@ -171,7 +209,7 @@ class SystemPreferencesForm extends Xoops\Form\SimpleForm
                 } else {
                     $ele = new Xoops\Form\TextArea([
                             'name' => $option->name,
-                            'value' => $option->name,
+                            'value' => $option->value,
                             'rows' => 5
                         ]
                     );
