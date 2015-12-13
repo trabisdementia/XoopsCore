@@ -1,6 +1,6 @@
 <{include file="admin:system/admin_breadcrumb.tpl"}>
 <{include file="admin:system/admin_tips.tpl"}>
-<{include file="admin:system/admin_buttons.tpl"}>
+<{include file="admin:system/admin-buttons.tpl"}>
 <{if $index}>
 <br class="clear" />
 <div class="spacer">

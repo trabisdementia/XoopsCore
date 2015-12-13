@@ -5,7 +5,7 @@
     Xoops.setStatusText('cancel', '<{translate key="YES"}>');
 </script>
 <{include file="admin:system/admin_navigation.tpl"}>
-<{include file="admin:system/admin_buttons.tpl"}>
+<{include file="admin:system/admin-buttons.tpl"}>
 <{if $step|default:false}>
 <table class="outer">
     <thead>

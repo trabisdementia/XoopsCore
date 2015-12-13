@@ -1,5 +1,5 @@
 <{if $users_display|default:false}>
-    <{include file="admin:system/admin_buttons.tpl"}>
+    <{include file="admin:system/admin-buttons.tpl"}>
 <!--Display form sort-->
     <form action="users.php" method="post">
     <div class="row">
@@ -41,7 +41,7 @@
     <form name='memberslist' id='memberslist' action='<{$php_selft}>' method='POST'>
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title">Table Title</h3>
+                <h3 class="panel-title"><{$systemLang.existingUsers}></h3>
             </div>
             <div class="table-responsive">
                 <table id="xo-users-sorter" class="table">

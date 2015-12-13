@@ -1,5 +1,5 @@
 <{include file="admin:system/admin_navigation.tpl"}>
-<{include file="admin:system/admin_buttons.tpl"}>
+<{include file="admin:system/admin-buttons.tpl"}>
 <{if $fieldlist|default:false}>
 <form action="field.php" method="post" id="fieldform">
     <table class="outer">

@@ -1,5 +1,5 @@
 <{include file="admin:system/admin_tips.tpl"}>
-<{include file="admin:system/admin_buttons.tpl"}>
+<{include file="admin:system/admin-buttons.tpl"}>
 
 <div class="modules-container">
 

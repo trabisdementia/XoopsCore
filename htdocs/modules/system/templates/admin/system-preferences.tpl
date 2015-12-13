@@ -1,5 +1,5 @@
 <{include file="admin:system/admin_tips.tpl"}>
-<{include file="admin:system/admin_buttons.tpl"}>
+<{include file="admin:system/admin-buttons.tpl"}>
 
 <!--Preferences-->
 <{if $menu|default:false}>

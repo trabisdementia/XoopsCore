@@ -1,6 +1,6 @@
 <{include file="admin:system/admin_navigation.tpl"}>
 <{include file="admin:system/admin_tips.tpl"}>
-<{include file="admin:system/admin_buttons.tpl"}>
+<{include file="admin:system/admin-buttons.tpl"}>
 
 <{if $count}>
 <div style="margin-bottom:10px; float: right">

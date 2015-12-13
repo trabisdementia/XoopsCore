@@ -6,7 +6,7 @@
     IMG_OFF = '<{xoAdminIcons 'cancel.png'}>';
 </script>
 <{if $filterform|default:false}>
-<{include file="admin:system/admin_buttons.tpl"}>
+<{include file="admin:system/admin-buttons.tpl"}>
 <div class="clear"></div>
 <div id="xo-block-dragndrop">
     <table class="outer">

@@ -42,7 +42,7 @@ class Admin
         'about' => 'admin_about.tpl',
         'infobox' => 'admin_infobox.tpl',
         'bread' => 'admin_breadcrumb.tpl',
-        'button' => 'admin_buttons.tpl',
+        'button' => 'admin-buttons.tpl',
         'tips' => 'admin_tips.tpl',
         'nav'   => 'admin_navigation.tpl',
     );

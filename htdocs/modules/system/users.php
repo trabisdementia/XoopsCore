@@ -50,10 +50,9 @@ switch ($op) {
     case 'users_add':
         // Assign Breadcrumb menu
         $admin_page = new \Xoops\Module\Admin();
-        $admin_page->addBreadcrumbLink(SystemLocale::CONTROL_PANEL, \XoopsBaseConfig::get('url') . '/admin.php', true);
         $admin_page->addBreadcrumbLink(SystemLocale::USERS_MANAGEMENT, $system->adminVersion('users', 'adminpath'));
         $admin_page->addBreadcrumbLink(SystemLocale::ADD_USER);
-        $admin_page->renderBreadcrumb();
+
         $member_handler = $xoops->getHandlerMember();
         $user = $member_handler->createUser();
         $form = $xoops->getModuleForm($user, 'user');
@@ -72,7 +71,7 @@ switch ($op) {
         $user = $member_handler->getUser($uid);
         if (isset($_REQUEST['ok']) && $_REQUEST['ok'] == 1) {
             if (!$xoops->security()->check()) {
-                $xoops->redirect("admin.php?fct=users", 3, implode('<br />', $xoops->security()->getErrors()));
+                $xoops->redirect("users.php", 3, implode('<br />', $xoops->security()->getErrors()));
             }
 
             $groups = $user->getGroups();
@@ -85,7 +84,7 @@ switch ($op) {
                 if ($xoops->isActiveModule('notifications')) {
                     Notifications::getInstance()->getHandlerNotification()->unsubscribeByUser($uid);
                 }
-                $xoops->redirect("admin.php?fct=users", 1, XoopsLocale::S_DATABASE_UPDATED);
+                $xoops->redirect("users.php", 1, XoopsLocale::S_DATABASE_UPDATED);
             }
         } else {
             //Assign Breadcrumb menu
@@ -94,7 +93,7 @@ switch ($op) {
             $system_breadcrumb->render();
             echo $xoops->confirm(array(
                 'ok' => 1, 'uid' => $uid, 'op' => 'users_delete'
-            ), "admin.php?fct=users", sprintf(SystemLocale::F_DELETE_USER, $user->getVar('uname')) . '<br />');
+            ), "users.php", sprintf(SystemLocale::F_DELETE_USER, $user->getVar('uname')) . '<br />');
         }
         break;
 
@@ -122,9 +121,9 @@ switch ($op) {
                 }
             }
             if ($error != '') {
-                $xoops->redirect("admin.php?fct=users", 3, sprintf(XoopsLocale::F_ERROR, $error));
+                $xoops->redirect("users.php", 3, sprintf(XoopsLocale::F_ERROR, $error));
             } else {
-                $xoops->redirect("admin.php?fct=users", 1, XoopsLocale::S_DATABASE_UPDATED);
+                $xoops->redirect("users.php", 1, XoopsLocale::S_DATABASE_UPDATED);
             }
         }
         break;
@@ -134,7 +133,7 @@ switch ($op) {
         if (isset($_REQUEST['uid'])) {
             //Update user
             if (!$xoops->security()->check()) {
-                $xoops->redirect("admin.php?fct=users", 3, implode('<br />', $xoops->security()->getErrors()));
+                $xoops->redirect("users.php", 3, implode('<br />', $xoops->security()->getErrors()));
             }
             // RMV-NOTIFY
             $user_avatar = $theme = null;
@@ -144,6 +143,8 @@ switch ($op) {
             if (!isset($_REQUEST['user_viewemail'])) {
                 $user_viewemail = null;
             }
+
+            $uid = $system->cleanVars($_POST, 'uid', 0);
 
             $edituser = $member_handler->getUser($uid);
             if ($edituser->getVar('uname', 'n') != $_REQUEST['username'] && $member_handler->getUserCount(new Criteria('uname', $_REQUEST['username'])) > 0) {
@@ -211,14 +212,15 @@ switch ($op) {
                             $member_handler->addUserToGroup($groupid, $edituser->getVar('uid'));
                         }
                     }
-                    $xoops->redirect("admin.php?fct=users", 1, XoopsLocale::S_DATABASE_UPDATED);
+
+                    $xoops->redirect("users.php", 1, XoopsLocale::S_DATABASE_UPDATED);
                 }
             }
             exit();
         } else {
             //Add user
             if (!$xoops->security()->check()) {
-                $xoops->redirect("admin.php?fct=users", 3, implode('<br />', $xoops->security()->getErrors()));
+                $xoops->redirect("users.php", 3, implode('<br />', $xoops->security()->getErrors()));
             }
             if (!$_REQUEST['username'] || !$_REQUEST['email'] || !$_REQUEST['password']) {
                 $adduser_errormsg = XoopsLocale::E_YOU_MUST_COMPLETE_ALL_REQUIRED_FIELDS;
@@ -283,7 +285,7 @@ switch ($op) {
                             $adduser_errormsg = sprintf(SystemLocale::EF_COULD_NOT_ADD_USER_TO_GROUPS, implode(", ", $group_names));
                         } else {
                             XoopsUserUtility::sendWelcome($newuser);
-                            $xoops->redirect("admin.php?fct=users", 1, XoopsLocale::S_DATABASE_UPDATED);
+                            $xoops->redirect("users.php", 1, XoopsLocale::S_DATABASE_UPDATED);
                             exit();
                         }
                     }
@@ -298,7 +300,7 @@ switch ($op) {
         $obj = $member_handler->getUser($uid);
         $obj->setVar("level", 1);
         if ($member_handler->insertUser($obj, true)) {
-            $xoops->redirect("admin.php?fct=users", 1, XoopsLocale::S_DATABASE_UPDATED);
+            $xoops->redirect("users.php", 1, XoopsLocale::S_DATABASE_UPDATED);
         }
         echo $obj->getHtmlErrors();
         break;
@@ -312,7 +314,7 @@ switch ($op) {
                 synchronize('', 'all users');
             }
         }
-        $xoops->redirect("admin.php?fct=users", 1, XoopsLocale::S_DATABASE_UPDATED);
+        $xoops->redirect("users.php", 1, XoopsLocale::S_DATABASE_UPDATED);
         break;
 
     default:
@@ -412,7 +414,7 @@ switch ($op) {
             $limit_text = new Xoops\Form\Text(XoopsLocale::NUMBER_OF_RESULTS_PER_PAGE, "user_limit", 6, 2, 20);
             $submit_button = new Xoops\Form\Button("", "user_submit", XoopsLocale::A_SUBMIT, "submit");
 
-            $form = new Xoops\Form\ThemeForm(XoopsLocale::FIND_USERS, "user_findform", "admin.php?fct=users", 'post', true);
+            $form = new Xoops\Form\ThemeForm(XoopsLocale::FIND_USERS, "user_findform", "users.php", 'post', true);
             $form->addElement($uname_tray);
             $form->addElement($name_tray);
             $form->addElement($email_tray);
@@ -762,7 +764,7 @@ switch ($op) {
             }
 
             if ($users_count > $user_limit) {
-                $nav = new XoopsPageNav($users_count, $user_limit, $start, 'start', 'fct=users&amp;op=default' . $requete_pagenav);
+                $nav = new XoopsPageNav($users_count, $user_limit, $start, 'start', 'users.php?op=default' . $requete_pagenav);
                 $xoops->tpl()->assign('nav', $nav->renderNav());
             }
         }
@@ -777,6 +779,7 @@ switch ($op) {
             'allUsers' => __('All users', 'system'),
             'activeUsers' => __('Only active users', 'system'),
             'inactiveUsers' => __('Only inactive users', 'system'),
+            'existingUsers' => __('Existing Users', 'system'),
         ]);
 
         break;
