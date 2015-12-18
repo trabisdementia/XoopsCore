@@ -26,7 +26,6 @@ htdocs/assets/*/
 htdocs/.idea/
 htdocs/xoops_lib/composer.json
 htdocs/modules/system/themes/hydrogen/src/prepros.cfg
-src/prepros.cfg
-src/prepros.cfg
-src/prepros.cfg
-src/prepros.cfg
+prepros.cfg
+
+*.DS_Store

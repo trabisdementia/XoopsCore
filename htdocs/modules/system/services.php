@@ -61,14 +61,13 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
     exit("Token error");
 }
 
-$xoops->theme()->addBaseStylesheetAssets('@jqueryuicss');
-$xoops->theme()->addStylesheet('modules/system/css/admin.css');
+//$xoops->theme()->addBaseStylesheetAssets('@jqueryuicss');
+//$xoops->theme()->addStylesheet('modules/system/css/admin.css');
 //$xoops->theme()->addBaseScriptAssets('@jqueryui', '@jgrowl', 'modules/system/js/admin.js');
 
-$xoops->header('admin:system/system_services.tpl');
+$xoops->header('admin:system/system-services.tpl');
 
 $admin_page = new \Xoops\Module\Admin();
-$admin_page->addBreadcrumbLink(SystemLocale::CONTROL_PANEL, \XoopsBaseConfig::get('url') . '/admin.php', true);
 $admin_page->addBreadcrumbLink(
     SystemLocale::SERVICES_MANAGER,
     $system->adminVersion('services', 'adminpath')
