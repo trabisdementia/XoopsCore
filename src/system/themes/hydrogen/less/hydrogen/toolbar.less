@@ -1,0 +1,283 @@
+/*
+ * Main toolbar (tob) for theme
+ */
+#xo-toolbar{
+  background: @main-toolbar-bgcolor;
+  height: 50px;
+  border: 0;
+
+  > .container-fluid{
+    padding: 0;
+  }
+
+  .nav{
+
+    > li{
+      color: @main-toolbar-color;
+
+      > a{
+        color: @main-toolbar-color;
+        line-height: 50px;
+        min-width: 50px;
+        display: block;
+        transition: ease-in-out all 250ms;
+        padding: 0;
+
+        > .xo-icon-svg{
+          .xo-icon-size(16px);
+          .xo-icon-color(@main-toolbar-color);
+        }
+
+        &:hover{
+          color:@main-toolbar-hover-color;
+
+          > .xo-icon-svg{
+            .xo-icon-color(@main-toolbar-hover-color);
+          }
+        }
+
+      }
+
+      &.alert-button{
+
+        > a{
+          position: relative;
+          > span.counter{
+            display: block;
+            background-color: @orange;
+            color: @orange-color;
+            border-radius: 50%;
+            line-height: 14px;
+            font-size: floor(@font-size-base * 0.6);
+            font-weight: 500;
+            text-align: center;
+            width: 14px;
+            height: 14px;
+            position: absolute;
+            top: 12px;
+            right: 13px;
+          }
+        }
+        > .dropdown-menu{
+          color: @text-color;
+          min-width: 300px;
+
+          .messages-container{
+            position: relative;
+            max-height: 350px;
+            overflow: hidden;
+
+            &.ps-container > .ps-scrollbar-y-rail{
+              opacity: 0.2;
+            }
+
+            > ul{
+              padding: 0;
+              margin: 0;
+              list-style: none;
+
+              > li{
+                border-bottom: 1px solid rgba(0,0,0,0.1);
+              }
+
+              .message{
+                padding: 10px 10px;
+                overflow: hidden;
+
+                > .icon{
+                  width: 32px;
+                  height: 32px;
+                  line-height: 32px;
+                  float: left;
+                  text-align: center;
+                  display: block;
+
+                  > .xo-icon-svg{
+                    .xo-icon-size(20px);
+                  }
+
+                }
+
+                > .text{
+                  margin-left: 40px;
+
+                  > small{
+                    display: block;
+                    color: @text-muted;
+                  }
+                }
+
+                &.info{
+                  > .icon {
+                    background-color: @info;
+                    > .xo-icon-svg {
+                      .xo-icon-color(@info-color);
+                    }
+                  }
+                  > .text{
+                    color: @state-info-text;
+                  }
+                }
+
+                &.warning{
+                  > .icon {
+                    background-color: @warning;
+                    > .xo-icon-svg {
+                      .xo-icon-color(@warning-color);
+                    }
+                  }
+                  > .text{
+                    color: @state-warning-text;
+                  }
+                }
+
+                &.success{
+                  > .icon {
+                    background-color: @success;
+                    > .xo-icon-svg {
+                      .xo-icon-color(@success-color);
+                    }
+                  }
+                  > .text{
+                    color: @state-success-text;
+                  }
+                }
+
+                &.error{
+                  > .icon {
+                    background-color: @danger;
+                    > .xo-icon-svg {
+                      .xo-icon-color(@danger-color);
+                    }
+                  }
+                  > .text{
+                    color: @state-danger-text;
+                  }
+                }
+
+              }
+
+            }
+
+          }
+
+        }
+      }
+
+    }
+
+    .dropdown-menu{
+      .xo-icon-svg{
+        .xo-icon-size(20px)
+      }
+    }
+  }
+
+  .navbar-right{
+    margin-right: 0;
+  }
+
+  /*
+   * Left tool (menu toggler and logo)
+   */
+  ul.default-tools{
+
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: inline-block;
+
+    > li{
+      border-right: 1px solid rgba(0,0,0,0.1);
+      float: left;
+
+      &.menu-toggler a{
+        display: block;
+        width: 50px;
+        height: 50px;
+        font-size: 18px;
+        color: @main-toolbar-color;
+        text-align: center;
+        vertical-align: middle;
+        background: url(../images/menu.png) no-repeat center;
+
+        > span{
+          display: none;
+        }
+
+      }
+
+      &.xo-logo{
+
+        border-right: 0;
+        background-color: rgba(0,0,0,0.05);
+        text-align: center;
+
+        > a{
+
+          padding: 0 20px;
+          width: 200px;
+          display: block;
+          transition: ease-in-out all 250ms;
+
+          > .xo-icon-svg{
+
+            .xo-icon-size(100%, 0);
+            max-height: 24px;
+
+          }
+
+        }
+
+      }
+
+    }
+  }
+
+  /*
+   * Right toolbar
+   */
+  ul.dynamic-tools{
+
+    float: right;
+
+    > li{
+
+      float: left;
+      border-left: 1px solid rgba(0,0,0, 0.1);
+
+      > a{
+        display: block;
+        line-height: 50px;
+        width: 50px;
+        text-align: center;
+        font-size: 16px;
+      }
+
+    }
+
+    > #xo-admin-button{
+      img{
+        width: 30px; height: 30px;
+        border-radius: 50%;
+      }
+    }
+
+    > #xo-tasks-toggle{
+
+      > a {
+        width: 50px;
+        height: 50px;
+        background: url("../images/menu.png") no-repeat center;
+
+        > span{
+          display: none;
+        }
+
+      }
+
+    }
+
+  }
+
+}

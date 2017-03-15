@@ -1,37 +1,81 @@
-{if $type != 'inline'}
-<form name="{$name}" id="{$name}" action="{$action}" method="{$method}" onsubmit="return xoopsFormValidate_{$name}();" {$extra} >
-    {if $title != ''}<h3>{$title}</h3>{/if}
-    {foreach item=input from=$xo_input|default:[]}
-        {if $input.datalist != ''}{$input.datalist}{/if}
-        <div class="form-group">
-            <label>{$input.caption}{if $input.required}<span class="caption-required">*</span>{/if}</label>
-            {$input.ele}
-            <small class="text-muted">{$input.description}</small>
-            <p class="dsc_pattern_vertical">{$input.pattern_description}</p>
+<{if $type == 'horizontal'}>
+    <div class="xo-panel xo-panel-primary">
+        <{if $title != ''}>
+            <div class="panel-heading">
+                <h2><{$title}></h2>
+            </div>
+        <{/if}>
+        <div class="panel-body">
+            <form name="<{$name}>" id="<{$name}>" action="<{$action}>" method="<{$method}>" onsubmit="return xoopsFormValidate_<{$name}>();"<{$extra}>>
+
+                <{foreach item=input from=$xo_input|default:[]}>
+                    <{if $input.datalist != ''}>
+                        <{$input.datalist}>
+                    <{/if}>
+                    <div class="row form-group">
+                        <div class="col-sm-3">
+                            <label><{$input.caption}><{if $input.required}> <span class="caption-required">*</span><{/if}></label>
+                        </div>
+                        <div class="col-sm-9">
+                            <{$input.ele}>
+                            <small class="help-block"><{$input.pattern_description}></small>
+                            <{if $input.description != ''}>
+                                <p class="help-block"><{$input.description}></p>
+                            <{/if}>
+                        </div>
+                    </div>
+                <{/foreach}>
+                <{$hidden}>
+
+            </form>
         </div>
-    {/foreach}
-    {$hidden}
-</form>
-{else}
-<form class="well form-inline" name="{$name}" id="{$name}" action="{$action}" method="{$method}" onsubmit="return xoopsFormValidate_{$name}();"{$extra}>
+    </div>
+
+<{/if}>
+<{if $type == 'vertical'}>
+<form name="<{$name}>" id="<{$name}>" action="<{$action}>" method="<{$method}>" onsubmit="return xoopsFormValidate_<{$name}>();"<{$extra}>>
     <fieldset>
-        {if $title != ''}
-        <legend>{$title}</legend>
-        {/if}
-        {foreach item=input from=$xo_input|default:[]}
-            {if $input.datalist != ''}
-                {$input.datalist}
-            {/if}
-            {if $input.caption}
-            <label>{$input.caption}{if $input.required}<span class="caption-required">*</span>{/if}</label>
-            {/if}
-            {$input.ele}
-            {if $input.description != ''}
-            <span class="help-inline">{$input.description}</span>
-            {/if}
-        {/foreach}
-        {$hidden}
+        <{if $title != ''}>
+        <legend><{$title}></legend>
+        <{/if}>
+        <{foreach item=input from=$xo_input|default:[]}>
+            <{if $input.datalist != ''}>
+                <{$input.datalist}>
+            <{/if}>
+            <div class="form-group">
+                <label><{$input.caption}><{if $input.required}><span class="caption-required">*</span><{/if}></label>
+                <{$input.ele}>
+                <{if $input.description != ''}>
+                    <span class="help-block"><{$input.description}></span>
+                <{/if}>
+            </div>
+            <p class="dsc_pattern_vertical"><{$input.pattern_description}></p>
+        <{/foreach}>
+        <{$hidden}>
     </fieldset>
 </form>
-{/if}
-{$validationJS}
+<{/if}>
+
+<{if $type == 'inline'}>
+<form class="well form-inline" name="<{$name}>" id="<{$name}>" action="<{$action}>" method="<{$method}>" onsubmit="return xoopsFormValidate_<{$name}>();"<{$extra}>>
+    <fieldset>
+        <{if $title != ''}>
+        <legend><{$title}></legend>
+        <{/if}>
+        <{foreach item=input from=$xo_input|default:[]}>
+            <{if $input.datalist != ''}>
+                <{$input.datalist}>
+            <{/if}>
+            <{if $input.caption}>
+            <label><{$input.caption}><{if $input.required}><span class="caption-required">*</span><{/if}></label>
+            <{/if}>
+            <{$input.ele}>
+            <{if $input.description != ''}>
+            <span class="help-inline"><{$input.description}></span>
+            <{/if}>
+        <{/foreach}>
+        <{$hidden}>
+    </fieldset>
+</form>
+<{/if}>
+<{$validationJS}>

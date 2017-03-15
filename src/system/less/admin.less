@@ -1,0 +1,729 @@
+@import '../themes/hydrogen/less/bootstrap/variables.less';
+@import '../themes/hydrogen/less/hydrogen/variables.less';
+@import '../themes/hydrogen/less/bootstrap/mixins/forms.less';
+@import '../themes/hydrogen/less/bootstrap/mixins/vendor-prefixes.less';
+
+.xo-module-icon{
+  > img{
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  }
+  .xo-icon-svg{
+    .xo-icon-size(48px);
+    .xo-icon-color(@text-color);
+  }
+}
+
+/*------------------------------------------------
+                MODULES: TABS
+------------------------------------------------*/
+.modules-container{
+  > div{
+    display: none;
+    opacity: 0;
+    animation: show-tab 1s;
+  }
+
+  > .active{
+    display: block;
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes show-tab {
+  0% {
+    display: none;
+    opacity: 0;
+  }
+  1% {
+    display: block;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+
+/*------------------------------------------------
+                MODULES: LIST MODE
+------------------------------------------------*/
+#table-installed-modules, #table-available-modules{
+
+  td:nth-child(5){
+    vertical-align: middle;
+  }
+
+  tr.disabled{
+    background-color: @body-bg;
+    > *{
+      color: @gray-light;
+    }
+  }
+
+  .name{
+    font-size: ceil(@font-size-base * 1.2);
+    display: block;
+
+    .rename{
+      display: block;
+    }
+
+    input{
+      display: block;
+      width: 100%;
+      height: @input-height-base; // Make inputs at least the height of their button counterpart (base line-height + padding + border)
+      padding: @padding-base-vertical @padding-base-horizontal;
+      font-size: @font-size-base;
+      line-height: @line-height-base;
+      color: @input-color;
+      background-color: @input-bg;
+      background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
+      border: 1px solid @input-border;
+      border-radius: @input-border-radius;
+      .box-shadow(inset 0 1px 1px rgba(0,0,0,.075));
+      .transition(~"border-color ease-in-out .15s, box-shadow ease-in-out .15s");
+
+      // Customize the `:focus` state to imitate native WebKit styles.
+      .form-control-focus();
+
+      // Placeholder
+      .placeholder();
+
+      // Disabled and read-only inputs
+      //
+      // HTML5 says that controls under a fieldset > legend:first-child won't be
+      // disabled if the fieldset is disabled. Due to implementation difficulty, we
+      // don't honor that edge case; we style them as disabled anyway.
+      &[disabled],
+      &[readonly],
+      fieldset[disabled] & {
+        background-color: @input-bg-disabled;
+        opacity: 1; // iOS fix for unreadable disabled content; see https://github.com/twbs/bootstrap/issues/11655
+      }
+
+      &[disabled],
+      fieldset[disabled] & {
+        cursor: @cursor-disabled;
+      }
+
+      // Reset height for `textarea`s
+      textarea& {
+        height: auto;
+      }
+    }
+  }
+  .module-version{
+    display: block;
+
+
+  }
+
+  .version, .updated{
+    white-space: nowrap;
+
+    .xo-icon-svg{
+      .xo-icon-size(16px);
+    }
+  }
+
+  .author{
+    font-size: floor(@font-size-base * 0.9);
+  }
+
+  .authors{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    > li{
+      display: inline-block;
+
+      > a{
+        display: block;
+        width: 30px;
+        height: 30px;
+        > img{
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
+          border: 1px solid rgba(0,0,0,0.15);
+          padding: 2px;
+        }
+      }
+    }
+
+  }
+}
+
+/*------------------------------------------------
+               MODULES: CARDS MODE
+------------------------------------------------*/
+#cards-installed-modules{
+  position: relative;
+  overflow: hidden;
+
+  .module-item{
+    border: 0;
+    display: inline-block;
+    width: 100%;
+    padding: 10px;
+    transition: ease all 500ms;
+    border-radius: @border-radius-base;
+
+    @media(min-width: @screen-sm-min){
+      width: 50%;
+      float: left;
+    }
+
+    @media(min-width: @screen-md-min){
+      width: 33.33333%;
+    }
+
+    @media(min-width: 1500px){
+      width: 25%;
+    }
+
+    @media(min-width: 1750px){
+      width: 20%;
+    }
+
+    > section{
+
+      box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+
+      > .module-card{
+        position: relative;
+        padding: 15px;
+        background-color: #FFF;
+        text-align: center;
+
+        @media(min-width: 451px) {
+          padding-left: 122px;
+          text-align: left;
+        }
+
+        @media(min-width: @screen-sm-min) {
+          padding-left: 95px;
+        }
+
+        @media(min-width: @screen-md-min) {
+          padding-left: 122px;
+        }
+
+        > .module-image{
+          padding: 15px;
+          text-align: center;
+          color: @primary;
+
+          .xo-icon-svg{
+            color: @primary;
+          }
+
+          @media(min-width: 451px) {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 122px;
+          }
+
+          @media(min-width: @screen-sm-min) {
+            width: 95px;
+          }
+
+          @media(min-width: @screen-md-min) {
+            width: 122px;
+          }
+
+          img{
+            box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+            width: 100%;
+            max-width: 92px;
+          }
+        }
+
+        > .module-data{
+
+          > .name{
+            font-weight: 700;
+            font-size: ceil(@font-size-base * 1.2);
+          }
+
+        }
+      }
+
+      > .module-options{
+        background-color: #f5f5f5;
+        border-top: 1px solid rgba(0,0,0,0.05);
+        overflow: hidden;
+        a {
+          display: block;
+          padding: 6px;
+          float: right;
+          border-left: 1px solid rgba(0,0,0,0.1);
+
+          > .xo-icon-svg{
+            .xo-icon-size(24px);
+          }
+
+          &:hover{
+            background-color: rgba(0,0,0,0.1);
+            border-left-color: transparent;
+          }
+        }
+      }
+
+    }
+
+    &.system{
+
+      > section{
+        color: darken(@azure, 10%);
+
+        .module-card{
+          background-color: @primary!important;
+          color: @primary-color;
+
+          > .module-image {
+
+            .xo-icon-svg {
+              color: @primary-color;
+            }
+
+          }
+
+        }
+
+        > .module-options{
+          background-color: @midnight;
+          color: @midnight-color;
+          a{
+            color: @midnight-color!important;
+
+            >.xo-icon-svg{
+              color: @midnight-color;
+            }
+          }
+        }
+      }
+
+    }
+
+  }
+
+}
+
+#cards-available-modules{
+  position: relative;
+  overflow: hidden;
+
+  .module-item{
+    border: 0;
+    display: inline-block;
+    width: 100%;
+    padding: 10px;
+    transition: ease all 500ms;
+    border-radius: @border-radius-base;
+
+    @media(min-width: 601px){
+      width: 50%;
+      float: left;
+    }
+
+    @media(min-width: @screen-md-min){
+      width: 33.33333%;
+    }
+
+    @media(min-width: @screen-lg-min){
+      width: 25%;
+    }
+
+    @media(min-width: 1500px){
+      width: 20%;
+    }
+
+    > section{
+
+      box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+
+      > .module-card{
+        position: relative;
+        padding: 15px;
+        background-color: #FFF;
+        text-align: center;
+
+        @media(min-width: 451px) {
+          padding-left: 122px;
+          text-align: left;
+        }
+
+        @media(min-width: @screen-sm-min) {
+          padding-left: 95px;
+        }
+
+        @media(min-width: @screen-md-min) {
+          padding-left: 122px;
+        }
+
+        > .module-image{
+          padding: 15px;
+          text-align: center;
+          color: @primary;
+
+          .xo-icon-svg{
+            color: @primary;
+          }
+
+          @media(min-width: 451px) {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 122px;
+          }
+
+          @media(min-width: @screen-sm-min) {
+            width: 95px;
+          }
+
+          @media(min-width: @screen-md-min) {
+            width: 122px;
+          }
+
+          img{
+            box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+            width: 100%;
+            max-width: 92px;
+          }
+        }
+
+        > .module-data{
+
+          > .name{
+            font-weight: 700;
+            font-size: ceil(@font-size-base * 1.2);
+          }
+
+        }
+      }
+
+      > .module-options{
+        background-color: #f5f5f5;
+        border-top: 1px solid rgba(0,0,0,0.05);
+        overflow: hidden;
+        a {
+          display: block;
+          padding: 6px;
+          float: right;
+          border-left: 1px solid rgba(0,0,0,0.1);
+
+          > .xo-icon-svg{
+            .xo-icon-size(24px);
+          }
+
+          &:hover{
+            background-color: rgba(0,0,0,0.1);
+            border-left-color: transparent;
+          }
+        }
+      }
+
+    }
+
+  }
+
+}
+
+/*
+--------------------------------------
+ AVAILABLE MODULES
+--------------------------------------
+*/
+#available-modules{
+
+}
+
+/*
+--------------------------------------
+ DOWNLOAD MODULES
+--------------------------------------
+*/
+#download-modules{
+
+}
+
+
+/*
+------------------------------------------------
+ MODULE DETAILS
+------------------------------------------------
+*/
+.module-details{
+
+  #general{
+    header{
+      //border-bottom: 1px solid @gray-lighter;
+      margin-bottom: 8px;
+
+    }
+
+    .authors{
+      img{
+        border-radius: @border-radius-large;
+        padding: 2px;
+        border: 1px solid rgba(0,0,0,0.1);
+        width: 30px;
+        height: 30px;
+      }
+    }
+
+    .module-links{
+      text-align: center;
+      padding: 0;
+      background-color: #f5f5f5;
+      margin: 8px -15px -15px -15px;
+      border-top: 1px solid rgba(0,0,0,0.05);
+      overflow: hidden;
+
+      > ul{
+        overflow: hidden;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        float: right;
+
+        > li{
+          float: left;
+
+          > a{
+
+            text-decoration: none;
+            display: inline-block;
+            padding: 6px 10px;
+            border-left: 1px solid rgba(0,0,0,0.1);
+
+            .xo-icon-svg{
+              .xo-icon-size(24px);
+            }
+
+            &.help{
+              color: @orange;
+            }
+
+          }
+
+        }
+      }
+
+    }
+
+  }
+
+  .row{
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid @gray-lighter;
+  }
+
+  .details-item{
+
+    > strong{
+      display: block;
+    }
+
+    > span{
+      display: block;
+      font-size: ceil(@font-size-base * 1.1);
+      color: @gray-light;
+      font-weight: 300;
+    }
+
+  }
+
+  // Blocks
+  #blocks, #settings, #tables{
+
+    .module-blocks{
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      counter-reset: blocks-list;
+
+      > li{
+        position: relative;
+        padding: 5px 0 5px 40px;
+
+        > p{
+          color: @gray-light;
+          margin: 0;
+          font-size: floor(@font-size-base * 0.85);
+        }
+
+        &:before{
+          counter-increment: blocks-list;
+          content: counter(blocks-list);
+          display: block;
+          position: absolute;
+          line-height: 24px;
+          width: 30px;
+          background-color: @orange;
+          position: absolute;
+          top: 5px; left: 0;
+          text-align: center;
+          color: @orange-color;
+          font-weight: bold;
+          border-radius: 3px;
+        }
+
+        @media(min-width: @screen-sm-min){
+          width: 50%;
+          float: left;
+        }
+      }
+
+      &:after{
+        content: '';
+        display: block;
+        clear:both;
+      }
+
+    }
+
+  }
+
+}
+
+
+/*---------------------------------
+    UPDATE LOG
+---------------------------------*/
+#module-logger{
+
+  .media{
+    background: rgba(0,0,0,0.05);
+    margin: -20px -15px 20px -15px;
+    padding: 15px;
+  }
+
+  ul.logger-module-details{
+    list-style: none;
+    margin: 20px 0;
+    padding: 0;
+
+    > li{
+      padding: 3px 0;
+
+      > strong{
+        display: inline-block;
+        width: 100px;
+      }
+
+    }
+  }
+
+  .logger-buttons{
+    padding: 20px 10px;
+
+    > .btn{
+      margin: 5px 0;
+    }
+  }
+
+  .logger-content{
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 20px;
+    max-height: 500px;
+    border: 1px solid rgba(0,0,0,0.1);
+
+    ul{
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      > li{
+
+        &.xo-step{
+          font-size: 0.8;
+          text-transform: uppercase;
+          font-weight: bold;
+          color: @orange;
+        }
+
+        &.xo-child{
+          padding-left: 30px;
+          color: @gray;
+
+          .xo-icon-svg{
+            .xo-icon-size(16px);
+            .xo-icon-color(@green);
+          }
+
+        }
+
+      }
+
+    }
+  }
+
+}
+
+/*------------------------------------------------
+                SETTINGS
+------------------------------------------------*/
+#settings-form{
+
+  .nav-tabs{
+
+    > li{
+
+      > a{
+
+        color: @gray-light;
+
+        .xo-icon-svg{
+          .xo-icon-size(ceil(@font-size-base * 1.2));
+          .xo-icon-color(@gray-light);
+        }
+
+        &:hover{
+          color: @gray;
+          .xo-icon-svg{
+            .xo-icon-color(@gray-light);
+          }
+        }
+
+        @media(max-width: @screen-sm-max){
+          > .caption{
+            display: none;
+          }
+
+          .xo-icon-svg{
+            .xo-icon-size(ceil(24px));
+          }
+        }
+
+      }
+
+      &.active{
+        a{
+          color: @text-color;
+          .xo-icon-svg{
+            .xo-icon-color(@text-color);
+          }
+        }
+      }
+
+    }
+
+  }
+
+  .tab-content{
+    padding: ceil(@panel-body-padding * 1.5);
+  }
+
+  .settings-controls{
+    padding: 25px 0;
+    text-align: right;
+  }
+
+}

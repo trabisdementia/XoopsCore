@@ -28,6 +28,7 @@ $modversion['license_url'] = 'www.gnu.org/licenses/gpl-2.0.html/';
 $modversion['official']    = 1;
 $modversion['help']        = 'page=help';
 $modversion['image']       = 'images/xcaptcha_logo.png';
+$modversion['icon']        = 'xicon-key';
 $modversion['dirname']     = 'xcaptcha';
 
 //about

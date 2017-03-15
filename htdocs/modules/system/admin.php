@@ -98,15 +98,15 @@ if (false != $error) {
     // Define main template
     $xoops->header('admin:system/system_index.tpl');
     // Define Stylesheet
-    $xoops->theme()->addStylesheet('modules/system/css/admin.css');
+    //$xoops->theme()->addStylesheet('modules/system/css/admin.css');
     // Define scripts
-    $xoops->theme()->addBaseScriptAssets('@jquery.');
-    $xoops->theme()->addBaseScriptAssets('modules/system/js/admin.js');
+    //$xoops->theme()->addBaseScriptAssets('@jquery.');
+    //$xoops->theme()->addBaseScriptAssets('modules/system/js/admin.js');
     // Define Breadcrumb and tips
     $admin_page = new \Xoops\Module\Admin();
     $admin_page->addBreadcrumbLink(SystemLocale::CONTROL_PANEL, \XoopsBaseConfig::get('url') . '/admin.php', true);
     $admin_page->addBreadcrumbLink(SystemLocale::SYSTEM_CONFIGURATION);
-    $admin_page->renderBreadcrumb();
+    //$admin_page->renderBreadcrumb();
     $admin_page->addTips(SystemLocale::TIPS_MAIN);
     $admin_page->renderTips();
     $groups = $xoopsUser->getGroups();

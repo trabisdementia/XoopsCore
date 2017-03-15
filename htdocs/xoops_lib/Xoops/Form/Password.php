@@ -62,6 +62,8 @@ class Password extends Element
             }
         }
         $this->set('type', 'password');
+
+        $this->setIfNotSet('class', 'form-control');
     }
 
     /**

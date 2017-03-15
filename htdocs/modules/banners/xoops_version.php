@@ -31,7 +31,22 @@ $modversion['license_url']    = 'http://www.gnu.org/licenses/gpl-2.0.html';
 $modversion['official']       = 1;
 $modversion['help']           = 'page=help';
 $modversion['image']          = 'images/logo.png';
+$modversion['icon']           = 'xicon-irradescent';
 $modversion['dirname']        = 'banners';
+
+$modversion['author']      = array(
+    array(
+        'name'      => 'Mage Gregory',
+        'email'     => '',
+        'aka'       => 'Mage',
+        'url'       => 'http://xoops.org'
+    )
+);
+
+$modversion['website']     = array(
+    'url'   => 'http://xoops.org',
+    'name'  => 'XOOPS'
+);
 
 //about
 $modversion['release_date']        = '2011/01/02';

@@ -41,6 +41,7 @@ class XcaptchaRecaptcha extends Xcaptcha
         $_POST['public_key']  = $system->cleanVars($_POST, 'public_key', 'Your public key', 'string');
         $_POST['theme']       = $system->cleanVars($_POST, 'theme', 'red', 'string');
         $_POST['lang']        = $system->cleanVars($_POST, 'lang', $default_lang, 'string');
+
         foreach (array_keys($this->config) as $key) {
             $config[$key] = $_POST[$key];
         }

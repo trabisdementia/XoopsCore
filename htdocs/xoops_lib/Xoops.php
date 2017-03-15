@@ -129,6 +129,12 @@ class Xoops
     public $isAdminSide = false;
 
     /**
+     * The current location (page) identifier for internal use
+     * @var string
+     */
+    public $locationId = '';
+
+    /**
      * Actual Xoops OS
      */
     private function __construct()
@@ -325,7 +331,7 @@ class Xoops
             } else {
                 $adminThemeFactory = new \Xoops\Core\Theme\AdminFactory();
                 $this->setTheme($adminThemeFactory->createInstance(array(
-                    'folderName'      => 'default', 'themesPath' => 'modules/system/themes',
+                    'folderName'      => 'hydrogen', 'themesPath' => 'modules/system/themes',
                     'contentTemplate' => $this->tpl_name
                 )));
                 //$this->theme()->loadLocalization('admin');
@@ -623,8 +629,8 @@ class Xoops
 
         if ($this->isAdminSide) {
             $this->events()->triggerEvent('system.class.gui.header');
-            include_once $this->path('modules/system/themes/default/default.php');
-            $gui = new XoopsGuiDefault();
+            include_once $this->path('modules/system/themes/hydrogen/hydrogen.php');
+            $gui = new XoopsGuiHydrogen();
             $gui->header();
         } else {
             $this->events()->triggerEvent('core.header.addmeta');
@@ -693,7 +699,16 @@ class Xoops
             trigger_error("xoopsOption[template_main] should be defined before including header.php", E_USER_WARNING);
             $this->theme()->contentTemplate = $this->tpl_name;
         }
+
+        if ($this->isAdminSide) {
+            $this->events()->triggerEvent('system.class.gui.footer');
+            include_once $this->path('modules/system/themes/hydrogen/hydrogen.php');
+            $gui = new XoopsGuiHydrogen();
+            $gui->footer();
+        }
+
         $this->theme()->render();
+
         $this->events()->triggerEvent('core.footer.end');
         exit();
     }
@@ -1470,10 +1485,10 @@ class Xoops
     /**
      * Function to redirect a user to certain pages
      *
-     * @param string $url               URL to redirect to
-     * @param int    $time              time to wait (to allow reading message display)
-     * @param string $message           message to display
-     * @param bool   $addredirect       add xoops_redirect parameter with current URL to the redirect
+     * @param string|array  $url               URL to redirect to
+     * @param int           $time              time to wait (to allow reading message display)
+     * @param string        $message           message to display
+     * @param bool          $addredirect       add xoops_redirect parameter with current URL to the redirect
      *                                   URL -  used for return from login redirect
      * @param bool   $allowExternalLink allow redirect to external URL
      *
@@ -1481,14 +1496,38 @@ class Xoops
      */
     public function redirect($url, $time = 3, $message = '', $addredirect = true, $allowExternalLink = false)
     {
-        $this->events()->triggerEvent('core.redirect.start', array(
-            $url, $time, $message, $addredirect, $allowExternalLink
-        ));
-        // if conditions are right, system preloads will exit on this call
-        // so don't use it if you want to be called, use start version above.
-        $this->events()->triggerEvent('core.include.functions.redirectheader', array(
-            $url, $time, $message, $addredirect, $allowExternalLink
-        ));
+        /**
+         * All parameters can be provided trough var $url
+         */
+        if(is_array($url)){
+
+            $this->events()->triggerEvent('core.redirect.start', $url);
+            // if conditions are right, system preloads will exit on this call
+            // so don't use it if you want to be called, use start version above.
+            $this->events()->triggerEvent('core.include.functions.redirectheader', $url);
+
+        } else {
+
+            $this->events()->triggerEvent('core.redirect.start', array(
+                'url' => $url,
+                'time' => $time,
+                'message' => $message,
+                'redirect' => $addredirect,
+                'external' => $allowExternalLink,
+                'type' => 'warning'
+            ));
+            // if conditions are right, system preloads will exit on this call
+            // so don't use it if you want to be called, use start version above.
+            $this->events()->triggerEvent('core.include.functions.redirectheader', array(
+                'url' => $url,
+                'time' => $time,
+                'message' => $message,
+                'redirect' => $addredirect,
+                'external' => $allowExternalLink,
+                'type' => 'warning'
+            ));
+
+        }
 
         $xoops_url = \XoopsBaseConfig::get('url');
 
@@ -1503,8 +1542,8 @@ class Xoops
                 $url = $xoops_url;
             }
         }
-        if (!defined('XOOPS_CPFUNC_LOADED')) {
-            $theme = 'default';
+        if (defined('XOOPS_CPFUNC_LOADED')) {
+            $theme = 'hydrogen';
         } else {
             $theme = $this->getConfig('theme_set');
         }
@@ -1978,5 +2017,85 @@ class Xoops
     {
         //error_reporting(0);
         $this->events()->triggerEvent('core.disableerrorreporting');
+    }
+
+    /**
+     * Returns an icon formatted correctly as an URL for bitmaps or the svg content (&lt;svg&gt;...&lt;/svg&gt;)
+     *
+     * The icon parameter must be specified as Xoops Icon element (starting with xicon-) or
+     * as a relative URL to an image.
+     *
+     * <pre>
+     * // For Xoops icon
+     * $xoops = Xoops::getInstance();
+     * $icon = $xoops->getIcon('xicon-system');
+     *
+     * // For module SVG icon with relative path. Module dirname
+     * // can be provided, if not, the current module dirname
+     * // will be used to search for icon.
+     * $icon = $xoops->getIcon('images/my-icon.svg', 'mymodule');
+     *
+     * // For module SVG icon with absolute path
+     * // External resources could not work correctly.
+     * $icon = $xoops->getIcon('/some-directory/icon.svg');
+     * $icon = $xoops->getIcon('http://somesite.com/icon.svg');
+     *
+     * // For module bitmap icon (not recommended!!!)
+     * $icon = $xoops->getIcon('images/my-icon.png', 'mymodule');
+     * </pre>
+     *
+     * @param string $icon
+     * @param string $module
+     *
+     * @return string
+     */
+    public function getIcon($icon, $module = '')
+    {
+        $xoops = \Xoops::getInstance();
+
+        // Check if this is a Xoops SVG icon
+        if ('xicon-' == substr($icon, 0, 6)){
+            $file = $xoops->path("media/xoops/icons/".substr($icon, 6).".svg");
+            if (! file_exists($file)){
+                $file = $xoops->path("media/xoops/icons/guess-what.svg");
+            }
+            return file_get_contents($file);
+        }
+
+        // Relative or absolute url?
+        $absolute = preg_match( "/^[http:\/\/|https:\/\/|ftp:\/\/|\/\/]/", $icon );
+        $is_svg = substr($icon, -4) == '.svg';
+
+        // Icon with absolute path
+        if ($absolute){
+            if ($is_svg){
+                return file_get_contents($icon);
+            } else {
+                return $icon;
+            }
+        }
+
+        // Icon with relative path
+        $module_relative = preg_match( "/^[\/|\.\.\/]/", $icon ) ? false : true;
+
+        if ('' == $module && $xoops->isModule()){
+            $module = $xoops->module->dirname();
+        }
+
+        if ('' == $module && $module_relative){
+            return null;
+        }
+
+        if ($is_svg){
+            $file = $module_relative ? $xoops->path("modules/{$module}/{$icon}") : $xoops->path($icon);
+            if(file_exists($file)){
+                return file_get_contents($file);
+            } else {
+                return null;
+            }
+        } else {
+            $file = $module_relative ? $xoops->url("modules/{$module}/{$icon}") : $xoops->url($icon);
+            return $file;
+        }
     }
 }

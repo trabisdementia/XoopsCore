@@ -1,0 +1,54 @@
+#hydrogen-wrapper{
+  width: 100%;
+  min-height: 94vh;
+  position: relative;
+  overflow: auto;
+
+  > .hydrogen-contents-wrapper{
+    vertical-align: top;
+    position: relative;
+    background-color: @contents-bgcolor;
+    margin-left: 250px;
+    transition: ease-in-out margin 250ms;
+
+    > .container-fluid{
+      margin-top: 20px;
+    }
+  }
+
+  .hydrogen-xoops-contents{
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+}
+
+/* COLLAPSED SIDEBAR BODY */
+.collapsed-sidebar{
+
+  /* HYDROGEN WRAPPER */
+  #hydrogen-wrapper{
+
+    /* CONTENTS WRAPPER */
+    > .hydrogen-contents-wrapper{
+      margin-left: 50px;
+    }
+    /* END CONTENTS WRAPPER */
+
+  }
+  /* END HYDROGEN WRAPPER */
+
+}
+/* END COLLAPSED SIDEBAR BODY */
+
+/*----------------------------*/
+
+/* BREADCRUMB */
+.breadcrumb{
+  margin-bottom: 0;
+
+  .xo-icon-svg{
+    .xo-icon-size(16px);
+  }
+}
+/* END BREADCRUMB */

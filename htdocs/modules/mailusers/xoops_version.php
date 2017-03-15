@@ -32,6 +32,7 @@ $modversion['license_url'] = 'http://www.gnu.org/licenses/gpl-2.0.html';
 $modversion['official']    = 1;
 $modversion['help']        = 'page=help';
 $modversion['image']       = 'images/logo.png';
+$modversion['icon']        = 'xicon-user-email';
 $modversion['dirname']     = 'mailusers';
 //about
 $modversion['release_date']        = '2012/01/20';

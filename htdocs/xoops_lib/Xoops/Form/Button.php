@@ -55,7 +55,6 @@ class Button extends Element
         $this->themeDecorateElement();
 
         $attributes = $this->renderAttributeString();
-        return '<input ' . $attributes . 'value="' . $this->getValue()
-            . '" ' . $this->getExtra() .' >';
+        return '<button ' . $attributes . ' ' . $this->getExtra() .' >' . $this->getValue() . '</button>';
     }
 }

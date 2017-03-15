@@ -1,5 +1,5 @@
-<{if isset($xo_sys_navigation)}>
-<div class="page-header">
-    <h3><img src="<{$xo_sys_navigation.icon}>" alt="" /><{$xo_sys_navigation.title}></h3>
+<{if $xo_sys_navigation}>
+<div class="xo-page-header">
+    <h3><{$xo_sys_navigation|print_r}></h3>
 </div>
 <{/if}>

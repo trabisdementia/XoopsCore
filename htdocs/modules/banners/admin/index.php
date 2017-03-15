@@ -23,6 +23,8 @@ include __DIR__ . '/header.php';
 $xoops = Xoops::getInstance();
 $helper = Banners::getInstance();
 
+// Location
+$xoops->locationId = 'banners-dashboard';
 $xoops_root_path = \XoopsBaseConfig::get('root-path');
 $xoops_upload_path = \XoopsBaseConfig::get('uploads-path');
 $xoops_upload_url = \XoopsBaseConfig::get('uploads-url');
@@ -48,6 +50,9 @@ $banners_finish = $banner_Handler->getCount($criteria);
 $folder_path = $xoops_root_path . '/uploads/banners';
 
 $admin_page = new \Xoops\Module\Admin();
+// Breadcrumb
+$admin_page->addBreadcrumbLink(__('Banners', 'banners'));
+
 $admin_page->addInfoBox(_MI_BANNERS_BANNERS);
 $admin_page->addInfoBoxLine(sprintf(_AM_BANNERS_INDEX_NBTOTAL, $banners_banner));
 $admin_page->addInfoBoxLine(sprintf(_AM_BANNERS_INDEX_NBCLIENT, '<span class="green">' . $banners_client . '</span>'));

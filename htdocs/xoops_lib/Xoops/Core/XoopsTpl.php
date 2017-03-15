@@ -55,6 +55,13 @@ class XoopsTpl extends \Smarty
         $this->compile_check = ($xoops->getConfig('theme_fromfile') == 1);
         $this->setPluginsDir(\XoopsBaseConfig::get('smarty-xoops-plugins'));
         $this->addPluginsDir(SMARTY_PLUGINS_DIR);
+        // Plugins for GUI themes
+        if ($xoops->isAdminSide) {
+            $this->addPluginsDir([
+                    \XoopsBaseConfig::get('root-path') . '/modules/system/themes/hydrogen/smarty'
+                ]
+            );
+        }
         $this->setCompileId();
         $this->assign(
             array('xoops_url' => \XoopsBaseConfig::get('url'),

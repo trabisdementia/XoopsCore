@@ -52,7 +52,7 @@ namespace Xoops\Core;
  * @code
  *      <?php
  *      // instantiate the loader
- *      $loader = new \Xoops\Core\Psr4ClassLoader;
+ *      $loader = new \Common\Core\Psr4ClassLoader;
  *
  *      // register the autoloader
  *      $loader->register();

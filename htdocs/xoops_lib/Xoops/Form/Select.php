@@ -54,6 +54,8 @@ class Select extends OptionElement
                 $this->set('multiple');
             }
         }
+
+        $this->setIfNotSet('class', 'form-control');
     }
 
     /**

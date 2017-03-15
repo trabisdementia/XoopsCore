@@ -84,6 +84,7 @@ class Events
         $this->eventListeners = array();
         $this->setPreloads();
         $this->setEvents();
+        $this->setThemesPreloads();
         $this->eventsEnabled = true;
     }
 
@@ -104,22 +105,71 @@ class Events
                 $modules_list = array ('system');
             }
             $this->preloadList =array();
-            $i = 0;
             foreach ($modules_list as $module) {
                 if (is_dir($dir = \XoopsBaseConfig::get('root-path') . "/modules/{$module}/preloads/")) {
                     $file_list = Lists\File::getList($dir);
                     foreach ($file_list as $file) {
                         if (preg_match('/(\.php)$/i', $file)) {
                             $file = substr($file, 0, -4);
-                            $this->preloadList[$i]['module'] = $module;
-                            $this->preloadList[$i]['file'] = $file;
-                            ++$i;
+                            $this->preloadList[] = array(
+                                'module'    => $module,
+                                'file'      => $file
+                            );
                         }
                     }
                 }
             }
+
             $cache->write($key, $this->preloadList);
         }
+
+    }
+
+    /**
+     * Load preloads from given directory
+     * @param $dir
+     * @param $name
+     */
+    private function loadExtraPreloads($dir, $name)
+    {
+
+        if (is_dir($dir = $dir . '/preloads/')){
+            $file_list = \XoopsLists::getFileListAsArray($dir);
+            foreach ($file_list as $file) {
+                if (preg_match('/(\.php)$/i', $file)) {
+                    include_once $dir . '/' . $file;
+                    $class_name = ucfirst($name) . ucfirst(substr($file, 0, -4)) . 'Preload';
+                    if (!class_exists($class_name)) {
+                        continue;
+                    }
+                    $class_methods = get_class_methods($class_name);
+                    foreach ($class_methods as $method) {
+                        if (strpos($method, 'event') === 0) {
+                            $eventName = strtolower(str_replace('event', '', $method));
+                            $event = array($class_name, $method);
+                            $this->eventListeners[$eventName][] = $event;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Load existing preloads for front-end and back-end themes
+     */
+    protected function setThemesPreloads()
+    {
+        $xoops = \Xoops::getInstance();
+
+        // GUI theme preloads
+        if ($xoops->isAdminSide) {
+            $theme = \Xoops::getInstance()->getConfig('cpanel');
+            $this->loadExtraPreloads(XOOPS_ROOT_PATH . "/modules/system/themes/{$theme}", $theme);
+        }
+
+        $theme = \Xoops::getInstance()->getConfig('theme_set');
+        $this->loadExtraPreloads(XOOPS_ROOT_PATH . "/themes/{$theme}", $theme);
     }
 
     /**
@@ -189,6 +239,38 @@ class Events
                 }
             }
         }
+    }
+
+    /**
+     * Trigger a specific event and return a value
+     *
+     * @param       string $eventName
+     * @param array array $args
+     *
+     * @return mixed
+     */
+    public function triggerEventWithReturn($eventName, $value = null)
+    {
+        $args = func_get_args();
+
+        if (! $this->eventsEnabled){
+            return $value; // Default value
+        }
+
+        $eventName = $this->toInternalEventName($eventName);
+
+        if (! array_key_exists($eventName, $this->eventListeners)){
+            return $value; // Default value
+        }
+
+
+
+        foreach ($this->eventListeners[$eventName] as $event){
+            $args[1] =& $value;
+            $value = call_user_func_array($event,array_slide($args, 1));
+        }
+
+        return $value;
     }
 
     /**

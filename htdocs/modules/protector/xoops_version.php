@@ -33,6 +33,7 @@ $modversion['license']     = 'GNU GPL 2.0';
 $modversion['license_url'] = "www.gnu.org/licenses/gpl-2.0.html/";
 $modversion['official']    = 1;
 $modversion['image']       = 'images/logo.png';
+$modversion['icon']        = 'xicon-security';
 $modversion['dirname']     = 'protector';
 
 /*

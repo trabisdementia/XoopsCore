@@ -1,0 +1,42 @@
+.modal-variation(@color, @text, @text2, @border){
+  .modal-header{
+    background-color: @color;
+    color: @text;
+  }
+
+  .modal-title{
+    color: @text;
+  }
+
+  .modal-body{
+
+    > .nav-tabs,
+    > .bootbox-body  > .nav-tabs{
+      background-color: @color;
+      color: @text;
+
+      li{
+
+        > a{
+          color: @text2;
+          &:hover,
+          &:focus{
+            color: @text;
+            border-bottom-color: @border;
+          }
+        }
+
+        &.active > a {
+          &,
+          &:hover,
+          &:focus {
+            color: @text;
+            border-bottom: 3px solid @border!important;
+          }
+        }
+
+      }
+    }
+
+  }
+}

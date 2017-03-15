@@ -48,15 +48,22 @@ $start = Request::getInt('start', 0);
 $admin_page = new \Xoops\Module\Admin();
 $admin_page->renderNavigation('clients.php');
 
+// Set location
+$xoops->locationId = 'banners-clients';
+
 switch ($op) {
 
     case 'list':
     default:
 
         $admin_page->addTips(_AM_BANNERS_TIPS_CLIENTS);
-        $admin_page->addItemButton(_AM_BANNERS_CLIENTS_ADD, 'clients.php?op=new', 'add');
+        $admin_page->addItemButton(_AM_BANNERS_CLIENTS_ADD, 'clients.php?op=new', 'xicon-plus', '', 'success');
         $admin_page->renderTips();
         $admin_page->renderButton();
+
+        // Breadcrumb
+        $admin_page->addBreadcrumbLink(__('Banners', 'banners'), 'index.php');
+        $admin_page->addBreadcrumbLink(__('Clients', 'banners'));
 
         // Display client
         $criteria = new CriteriaCompo();
@@ -106,8 +113,14 @@ switch ($op) {
         break;
 
     case 'new':
-        $admin_page->addItemButton(_AM_BANNERS_CLIENTS_LIST, 'clients.php', 'application-view-detail');
+        $admin_page->addItemButton(_AM_BANNERS_CLIENTS_LIST, 'clients.php', 'xicon-list', '', 'indigo');
         $admin_page->renderButton();
+
+        // Breadcrumb
+        $admin_page->addBreadcrumbLink(__('Banners', 'banners'), 'index.php');
+        $admin_page->addBreadcrumbLink(__('Clients', 'banners'), 'clients.php');
+        $admin_page->addBreadcrumbLink(__('Add new', 'banners'));
+
         $xoops->tpl()->assign(
             'info_msg',
             $xoops->alert('info', _AM_BANNERS_ALERT_INFO_CLIENT_ADDEDIT, _AM_BANNERS_ALERT_INFO_TITLE)
@@ -118,7 +131,7 @@ switch ($op) {
         break;
 
     case 'edit':
-        $admin_page->addItemButton(_AM_BANNERS_CLIENTS_LIST, 'clients.php', 'application-view-detail');
+        $admin_page->addItemButton(_AM_BANNERS_CLIENTS_LIST, 'clients.php', 'xicon-list', '', 'indigo');
         $admin_page->renderButton();
         $xoops->tpl()->assign(
             'info_msg',

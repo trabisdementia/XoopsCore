@@ -1,44 +1,47 @@
-<{include file="admin:system/admin_navigation.tpl"}>
 <{include file="admin:system/admin_tips.tpl"}>
-<{include file="admin:system/admin_buttons.tpl"}>
-<br />
+<{include file="admin:system/admin-buttons.tpl"}>
+
 <{$info_msg|default:''}>
 <{$error_msg|default:''}>
 <{if $client_count|default:false}>
-<table id="xo-bannersclient-sorter" cellspacing="1" class="outer tablesorter">
-    <thead>
-    <tr>
-        <th class="txtcenter width15"><{$smarty.const._AM_BANNERS_CLIENTS_NAME}></th>
-        <th class="txtcenter width15"><{$smarty.const._AM_BANNERS_CLIENTS_UNAME}></th>
-        <th class="txtcenter width10"><{$smarty.const._AM_BANNERS_CLIENTS_ACTIVEBANNERS}></th>
-        <th class="txtcenter"><{$smarty.const._AM_BANNERS_CLIENTS_MAIL}></th>
-        <th class="txtcenter width10"><{$smarty.const._AM_BANNERS_ACTION}></th>
-    </tr>
-    </thead>
-    <tbody>
-    <{foreach item=clientitem from=$client}>
-    <tr class="<{cycle values='even,odd'}>">
-        <td class="txtcenter"><{$clientitem.name}></td>
-        <{if $clientitem.uid == 0}>
-        <td class="txtcenter"><{$clientitem.uname}></td>
-        <{else}>
-        <td class="txtcenter"><a title="<{$clientitem.uname}>" href="<{$xoops_url}>/userinfo.php?uid=<{$clientitem.uid}>" ><{$clientitem.uname}></a></td>
-        <{/if}>
-        <td class="txtcenter"><{$clientitem.banner_active}></td>
-        <td class="txtcenter"><{$clientitem.email}></td>
-        <td class="xo-actions txtcenter">
-            <img onclick="display_dialog(<{$clientitem.cid}>, true, true, 'slide', 'slide', 325, 400);" src="<{xoAdminIcons 'display.png'}>" alt="<{$smarty.const._AM_BANNERS_VIEW}>" title="<{$smarty.const._AM_BANNERS_VIEW}>" />
-            <a href="clients.php?op=edit&amp;cid=<{$clientitem.cid}>" title="<{$smarty.const._AM_BANNERS_EDIT}>">
-                <img src="<{xoAdminIcons 'edit.png'}>" alt="<{$smarty.const._AM_BANNERS_EDIT}>" />
-            </a>
-            <a href="clients.php?op=delete&amp;cid=<{$clientitem.cid}>" title="<{$smarty.const._AM_BANNERS_DELETE}>">
-                <img src="<{xoAdminIcons 'delete.png'}>" alt="<{$smarty.const._AM_BANNERS_DELETE}>" />
-            </a>
-        </td>
-    </tr>
-    <{/foreach}>
-    </tbody>
-</table>
+
+    <div class="table-responsive">
+        <table id="xo-bannersclient-sorter" cellspacing="1" class="table">
+            <thead>
+            <tr>
+                <th class="text-left"><{$smarty.const._AM_BANNERS_CLIENTS_NAME}></th>
+                <th class="text-center"><{$smarty.const._AM_BANNERS_CLIENTS_UNAME}></th>
+                <th class="text-center"><{$smarty.const._AM_BANNERS_CLIENTS_ACTIVEBANNERS}></th>
+                <th class="text-center"><{$smarty.const._AM_BANNERS_CLIENTS_MAIL}></th>
+                <th class="text-center"><{$smarty.const._AM_BANNERS_ACTION}></th>
+            </tr>
+            </thead>
+            <tbody>
+            <{foreach item=clientitem from=$client}>
+                <tr>
+                    <td class="text-left"><{$clientitem.name}></td>
+                    <{if $clientitem.uid == 0}>
+                        <td class="text-center"><{$clientitem.uname}></td>
+                    <{else}>
+                        <td class="text-center"><a title="<{$clientitem.uname}>" href="<{$xoops_url}>/userinfo.php?uid=<{$clientitem.uid}>" ><{$clientitem.uname}></a></td>
+                    <{/if}>
+                    <td class="text-center"><{$clientitem.banner_active}></td>
+                    <td class="text-center"><{$clientitem.email}></td>
+                    <td class="xo-actions text-center">
+                        <img onclick="display_dialog(<{$clientitem.cid}>, true, true, 'slide', 'slide', 325, 400);" src="<{xoAdminIcons 'display.png'}>" alt="<{$smarty.const._AM_BANNERS_VIEW}>" title="<{$smarty.const._AM_BANNERS_VIEW}>" />
+                        <a href="clients.php?op=edit&amp;cid=<{$clientitem.cid}>" title="<{$smarty.const._AM_BANNERS_EDIT}>">
+                            <img src="<{xoAdminIcons 'edit.png'}>" alt="<{$smarty.const._AM_BANNERS_EDIT}>" />
+                        </a>
+                        <a href="clients.php?op=delete&amp;cid=<{$clientitem.cid}>" title="<{$smarty.const._AM_BANNERS_DELETE}>">
+                            <img src="<{xoAdminIcons 'delete.png'}>" alt="<{$smarty.const._AM_BANNERS_DELETE}>" />
+                        </a>
+                    </td>
+                </tr>
+            <{/foreach}>
+            </tbody>
+        </table>
+    </div>
+
 <div class="clear spacer"></div>
 <{if $nav_menu|default:false}>
 <div class="xo-avatar-pagenav floatright"><{$nav_menu}></div>
@@ -50,10 +53,10 @@
     <table>
         <{if $client.uid != 0}>
         <tr>
-            <td class="txtcenter">
+            <td class="text-center">
                 <img src="<{$client.avatar}>" alt="<{$client.uname}>" title="<{$client.uname}>" />
             </td>
-            <td class="txtcenter">
+            <td class="text-center">
                 <a href='mailto:<{$client.email}>'><img src="<{xoAdminIcons 'mail_send.png'}>" alt="" title="" /></a>
                 <a href='javascript:openWithSelfMain("<{$xoops_url}>/pmlite.php?send2=1&amp;to_userid=<{$client.uid}>","pmlite",450,370);'><img src="<{xoAdminIcons 'pm.png'}>" alt="" title="" /></a>
                 <a href='<{$client.url}>' rel='external'><img src="<{xoAdminIcons 'url.png'}>" alt="" title="" ></a>

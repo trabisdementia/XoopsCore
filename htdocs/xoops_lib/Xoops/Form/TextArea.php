@@ -48,6 +48,8 @@ class TextArea extends Element
             $this->setWithDefaults('value', $value, '');
             $this->setIfNotEmpty('placeholder', $placeholder);
         }
+
+        $this->setIfNotSet('class', 'form-control');
     }
 
     /**

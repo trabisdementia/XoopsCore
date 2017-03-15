@@ -21,6 +21,9 @@
  */
 include __DIR__ . '/header.php';
 $xoops = Xoops::getInstance();
+// Location
+$xoops->locationId = 'banners-about';
+
 $xoops->header();
 $aboutAdmin = new \Xoops\Module\Admin();
 $aboutAdmin->displayNavigation('about.php');

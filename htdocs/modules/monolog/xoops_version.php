@@ -39,6 +39,7 @@ $modversion['helpsection'][] = array(
     'link' => 'page=hacking'
 );
 $modversion['image']         = 'images/logo.png';
+$modversion['icon']          = 'xicon-monolog';
 $modversion['dirname']       = 'monolog';
 
 //about

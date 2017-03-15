@@ -41,7 +41,7 @@ $groups_handler = $xoops->getHandlerGroup();
 $member_handler = $xoops->getHandlerMember();
 
 // Call Header
-$xoops->header('admin:system/system_groups.tpl');
+$xoops->header('admin:system/system-groups.tpl');
 //$system_breadcrumb->addLink(_AM_SYSTEM_GROUPS_NAV_MANAGER, system_adminVersion('groups', 'adminpath'));
 
 switch ($op) {

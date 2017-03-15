@@ -6,7 +6,7 @@
 </script>
 <{include file="admin:system/admin_navigation.tpl"}>
 <{include file="admin:system/admin_tips.tpl"}>
-<{include file="admin:system/admin_buttons.tpl"}>
+<{include file="admin:system/admin-buttons.tpl"}>
 
 <{if $error_message|default:false}>
 <div class="alert alert-error" style="text-align:center;">

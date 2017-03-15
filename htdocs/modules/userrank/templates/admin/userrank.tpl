@@ -6,7 +6,7 @@
 </script>
 <{include file="admin:system/admin_navigation.tpl"}>
 <{include file="admin:system/admin_tips.tpl"}>
-<{include file="admin:system/admin_buttons.tpl"}>
+<{include file="admin:system/admin-buttons.tpl"}>
 <{if $userrank_count == true}>
 <!--User rank-->
 <table id="xo-rank-sorter" cellspacing="1" class="outer tablesorter">

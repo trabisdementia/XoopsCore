@@ -3,6 +3,8 @@
 \#*
 *.bak
 htdocs/mainfile.php
+htdocs/advform-icons.php
+htdocs/svg-browser.php
 htdocs/xoops_data/caches/smarty_cache/*.php
 htdocs/xoops_data/caches/smarty_compile/*.php
 htdocs/xoops_data/caches/xoops_cache/*.php
@@ -22,3 +24,8 @@ htdocs/assets/*/
 /UnitTestXoops/*.lnk
 .idea/
 htdocs/.idea/
+htdocs/xoops_lib/composer.json
+htdocs/modules/system/themes/hydrogen/src/prepros.cfg
+prepros.cfg
+
+*.DS_Store

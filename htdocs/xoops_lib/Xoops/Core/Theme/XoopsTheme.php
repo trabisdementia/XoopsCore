@@ -119,6 +119,13 @@ class XoopsTheme
     public $template = false;
 
     /**
+     * CSS classes to be assigned to BODY element
+     *
+     * @var array
+     */
+    public $bodyClasses = array();
+
+    /**
      * Array containing the document meta-information
      *
      * @var array
@@ -265,9 +272,10 @@ class XoopsTheme
         if (!empty($cssAssets)) {
             $this->addBaseStylesheetAssets($cssAssets);
         }
-        $this->addBaseScriptAssets('include/xoops.js');
         $this->addBaseScriptAssets('@jquery');
         $this->addBaseStylesheetAssets('@fontawesome');
+        $this->addBaseScriptAssets('include/xoops.min.js');
+        //$this->addBaseScriptAssets('media/bootstrap/js/bootstrap.min.js');
         if (!empty($jsAssets)) {
             $this->addBaseScriptAssets($jsAssets);
         }
@@ -642,7 +650,7 @@ class XoopsTheme
     public function addBaseAssets($type, $assets)
     {
         if (is_scalar($assets)) {
-            $this->baseAssets[$type][]=$assets;
+            $this->baseAssets[$type][] = $assets;
         } elseif (is_array($assets)) {
             $this->baseAssets[$type] = array_merge($this->baseAssets[$type], $assets);
         }
@@ -809,14 +817,14 @@ class XoopsTheme
         if (!empty($this->baseAssets['js'])) {
             $url = $this->assets->getUrlToAssets('js', $this->baseAssets['js']);
             if (!empty($url)) {
-                $str .= '<script src="' . $url . '" type="text/javascript"></script>'."\n";
+                $str .= '<script src="' . $url . '" type="text/javascript"></script>' . "\n";
             }
         }
 
         if (!empty($this->baseAssets['css'])) {
             $url = $this->assets->getUrlToAssets('css', $this->baseAssets['css']);
             if (!empty($url)) {
-                $str .= '<link rel="stylesheet" href="' . $url . '" type="text/css" />'."\n";
+                $str .= '<link rel="stylesheet" href="' . $url . '" type="text/css" />' . "\n";
             }
         }
         return $str;
@@ -939,5 +947,46 @@ class XoopsTheme
         }
 //\Xoops::getInstance()->events()->triggerEvent('debug.log', "drop thru {$path}");
         return $path;
+    }
+
+    /**
+     * Add a new CSS class to be assigned to BODY element.
+     *
+     * @param $class
+     */
+    public function addBodyClass($class)
+    {
+        if (is_array($class) && !empty($class)) {
+            $this->bodyClasses = array_merge($this->bodyClasses, $class);
+        } else {
+            $this->bodyClasses[] = $class;
+        }
+    }
+
+    public function renderBodyClasses()
+    {
+        return implode(" ", $this->bodyClasses);
+    }
+
+    /**
+     * Add a tool item to main toolbar
+
+     * @param $tool
+     *
+     * @return bool
+     */
+    public function addMainTool( $tool )
+    {
+        if ( empty($tool) || !is_array($tool) ){
+            return false;
+        }
+
+        $this->mainTools[] = $tool;
+        return true;
+    }
+
+    public function renderMainTools(){
+        $xoops = \Xoops::getInstance();
+        $xoops->tpl()->assign('main_toolbar_items', $this->mainTools);
     }
 }
